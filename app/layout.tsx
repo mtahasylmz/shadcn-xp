@@ -1,17 +1,15 @@
 import type { Metadata } from "next"
 
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
-
-// XP UI was Tahoma; we lean on the system Tahoma/Verdana stack (defined in
-// globals.css) instead of a webfont so the chrome feels native and loads
-// instantly. No next/font here on purpose.
 
 export const metadata: Metadata = {
-  title: "shadcn/ui — Windows XP edition",
+  title: "shadcn/ui — Concept Skins",
   description:
-    "Every shadcn/ui component, reskinned in the Windows XP (Luna) theme.",
+    "One unmodified shadcn/ui component set, re-conceptualized by swappable CSS skins: Windows XP, Brutalist, Neumorphic, Terminal, Glassmorphism.",
 }
+
+// Set the active skin before first paint to avoid a flash of the default skin.
+const skinInit = `try{var s=localStorage.getItem('skin')||'xp';document.documentElement.setAttribute('data-skin',s)}catch(e){document.documentElement.setAttribute('data-skin','xp')}`
 
 export default function RootLayout({
   children,
@@ -20,9 +18,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
-        <ThemeProvider>{children}</ThemeProvider>
-      </body>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: skinInit }} />
+      </head>
+      <body>{children}</body>
     </html>
   )
 }

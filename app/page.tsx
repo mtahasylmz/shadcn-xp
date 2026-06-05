@@ -6,13 +6,14 @@ import {
   ChevronDown,
   Folder,
   Info,
-  Monitor,
+  Layers,
   Search,
   Settings,
   TriangleAlert,
 } from "lucide-react"
 
-import { XPWindow, XPPanel, XPDemoRow } from "@/components/xp/chrome"
+import { Specimen } from "@/components/showcase/specimen"
+import { SkinSwitcher } from "@/components/showcase/skin-switcher"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
@@ -23,7 +24,6 @@ import { Switch } from "@/components/ui/switch"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Slider } from "@/components/ui/slider"
 import { Progress } from "@/components/ui/progress"
-import { Separator } from "@/components/ui/separator"
 import {
   Card,
   CardContent,
@@ -32,12 +32,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Accordion,
   AccordionContent,
@@ -98,7 +93,7 @@ const NAV = [
   ["buttons", "Buttons"],
   ["badges", "Badges"],
   ["inputs", "Text Fields"],
-  ["selection", "Selection Controls"],
+  ["selection", "Selection"],
   ["select", "Select"],
   ["card", "Card"],
   ["tabs", "Tabs"],
@@ -116,148 +111,140 @@ export default function Page() {
 
   return (
     <TooltipProvider delayDuration={150}>
-      <main className="mx-auto w-full max-w-[1040px] px-3 py-6 sm:py-10">
-        <XPWindow
-          title="shadcn/ui — Windows XP Edition"
-          icon={<Monitor className="size-4 text-white" />}
-        >
-          {/* menubar */}
-          <nav className="xp-menubar">
-            <span>File</span>
-            <span>Edit</span>
-            <span>View</span>
-            <span>Favorites</span>
-            <span>Help</span>
-          </nav>
+      <div className="app">
+        {/* host toolbar — always available, repainted per skin */}
+        <header className="app-bar">
+          <span className="app-brand">
+            <span className="app-brand-mark">
+              <Layers className="size-4" />
+            </span>
+            shadcn/ui · concept skins
+          </span>
+          <span className="app-bar-controls">
+            <label htmlFor="skin">skin</label>
+            <SkinSwitcher />
+          </span>
+        </header>
 
-          <div className="grid grid-cols-1 gap-3 p-3 md:grid-cols-[180px_1fr]">
-            {/* left explorer nav */}
-            <aside className="hidden md:block">
-              <div className="xp-panel sticky top-4">
-                <div className="xp-panel-header">
-                  <span>Components</span>
-                </div>
-                <div className="xp-panel-body !p-1.5">
-                  <nav className="xp-nav">
-                    {NAV.map(([id, label]) => (
-                      <a key={id} href={`#${id}`}>
-                        {label}
-                      </a>
-                    ))}
-                  </nav>
-                </div>
-              </div>
+        {/* the skinned surface */}
+        <div className="stage">
+          <div className="stage-head">
+            <span className="stage-head-title">
+              <Layers className="size-4" />
+              Component Gallery
+            </span>
+            <span className="stage-head-buttons">
+              <span aria-hidden>_</span>
+              <span aria-hidden>▢</span>
+              <span aria-hidden>✕</span>
+            </span>
+          </div>
+
+          <div className="app-main">
+            <aside className="app-nav">
+              <nav className="app-nav-inner">
+                <span className="app-nav-title">Components</span>
+                {NAV.map(([id, label]) => (
+                  <a key={id} href={`#${id}`}>
+                    {label}
+                  </a>
+                ))}
+              </nav>
             </aside>
 
-            {/* content */}
-            <div className="flex flex-col gap-2">
-              {/* hero terminal */}
-              <div className="xp-terminal">
-                <div className="xp-terminal-slogan">
-                  C:\&gt; shadcn add --theme windows-xp
-                </div>
-                <p>
-                  Every shadcn/ui component, reskinned in the Windows XP “Luna”
-                  theme — beveled controls, putty greys, and that unmistakable
-                  blue title bar.
+            <main className="gallery">
+              <section className="hero">
+                <div className="hero-kicker">$ shadcn skins — one set, many concepts</div>
+                <h1 className="hero-title">Stock shadcn/ui, re-conceptualized</h1>
+                <p className="hero-sub">
+                  Every component below is the unmodified shadcn/ui source. The
+                  entire look is a CSS overlay scoped to <code>[data-skin]</code>
+                  . Switch skins in the top bar — the markup never changes.
                 </p>
-              </div>
+              </section>
 
-              {/* BUTTONS */}
-              <XPPanel id="buttons" title="Button" tag="variants · sizes · states">
-                <div className="flex flex-col gap-4">
-                  <XPDemoRow label="variants">
-                    <Button>Default</Button>
-                    <Button variant="secondary">Secondary</Button>
-                    <Button variant="outline">Outline</Button>
-                    <Button variant="ghost">Ghost</Button>
-                    <Button variant="destructive">Destructive</Button>
-                    <Button variant="link">Link</Button>
-                  </XPDemoRow>
-                  <XPDemoRow label="sizes">
-                    <Button size="sm">Small</Button>
-                    <Button>Default</Button>
-                    <Button size="lg">Large</Button>
-                    <Button size="icon" aria-label="Settings">
-                      <Settings />
-                    </Button>
-                  </XPDemoRow>
-                  <XPDemoRow label="with icon / disabled">
-                    <Button>
-                      <Search data-icon="inline-start" />
-                      Search
-                    </Button>
-                    <Button disabled>Disabled</Button>
-                  </XPDemoRow>
+              <Specimen id="buttons" title="Button" tag="variants · sizes · states">
+                <div className="demo-col" style={{ gap: 16 }}>
+                  <div className="demo-col">
+                    <span className="demo-label">variants</span>
+                    <div className="demo-row">
+                      <Button>Default</Button>
+                      <Button variant="secondary">Secondary</Button>
+                      <Button variant="outline">Outline</Button>
+                      <Button variant="ghost">Ghost</Button>
+                      <Button variant="destructive">Destructive</Button>
+                      <Button variant="link">Link</Button>
+                    </div>
+                  </div>
+                  <div className="demo-col">
+                    <span className="demo-label">sizes & icons</span>
+                    <div className="demo-row">
+                      <Button size="sm">Small</Button>
+                      <Button>Default</Button>
+                      <Button size="lg">Large</Button>
+                      <Button size="icon" aria-label="Settings">
+                        <Settings />
+                      </Button>
+                      <Button>
+                        <Search data-icon="inline-start" />
+                        Search
+                      </Button>
+                      <Button disabled>Disabled</Button>
+                    </div>
+                  </div>
                 </div>
-              </XPPanel>
+              </Specimen>
 
-              {/* BADGES */}
-              <XPPanel id="badges" title="Badge" tag="status pills">
-                <XPDemoRow>
+              <Specimen id="badges" title="Badge" tag="status pills">
+                <div className="demo-row">
                   <Badge>Default</Badge>
                   <Badge variant="secondary">Secondary</Badge>
                   <Badge variant="outline">Outline</Badge>
                   <Badge variant="destructive">Destructive</Badge>
-                </XPDemoRow>
-              </XPPanel>
+                </div>
+              </Specimen>
 
-              {/* INPUTS */}
-              <XPPanel id="inputs" title="Text Fields" tag="input · textarea · label">
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div className="flex flex-col gap-1.5">
-                    <Label htmlFor="name">File name</Label>
-                    <Input id="name" placeholder="untitled.txt" />
+              <Specimen id="inputs" title="Text Fields" tag="input · textarea · label">
+                <div className="demo-grid demo-grid-2">
+                  <div className="demo-col">
+                    <Label htmlFor="name">Name</Label>
+                    <Input id="name" placeholder="Ada Lovelace" />
                   </div>
-                  <div className="flex flex-col gap-1.5">
+                  <div className="demo-col">
                     <Label htmlFor="disabled">Disabled</Label>
                     <Input id="disabled" placeholder="read only" disabled />
                   </div>
-                  <div className="flex flex-col gap-1.5 sm:col-span-2">
+                  <div className="demo-col" style={{ gridColumn: "1 / -1" }}>
                     <Label htmlFor="msg">Message</Label>
                     <Textarea id="msg" placeholder="Type your message…" rows={3} />
                   </div>
                 </div>
-              </XPPanel>
+              </Specimen>
 
-              {/* SELECTION CONTROLS */}
-              <XPPanel
-                id="selection"
-                title="Selection Controls"
-                tag="checkbox · radio · switch"
-              >
-                <div className="grid gap-6 sm:grid-cols-3">
-                  <div className="flex flex-col gap-2">
-                    <span className="font-mono text-[11px] text-muted-foreground">
-                      checkbox
-                    </span>
+              <Specimen id="selection" title="Selection Controls" tag="checkbox · radio · switch">
+                <div className="demo-grid demo-grid-3">
+                  <div className="demo-col">
+                    <span className="demo-label">checkbox</span>
                     <label className="flex items-center gap-2">
-                      <Checkbox defaultChecked /> Show hidden files
+                      <Checkbox defaultChecked /> Notifications
                     </label>
                     <label className="flex items-center gap-2">
-                      <Checkbox /> Read-only
+                      <Checkbox /> Auto-update
                     </label>
                   </div>
-                  <div className="flex flex-col gap-2">
-                    <span className="font-mono text-[11px] text-muted-foreground">
-                      radio
-                    </span>
-                    <RadioGroup defaultValue="tiles" className="flex flex-col gap-2">
+                  <div className="demo-col">
+                    <span className="demo-label">radio</span>
+                    <RadioGroup defaultValue="a" className="flex flex-col gap-2">
                       <label className="flex items-center gap-2">
-                        <RadioGroupItem value="tiles" /> Tiles
+                        <RadioGroupItem value="a" /> Option A
                       </label>
                       <label className="flex items-center gap-2">
-                        <RadioGroupItem value="icons" /> Icons
-                      </label>
-                      <label className="flex items-center gap-2">
-                        <RadioGroupItem value="list" /> List
+                        <RadioGroupItem value="b" /> Option B
                       </label>
                     </RadioGroup>
                   </div>
-                  <div className="flex flex-col gap-2">
-                    <span className="font-mono text-[11px] text-muted-foreground">
-                      switch
-                    </span>
+                  <div className="demo-col">
+                    <span className="demo-label">switch</span>
                     <label className="flex items-center gap-2">
                       <Switch defaultChecked /> Wi-Fi
                     </label>
@@ -266,122 +253,108 @@ export default function Page() {
                     </label>
                   </div>
                 </div>
-              </XPPanel>
+              </Specimen>
 
-              {/* SELECT */}
-              <XPPanel id="select" title="Select" tag="dropdown list box">
-                <div className="max-w-xs">
+              <Specimen id="select" title="Select" tag="dropdown list box">
+                <div style={{ maxWidth: 260 }}>
                   <Select>
                     <SelectTrigger>
-                      <SelectValue placeholder="Choose a drive…" />
+                      <SelectValue placeholder="Choose a framework…" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectGroup>
-                        <SelectLabel>Local Disks</SelectLabel>
-                        <SelectItem value="c">(C:) Local Disk</SelectItem>
-                        <SelectItem value="d">(D:) Data</SelectItem>
+                        <SelectLabel>Meta-frameworks</SelectLabel>
+                        <SelectItem value="next">Next.js</SelectItem>
+                        <SelectItem value="remix">Remix</SelectItem>
+                        <SelectItem value="start">TanStack Start</SelectItem>
                       </SelectGroup>
                       <SelectGroup>
-                        <SelectLabel>Removable</SelectLabel>
-                        <SelectItem value="a">(A:) Floppy</SelectItem>
-                        <SelectItem value="e">(E:) CD-ROM</SelectItem>
+                        <SelectLabel>Build tools</SelectLabel>
+                        <SelectItem value="vite">Vite</SelectItem>
+                        <SelectItem value="astro">Astro</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
                 </div>
-              </XPPanel>
+              </Specimen>
 
-              {/* CARD */}
-              <XPPanel id="card" title="Card" tag="composed surface">
-                <Card className="max-w-sm">
+              <Specimen id="card" title="Card" tag="composed surface">
+                <Card style={{ maxWidth: 360 }}>
                   <CardHeader>
-                    <CardTitle>System Properties</CardTitle>
-                    <CardDescription>
-                      Microsoft Windows XP Professional
-                    </CardDescription>
+                    <CardTitle>Project settings</CardTitle>
+                    <CardDescription>Manage your deployment.</CardDescription>
                   </CardHeader>
-                  <CardContent className="text-[13px]">
-                    Registered to: Bosphorify. Service Pack 3. 512 MB of RAM.
+                  <CardContent className="text-sm">
+                    Builds run on push to <code>main</code>. Preview URLs are
+                    generated for every pull request.
                   </CardContent>
                   <CardFooter className="gap-2">
-                    <Button size="sm">OK</Button>
+                    <Button size="sm">Save</Button>
                     <Button size="sm" variant="secondary">
                       Cancel
                     </Button>
                   </CardFooter>
                 </Card>
-              </XPPanel>
+              </Specimen>
 
-              {/* TABS */}
-              <XPPanel id="tabs" title="Tabs" tag="property sheet">
-                <Tabs defaultValue="general" className="max-w-md gap-0">
+              <Specimen id="tabs" title="Tabs" tag="segmented views">
+                <Tabs defaultValue="general" style={{ maxWidth: 440 }} className="gap-0">
                   <TabsList>
                     <TabsTrigger value="general">General</TabsTrigger>
-                    <TabsTrigger value="tools">Tools</TabsTrigger>
-                    <TabsTrigger value="sharing">Sharing</TabsTrigger>
+                    <TabsTrigger value="security">Security</TabsTrigger>
+                    <TabsTrigger value="team">Team</TabsTrigger>
                   </TabsList>
-                  <TabsContent
-                    value="general"
-                    className="border border-t-0 border-[#808080] bg-[#ece9d8] p-3 text-[13px]"
-                  >
-                    General settings for this volume.
+                  <TabsContent value="general" className="border border-t-0 border-border p-3 text-sm">
+                    General workspace preferences.
                   </TabsContent>
-                  <TabsContent
-                    value="tools"
-                    className="border border-t-0 border-[#808080] bg-[#ece9d8] p-3 text-[13px]"
-                  >
-                    Error-checking and defragmentation tools.
+                  <TabsContent value="security" className="border border-t-0 border-border p-3 text-sm">
+                    Two-factor authentication and sessions.
                   </TabsContent>
-                  <TabsContent
-                    value="sharing"
-                    className="border border-t-0 border-[#808080] bg-[#ece9d8] p-3 text-[13px]"
-                  >
-                    Share this folder on the network.
+                  <TabsContent value="team" className="border border-t-0 border-border p-3 text-sm">
+                    Invite and manage collaborators.
                   </TabsContent>
                 </Tabs>
-              </XPPanel>
+              </Specimen>
 
-              {/* ACCORDION */}
-              <XPPanel id="accordion" title="Accordion" tag="collapsible groups">
-                <Accordion type="single" collapsible className="max-w-lg">
+              <Specimen id="accordion" title="Accordion" tag="collapsible groups">
+                <Accordion type="single" collapsible style={{ maxWidth: 520 }}>
                   <AccordionItem value="a">
-                    <AccordionTrigger>What is this?</AccordionTrigger>
+                    <AccordionTrigger>What is the skin engine?</AccordionTrigger>
                     <AccordionContent>
-                      A faithful Windows XP reskin of the shadcn/ui component
-                      library.
+                      A CSS overlay, scoped per skin, layered on top of stock
+                      shadcn/ui components.
                     </AccordionContent>
                   </AccordionItem>
                   <AccordionItem value="b">
-                    <AccordionTrigger>Is it accessible?</AccordionTrigger>
+                    <AccordionTrigger>Do the components still work?</AccordionTrigger>
                     <AccordionContent>
-                      Yes — it keeps Radix primitives, only the paint changes.
+                      Yes — only paint changes. Behavior and accessibility are
+                      untouched.
                     </AccordionContent>
                   </AccordionItem>
                 </Accordion>
-              </XPPanel>
+              </Specimen>
 
-              {/* ALERTS */}
-              <XPPanel id="alert" title="Alert" tag="inline callouts">
-                <div className="flex flex-col gap-3">
+              <Specimen id="alert" title="Alert" tag="inline callouts">
+                <div className="demo-col" style={{ gap: 12 }}>
                   <Alert>
                     <Info />
                     <AlertTitle>Heads up</AlertTitle>
                     <AlertDescription>
-                      Your settings have been saved successfully.
+                      Your changes have been saved.
                     </AlertDescription>
                   </Alert>
                   <Alert variant="destructive">
                     <TriangleAlert />
-                    <AlertTitle>Low disk space</AlertTitle>
+                    <AlertTitle>Something went wrong</AlertTitle>
                     <AlertDescription>
-                      Drive (C:) is running out of space.
+                      The deployment failed. Check the build logs.
                     </AlertDescription>
                   </Alert>
                 </div>
-              </XPPanel>
+              </Specimen>
 
-              {/* TABLE */}
-              <XPPanel id="table" title="Table" tag="details view" bodyClassName="!p-0">
+              <Specimen id="table" title="Table" tag="data grid">
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -392,13 +365,13 @@ export default function Page() {
                   </TableHeader>
                   <TableBody>
                     {[
-                      ["readme.txt", "Text Document", "2 KB"],
-                      ["setup.exe", "Application", "4.1 MB"],
-                      ["photo.bmp", "Bitmap Image", "900 KB"],
+                      ["index.tsx", "TypeScript", "2 KB"],
+                      ["globals.css", "Stylesheet", "9 KB"],
+                      ["logo.svg", "Vector", "4 KB"],
                     ].map(([name, type, size]) => (
                       <TableRow key={name}>
                         <TableCell className="flex items-center gap-2">
-                          <Folder className="size-4 text-[#d8a400]" />
+                          <Folder className="size-4 opacity-70" />
                           {name}
                         </TableCell>
                         <TableCell>{type}</TableCell>
@@ -407,53 +380,34 @@ export default function Page() {
                     ))}
                   </TableBody>
                 </Table>
-              </XPPanel>
+              </Specimen>
 
-              {/* DIALOG */}
-              <XPPanel id="dialog" title="Dialog" tag="modal window">
+              <Specimen id="dialog" title="Dialog" tag="modal window">
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button>Open Dialog…</Button>
                   </DialogTrigger>
-                  <DialogContent className="p-0">
-                    <div className="xp-titlebar">
-                      <span className="xp-titlebar-title">
-                        <Bell className="size-4" /> Confirm
-                      </span>
-                      <span className="xp-titlebar-buttons">
-                        <DialogClose
-                          className="xp-caption-btn xp-caption-btn--close"
-                          aria-label="Close"
-                        >
-                          ✕
-                        </DialogClose>
-                      </span>
-                    </div>
-                    <div className="p-4">
-                      <DialogHeader>
-                        <DialogTitle>Delete this file?</DialogTitle>
-                        <DialogDescription>
-                          Are you sure you want to move “setup.exe” to the Recycle
-                          Bin?
-                        </DialogDescription>
-                      </DialogHeader>
-                      <DialogFooter className="mt-4 gap-2">
-                        <DialogClose asChild>
-                          <Button size="sm">Yes</Button>
-                        </DialogClose>
-                        <DialogClose asChild>
-                          <Button size="sm" variant="secondary">
-                            No
-                          </Button>
-                        </DialogClose>
-                      </DialogFooter>
-                    </div>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Delete project?</DialogTitle>
+                      <DialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete the project and all of its data.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter className="gap-2">
+                      <DialogClose asChild>
+                        <Button variant="secondary">Cancel</Button>
+                      </DialogClose>
+                      <DialogClose asChild>
+                        <Button variant="destructive">Delete</Button>
+                      </DialogClose>
+                    </DialogFooter>
                   </DialogContent>
                 </Dialog>
-              </XPPanel>
+              </Specimen>
 
-              {/* DROPDOWN MENU */}
-              <XPPanel id="menu" title="Dropdown Menu" tag="context actions">
+              <Specimen id="menu" title="Dropdown Menu" tag="context actions">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline">
@@ -462,7 +416,7 @@ export default function Page() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="start" className="w-48">
-                    <DropdownMenuLabel>File</DropdownMenuLabel>
+                    <DropdownMenuLabel>Project</DropdownMenuLabel>
                     <DropdownMenuGroup>
                       <DropdownMenuItem>
                         Open
@@ -475,16 +429,15 @@ export default function Page() {
                       <DropdownMenuSeparator />
                       <DropdownMenuItem variant="destructive">
                         Delete
-                        <DropdownMenuShortcut>Del</DropdownMenuShortcut>
+                        <DropdownMenuShortcut>⌫</DropdownMenuShortcut>
                       </DropdownMenuItem>
                     </DropdownMenuGroup>
                   </DropdownMenuContent>
                 </DropdownMenu>
-              </XPPanel>
+              </Specimen>
 
-              {/* TOOLTIP + POPOVER */}
-              <XPPanel id="overlays" title="Tooltip & Popover" tag="floating info">
-                <XPDemoRow>
+              <Specimen id="overlays" title="Tooltip & Popover" tag="floating info">
+                <div className="demo-row">
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button variant="outline">
@@ -492,7 +445,7 @@ export default function Page() {
                         Hover me
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent>Notifications: 3 unread</TooltipContent>
+                    <TooltipContent>3 unread notifications</TooltipContent>
                   </Tooltip>
 
                   <Popover>
@@ -501,31 +454,26 @@ export default function Page() {
                     </PopoverTrigger>
                     <PopoverContent className="w-64">
                       <div className="flex flex-col gap-1">
-                        <strong className="text-[13px]">Display Properties</strong>
-                        <p className="text-[12px] text-muted-foreground">
-                          Adjust your screen resolution and color quality here.
+                        <strong className="text-sm">Dimensions</strong>
+                        <p className="text-xs text-muted-foreground">
+                          Set the width and height of the layer.
                         </p>
                       </div>
                     </PopoverContent>
                   </Popover>
-                </XPDemoRow>
-              </XPPanel>
+                </div>
+              </Specimen>
 
-              {/* SLIDER + PROGRESS */}
-              <XPPanel id="ranges" title="Slider & Progress" tag="ranges">
-                <div className="flex max-w-md flex-col gap-6">
-                  <div className="flex flex-col gap-2">
-                    <span className="font-mono text-[11px] text-muted-foreground">
-                      slider
-                    </span>
+              <Specimen id="ranges" title="Slider & Progress" tag="ranges">
+                <div className="demo-col" style={{ gap: 22, maxWidth: 440 }}>
+                  <div className="demo-col">
+                    <span className="demo-label">slider</span>
                     <Slider defaultValue={[40]} max={100} step={1} />
                   </div>
-                  <div className="flex flex-col gap-2">
-                    <span className="font-mono text-[11px] text-muted-foreground">
-                      progress — copying files… {progress}%
-                    </span>
+                  <div className="demo-col">
+                    <span className="demo-label">progress — {progress}%</span>
                     <Progress value={progress} />
-                    <div className="flex gap-2">
+                    <div className="demo-row">
                       <Button
                         size="sm"
                         onClick={() => setProgress((p) => Math.max(0, p - 10))}
@@ -541,20 +489,17 @@ export default function Page() {
                     </div>
                   </div>
                 </div>
-              </XPPanel>
-
-              <Separator className="my-1 bg-[#808080]" />
-            </div>
+              </Specimen>
+            </main>
           </div>
+        </div>
 
-          {/* statusbar */}
-          <div className="xp-statusbar">
-            <span>{NAV.length} components · shadcn/ui · radix base</span>
-            <span>Luna theme</span>
-            <span>istanbul, 2026</span>
-          </div>
-        </XPWindow>
-      </main>
+        <footer className="app-status">
+          <span>{NAV.length} components · stock shadcn/ui · radix base</span>
+          <span>6 skins · one component set</span>
+          <span>istanbul, 2026</span>
+        </footer>
+      </div>
     </TooltipProvider>
   )
 }

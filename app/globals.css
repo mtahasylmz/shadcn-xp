@@ -2,24 +2,29 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* Concept skins — each is a self-contained, drop-in overlay scoped under
+   [data-skin="…"] on <html>. They layer on top of UNMODIFIED shadcn
+   components by targeting stable data-slot / data-state hooks. */
+@import "./skins/xp.css";
+@import "./skins/brutalist.css";
+@import "./skins/neumorphic.css";
+@import "./skins/terminal.css";
+@import "./skins/glass.css";
+
 @custom-variant dark (&:is(.dark *));
 
 /* ==========================================================================
-   shadcn/ui — Windows XP (Luna) edition
+   shadcn/ui — Concept Skin Engine · core (skin-agnostic)
    --------------------------------------------------------------------------
-   Strategy:
-   - Color comes from shadcn's semantic tokens, remapped to the XP "Luna"
-     palette below (putty greys, navy/cerulean title gradient, blue selection).
-   - Shape + bevel come from an UNLAYERED override block at the bottom. Tailwind
-     utilities live in the `utilities` cascade layer; unlayered rules outrank
-     any layer, so [data-slot] overrides reliably beat the component utilities
-     without a forest of !important.
+   This file owns: token plumbing, the neutral "default" (stock-ish) look, and
+   the generic structural skeleton (.app / .specimen / …) that every skin
+   repaints. Each concept lives in its own app/skins/*.css file.
    ========================================================================== */
 
 @theme inline {
-    --font-heading: var(--font-sans);
-    --font-sans: "Tahoma", "Verdana", "Geneva", "DejaVu Sans", "Segoe UI", sans-serif;
-    --font-mono: "Lucida Console", "DejaVu Sans Mono", "Courier New", monospace;
+    --font-heading: var(--app-font-heading);
+    --font-sans: var(--app-font-sans);
+    --font-mono: var(--app-font-mono);
 
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
@@ -53,99 +58,56 @@
     --color-foreground: var(--foreground);
     --color-background: var(--background);
 
-    /* XP is square. Zero out the radius scale. */
-    --radius-sm: 0px;
-    --radius-md: 0px;
-    --radius-lg: 0px;
-    --radius-xl: 0px;
-    --radius-2xl: 0px;
-    --radius-3xl: 0px;
-    --radius-4xl: 0px;
-
-    /* ---- XP design primitives (used by the override block) ---- */
-    --color-xp-face: #ece9d8;       /* window/control face */
-    --color-xp-desktop: #d4d0c8;    /* desktop / inset trough */
-    --color-xp-titlebar-from: #0a246a;
-    --color-xp-titlebar-to: #3a6ea5;
-    --color-xp-selection: #316ac5;  /* highlighted item */
-    --color-xp-hilite: #ffffff;     /* bevel light edge */
-    --color-xp-shadow: #808080;     /* bevel mid shadow */
-    --color-xp-shadow-deep: #404040;/* bevel deep shadow */
+    /* Radius scale derives from a single --radius token a skin can override. */
+    --radius-sm: calc(var(--radius) - 4px);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) + 4px);
+    --radius-2xl: calc(var(--radius) + 8px);
+    --radius-3xl: calc(var(--radius) + 12px);
+    --radius-4xl: calc(var(--radius) + 16px);
 }
 
+/* ---- Default skin = a clean, stock-ish shadcn baseline ------------------- */
 :root {
-    --radius: 0px;
+    --app-font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --app-font-heading: var(--app-font-sans);
+    --app-font-mono: ui-monospace, "SF Mono", "Cascadia Mono", "JetBrains Mono", monospace;
+    --app-font-size: 14px;
 
-    /* Surfaces */
-    --background: #d4d0c8;            /* desktop putty */
-    --foreground: #000000;
-    --card: #ece9d8;                 /* window face */
-    --card-foreground: #000000;
-    --popover: #ffffff;              /* menus/dropdowns are white in XP */
-    --popover-foreground: #000000;
+    --radius: 0.625rem;
 
-    /* Primary = the Luna navy (used for accents, default emphasis) */
-    --primary: #0a246a;
-    --primary-foreground: #ffffff;
-
-    /* Secondary = the silver control face */
-    --secondary: #ece9d8;
-    --secondary-foreground: #000000;
-
-    /* Muted = recessed putty + grey caption text */
-    --muted: #d4d0c8;
-    --muted-foreground: #555555;
-
-    /* Accent = the blue selection highlight (hovered menu/list items) */
-    --accent: #316ac5;
-    --accent-foreground: #ffffff;
-
-    /* Classic XP error red */
-    --destructive: #a40000;
-
-    --border: #808080;
-    --input: #808080;
-    --ring: #0a246a;
-
-    /* Charts: a period-appropriate office palette */
-    --chart-1: #0a246a;
-    --chart-2: #3a6ea5;
-    --chart-3: #008000;
-    --chart-4: #c08000;
-    --chart-5: #a40000;
-
-    /* Sidebar (explorer pane) */
-    --sidebar: #ece9d8;
-    --sidebar-foreground: #000000;
-    --sidebar-primary: #0a246a;
-    --sidebar-primary-foreground: #ffffff;
-    --sidebar-accent: #316ac5;
-    --sidebar-accent-foreground: #ffffff;
-    --sidebar-border: #808080;
-    --sidebar-ring: #0a246a;
-}
-
-/* The .dark block is intentionally left at light values — the app forces the
-   light theme. Kept so any stray `.dark` ancestor never goes black. */
-.dark {
-    --background: #d4d0c8;
-    --foreground: #000000;
-    --card: #ece9d8;
-    --card-foreground: #000000;
+    --background: #fafafa;
+    --foreground: #18181b;
+    --card: #ffffff;
+    --card-foreground: #18181b;
     --popover: #ffffff;
-    --popover-foreground: #000000;
-    --primary: #0a246a;
-    --primary-foreground: #ffffff;
-    --secondary: #ece9d8;
-    --secondary-foreground: #000000;
-    --muted: #d4d0c8;
-    --muted-foreground: #555555;
-    --accent: #316ac5;
-    --accent-foreground: #ffffff;
-    --destructive: #a40000;
-    --border: #808080;
-    --input: #808080;
-    --ring: #0a246a;
+    --popover-foreground: #18181b;
+    --primary: #18181b;
+    --primary-foreground: #fafafa;
+    --secondary: #f4f4f5;
+    --secondary-foreground: #18181b;
+    --muted: #f4f4f5;
+    --muted-foreground: #71717a;
+    --accent: #f4f4f5;
+    --accent-foreground: #18181b;
+    --destructive: #e7000b;
+    --border: #e4e4e7;
+    --input: #e4e4e7;
+    --ring: #a1a1aa;
+    --chart-1: #6366f1;
+    --chart-2: #0ea5e9;
+    --chart-3: #22c55e;
+    --chart-4: #eab308;
+    --chart-5: #ef4444;
+    --sidebar: #ffffff;
+    --sidebar-foreground: #18181b;
+    --sidebar-primary: #18181b;
+    --sidebar-primary-foreground: #fafafa;
+    --sidebar-accent: #f4f4f5;
+    --sidebar-accent-foreground: #18181b;
+    --sidebar-border: #e4e4e7;
+    --sidebar-ring: #a1a1aa;
 }
 
 @layer base {
@@ -154,8 +116,8 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-size: 13px;
-    line-height: 1.45;
+    font-family: var(--app-font-sans);
+    font-size: var(--app-font-size);
   }
   html {
     @apply font-sans;
@@ -163,469 +125,245 @@
 }
 
 /* ==========================================================================
-   XP CONTROL LAYER (unlayered — outranks Tailwind utility layer)
-   These reusable bevel recipes mimic the pixel bevels of Luna controls.
+   GENERIC STRUCTURAL SKELETON
+   Skin-agnostic layout the page renders. Each skin repaints these classes;
+   here we give them a clean default so the "Default" skin looks presentable.
    ========================================================================== */
 
-/* Reusable bevel mixins via custom props (applied through box-shadow below). */
-:root {
-  /* Raised control (button at rest): light top-left, dark bottom-right */
-  --xp-bevel-raised:
-    inset 1px 1px 0 0 var(--color-xp-hilite),
-    inset -1px -1px 0 0 var(--color-xp-shadow-deep),
-    inset 2px 2px 0 0 #f7f6f0,
-    inset -2px -2px 0 0 var(--color-xp-shadow);
-  /* Pressed control: invert the bevel */
-  --xp-bevel-sunken:
-    inset 1px 1px 0 0 var(--color-xp-shadow-deep),
-    inset -1px -1px 0 0 var(--color-xp-hilite),
-    inset 2px 2px 0 0 var(--color-xp-shadow),
-    inset -2px -2px 0 0 #f7f6f0;
-  /* Inset field (inputs, troughs, list boxes) */
-  --xp-bevel-field:
-    inset 1px 1px 0 0 var(--color-xp-shadow),
-    inset -1px -1px 0 0 var(--color-xp-hilite),
-    inset 2px 2px 0 0 var(--color-xp-shadow-deep),
-    inset -2px -2px 0 0 #f7f6f0;
-  /* Thin raised group/window edge */
-  --xp-bevel-window:
-    inset 1px 1px 0 0 var(--color-xp-hilite),
-    inset -1px -1px 0 0 var(--color-xp-shadow);
+.app {
+  width: 100%;
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 20px 16px 48px;
 }
 
-/* ---- Buttons ------------------------------------------------------------
-   We key off `.group\/button` (emitted by buttonVariants for EVERY button) in
-   addition to [data-slot="button"]. When a Radix `asChild` trigger (Dialog,
-   Tooltip, Popover…) wraps a Button, the trigger's own data-slot wins the
-   merge — but the className list, and thus `group/button`, always survives. */
-.group\/button {
-  border: 0;
-  border-radius: 0;
-  background-color: var(--color-xp-face);
-  color: #000;
-  box-shadow: var(--xp-bevel-raised);
-  transition: none;
-}
-.group\/button:hover {
-  background-color: #f4f2e9;
-}
-.group\/button:active:not(:disabled),
-.group\/button[data-state="open"],
-.group\/button[aria-expanded="true"] {
-  box-shadow: var(--xp-bevel-sunken);
-  background-color: var(--color-xp-face);
-}
-.group\/button:focus-visible {
-  outline: 1px dotted #000;
-  outline-offset: -4px;
-  box-shadow: var(--xp-bevel-raised);
-}
-/* Variant nuance: keep buttons silver, but let intent show through text/edges */
-.group\/button[data-variant="default"] {
-  font-weight: 700;
-}
-.group\/button[data-variant="destructive"] {
-  color: var(--destructive);
-}
-.group\/button[data-variant="link"] {
-  background: transparent;
-  box-shadow: none;
-  color: #0000ee;
-  text-decoration: underline;
-}
-.group\/button[data-variant="link"]:hover {
-  background: transparent;
-}
-.group\/button[data-variant="ghost"] {
-  background: transparent;
-  box-shadow: none;
-}
-.group\/button[data-variant="ghost"]:hover {
-  background: var(--color-xp-selection);
-  color: #fff;
-}
-
-/* ---- Inputs / textareas / select trigger -------------------------------- */
-[data-slot="input"],
-[data-slot="textarea"],
-[data-slot="select-trigger"],
-[data-slot="input-group"] {
-  border: 0;
-  border-radius: 0;
-  background-color: #ffffff;
-  color: #000;
-  box-shadow: var(--xp-bevel-field);
-}
-[data-slot="input"]:focus-visible,
-[data-slot="textarea"]:focus-visible,
-[data-slot="select-trigger"]:focus-visible {
-  box-shadow: var(--xp-bevel-field);
-  outline: 1px dotted #0a246a;
-  outline-offset: -3px;
-}
-[data-slot="select-trigger"] {
-  background-color: #ffffff;
-}
-
-/* ---- Cards / panels (raised window face) -------------------------------- */
-[data-slot="card"] {
-  border: 0;
-  border-radius: 0;
-  background-color: var(--color-xp-face);
-  box-shadow: var(--xp-bevel-window);
-}
-
-/* ---- Menus, popovers, dropdowns, tooltips (floating surfaces) ----------- */
-[data-slot="popover-content"],
-[data-slot="dropdown-menu-content"],
-[data-slot="context-menu-content"],
-[data-slot="menubar-content"],
-[data-slot="select-content"],
-[data-slot="command"],
-[data-slot="hover-card-content"] {
-  border: 1px solid var(--color-xp-shadow);
-  border-radius: 0;
-  box-shadow:
-    inset 1px 1px 0 0 #fff,
-    2px 2px 0 0 rgba(0, 0, 0, 0.35);
-  background-color: #fff;
-}
-[data-slot="tooltip-content"] {
-  border-radius: 0;
-  background-color: #ffffe1;          /* classic XP tooltip yellow */
-  color: #000;
-  border: 1px solid #000;
-  box-shadow: none;
-}
-[data-slot="tooltip-content"] [data-slot="tooltip-arrow"],
-[data-slot="tooltip-content"] svg {
-  fill: #ffffe1;
-}
-
-/* Highlighted menu/select/command items → XP blue selection */
-[data-slot="dropdown-menu-item"][data-highlighted],
-[data-slot="context-menu-item"][data-highlighted],
-[data-slot="menubar-item"][data-highlighted],
-[data-slot="command-item"][data-selected="true"],
-[data-slot="select-item"][data-highlighted] {
-  border-radius: 0;
-  background-color: var(--color-xp-selection);
-  color: #fff;
-}
-
-/* ---- Dialog / Sheet / AlertDialog (windows) ----------------------------- */
-[data-slot="dialog-content"],
-[data-slot="alert-dialog-content"],
-[data-slot="sheet-content"] {
-  border-radius: 0;
-  background-color: var(--color-xp-face);
-  border: 2px solid;
-  border-color: #fff #808080 #808080 #fff;
-  box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.4);
-  padding: 0;
-}
-
-/* ---- Checkbox / Radio --------------------------------------------------- */
-[data-slot="checkbox"] {
-  border: 0;
-  border-radius: 0;
-  background-color: #fff;
-  box-shadow: var(--xp-bevel-field);
-  color: #0a246a;
-}
-[data-slot="checkbox"][data-state="checked"] {
-  background-color: #fff;
-  color: #0a246a;
-}
-[data-slot="radio-group-item"] {
-  border: 0;
-  border-radius: 9999px;             /* radios stay round */
-  background-color: #fff;
-  box-shadow:
-    inset 1px 1px 0 0 var(--color-xp-shadow),
-    inset -1px -1px 0 0 #fff,
-    0 0 0 1px var(--color-xp-shadow-deep);
-  color: #0a246a;
-}
-
-/* ---- Tabs (XP property-sheet tabs) --------------------------------------
-   Inactive tabs sit 2px lower; the active tab is taller and overlaps the
-   list's bottom border so its interior merges seamlessly into the content. */
-[data-slot="tabs-list"] {
-  border-radius: 0;
-  background: transparent;
-  gap: 2px;
-  padding: 0;
-  align-items: flex-end;
-  border-bottom: 1px solid var(--color-xp-shadow);
-}
-[data-slot="tabs-trigger"] {
-  border-radius: 0;
-  color: #000;
-  padding: 3px 12px;
-  background: linear-gradient(to bottom, #f6f4ec, var(--color-xp-face));
-  border: 1px solid var(--color-xp-shadow);
-  border-bottom: 0;
-  box-shadow: inset 1px 1px 0 0 #fff;
-  margin-top: 2px;
-}
-[data-slot="tabs-trigger"][data-state="active"] {
-  background: var(--color-xp-face);
-  position: relative;
-  z-index: 1;
-  margin-top: 0;
-  margin-bottom: -1px;
-  padding-bottom: 4px;
-  font-weight: 700;
-}
-[data-slot="tabs-trigger"]:focus-visible {
-  outline: 1px dotted #0a246a;
-  outline-offset: -3px;
-}
-
-/* ---- Consistent dotted focus rings (the XP keyboard-focus marquee) ------ */
-[data-slot="checkbox"]:focus-visible,
-[data-slot="radio-group-item"]:focus-visible,
-[data-slot="switch"]:focus-visible,
-[data-slot="select-item"]:focus-visible,
-[data-slot="dropdown-menu-item"]:focus-visible {
-  outline: 1px dotted #0a246a;
-  outline-offset: 2px;
-}
-
-/* ---- Switch (no real XP analog → keep a tidy beveled toggle) ------------- */
-[data-slot="switch"] {
-  border-radius: 9999px;
-  box-shadow: var(--xp-bevel-field);
-}
-
-/* ---- Badge -------------------------------------------------------------- */
-[data-slot="badge"] {
-  border-radius: 0;
-}
-
-/* ---- Progress (XP segmented bar feel) ----------------------------------- */
-[data-slot="progress"] {
-  border-radius: 0;
-  background-color: #fff;
-  box-shadow: var(--xp-bevel-field);
-}
-[data-slot="progress-indicator"] {
-  border-radius: 0;
-  background-color: #1f8a1f;          /* XP green progress */
-}
-
-/* ---- Slider ------------------------------------------------------------- */
-[data-slot="slider-track"] {
-  border-radius: 0;
-  box-shadow: var(--xp-bevel-field);
-  background-color: #fff;
-}
-[data-slot="slider-thumb"] {
-  border-radius: 0;
-  background-color: var(--color-xp-face);
-  box-shadow: var(--xp-bevel-raised);
-  border: 0;
-}
-
-/* ---- Scrollbars (period-correct chunky chrome) -------------------------- */
-* {
-  scrollbar-color: var(--color-xp-face) var(--color-xp-desktop);
-}
-::-webkit-scrollbar {
-  width: 17px;
-  height: 17px;
-}
-::-webkit-scrollbar-track {
-  background: var(--color-xp-desktop);
-}
-::-webkit-scrollbar-thumb {
-  background: var(--color-xp-face);
-  box-shadow: var(--xp-bevel-raised);
-  border: 1px solid var(--color-xp-shadow);
-}
-::-webkit-scrollbar-button {
-  background: var(--color-xp-face);
-  box-shadow: var(--xp-bevel-raised);
-  display: block;
-  height: 17px;
-  width: 17px;
-}
-
-/* Links inside content keep the classic web-blue */
-.xp-prose a {
-  color: #0000ee;
-}
-.xp-prose a:visited {
-  color: #551a8b;
-}
-
-/* Text selection uses the Luna highlight */
-::selection {
-  background: var(--color-xp-selection);
-  color: #fff;
-}
-
-/* ==========================================================================
-   XP WINDOW CHROME (showcase shell) — reusable layout classes
-   ========================================================================== */
-
-.xp-window {
-  background: var(--color-xp-face);
-  border: 1px solid #00138c;
-  box-shadow:
-    inset 0 0 0 1px #0a246a,
-    3px 3px 10px rgba(0, 0, 0, 0.35);
-}
-
-.xp-titlebar {
+.app-bar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  padding: 3px 4px 3px 6px;
-  color: #fff;
-  font-weight: 700;
-  font-size: 12px;
-  /* Flat horizontal Luna gradient, matching bosphorify.com */
-  background: linear-gradient(to right, #0a246a, #3a6ea5);
-  border-bottom: 1px solid #00138c;
+  gap: 16px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  background: color-mix(in srgb, var(--card) 86%, transparent);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
 }
-
-.xp-titlebar-title {
+.app-brand {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.app-brand .app-brand-mark {
+  display: inline-flex;
+}
+.app-bar-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.app-bar-controls label {
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.skin-select {
+  font: inherit;
+  font-size: 13px;
+  padding: 6px 10px;
+  color: var(--foreground);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 4px);
+  cursor: pointer;
+}
+.skin-select:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+
+/* .stage wraps the main content + status; it's the surface a skin turns into
+   its signature container (XP window, terminal screen, glass slab…). The
+   .stage-head is that container's chrome header (hidden until a skin shows it). */
+.stage {
+  min-width: 0;
+}
+.stage-head {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.stage-head-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   min-width: 0;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
-
-.xp-titlebar-buttons {
+.stage-head-buttons {
   display: flex;
-  gap: 2px;
+  gap: 4px;
   flex: none;
 }
 
-/* Flat grey caption buttons, matching bosphorify.com (16×14, 1px outset) */
-.xp-caption-btn {
-  width: 17px;
-  height: 15px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  line-height: 1;
-  color: #000;
-  background: #d4d0c8;
-  border: 1px solid;
-  border-color: #fff #404040 #404040 #fff;
-  cursor: default;
+.app-main {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
 }
-.xp-caption-btn:active {
-  border-color: #404040 #fff #fff #404040;
-}
-.xp-caption-btn--close {
-  font-weight: 700;
+@media (min-width: 880px) {
+  .app-main {
+    grid-template-columns: 200px 1fr;
+  }
 }
 
-.xp-menubar {
+.app-nav {
+  display: none;
+}
+@media (min-width: 880px) {
+  .app-nav {
+    display: block;
+    position: sticky;
+    top: 76px;
+    align-self: start;
+  }
+}
+.app-nav-inner {
   display: flex;
-  gap: 0;
-  padding: 1px 2px;
-  font-size: 13px;
-  background: var(--color-xp-face);
-  border-bottom: 1px solid var(--color-xp-shadow);
+  flex-direction: column;
+  gap: 1px;
+  padding: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
 }
-.xp-menubar > * {
-  padding: 2px 8px;
-  cursor: default;
-}
-.xp-menubar > *:hover {
-  background: var(--color-xp-selection);
-  color: #fff;
-}
-
-/* Panel = an inset group with a gradient caption, like XP task panes */
-.xp-panel {
-  border: 1px solid var(--color-xp-shadow);
-  background: var(--color-xp-face);
-  box-shadow: inset 1px 1px 0 0 #fff;
-}
-.xp-panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 2px 8px;
+.app-nav-title {
   font-size: 11px;
-  font-weight: 700;
-  color: #fff;
-  background: linear-gradient(to right, #0a246a, #3a6ea5);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.22);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted-foreground);
+  padding: 2px 8px 6px;
 }
-.xp-panel-header .xp-panel-tag {
-  font-weight: 400;
-  font-size: 10px;
-  font-style: italic;
-  color: #cdd8ec;
-}
-.xp-panel-body {
-  padding: 14px;
-}
-
-.xp-statusbar {
-  display: flex;
-  gap: 3px;
-  padding: 2px 3px;
-  font-size: 11px;
-  color: #333;
-  background: var(--color-xp-face);
-  border-top: 1px solid #fff;
-}
-.xp-statusbar > * {
-  padding: 1px 8px;
-  box-shadow:
-    inset 1px 1px 0 0 var(--color-xp-shadow),
-    inset -1px -1px 0 0 #fff;
-}
-.xp-statusbar > *:first-child {
-  flex: 1;
-}
-
-/* Explorer-style nav list (left pane) */
-.xp-nav {
-  background: #fff;
-  box-shadow: var(--xp-bevel-field);
-  padding: 2px;
-}
-.xp-nav a {
+.app-nav a {
   display: block;
-  padding: 3px 8px;
-  color: #000;
+  padding: 5px 8px;
+  font-size: 13px;
+  color: var(--foreground);
   text-decoration: none;
-  font-size: 12px;
-  cursor: default;
+  border-radius: calc(var(--radius) - 3px);
 }
-.xp-nav a:hover {
-  background: var(--color-xp-selection);
-  color: #fff;
+.app-nav a:hover {
+  background: var(--accent);
+  color: var(--accent-foreground);
 }
 
-/* Green CRT terminal block (matches bosphorify hero) */
-.xp-terminal {
-  background: #000;
-  box-shadow: var(--xp-bevel-field);
-  padding: 18px;
-  font-family: var(--font-mono);
-  color: #ccc;
-  font-size: 13px;
-  line-height: 1.6;
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
 }
-.xp-terminal .xp-terminal-slogan {
-  color: #00ff00;
+
+.hero {
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+.hero-kicker {
+  font-family: var(--app-font-mono);
+  font-size: 12px;
+  color: var(--muted-foreground);
+  margin-bottom: 8px;
+}
+.hero-title {
+  font-size: 22px;
   font-weight: 700;
-  font-size: 18px;
-  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  font-family: var(--app-font-heading);
+}
+.hero-sub {
+  color: var(--muted-foreground);
+  max-width: 64ch;
+}
+
+.specimen {
+  scroll-margin-top: 76px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  overflow: hidden;
+}
+.specimen-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.specimen-title {
+  font-weight: 600;
+  font-family: var(--app-font-heading);
+}
+.specimen-tag {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  font-family: var(--app-font-mono);
+}
+.specimen-body {
+  padding: 18px 16px;
+}
+
+.app-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  justify-content: space-between;
+  margin-top: 18px;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: var(--muted-foreground);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+
+/* Small helpers used inside specimen demos (skin-neutral) */
+.demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+.demo-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.demo-label {
+  font-size: 11px;
+  font-family: var(--app-font-mono);
+  color: var(--muted-foreground);
+}
+.demo-grid {
+  display: grid;
+  gap: 18px;
+}
+@media (min-width: 560px) {
+  .demo-grid-2 { grid-template-columns: 1fr 1fr; }
+  .demo-grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+}
+
+/* The faux window-caption bar some skins render inside dialogs (decoration). */
+.dialog-caption {
+  display: none;
 }

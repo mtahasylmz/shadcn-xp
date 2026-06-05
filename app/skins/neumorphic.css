@@ -1,0 +1,241 @@
+/* ==========================================================================
+   SKIN: Neumorphic / Soft-UI   ·   [data-skin="neumorphic"]
+   One monochrome surface; depth comes purely from paired light/dark soft
+   shadows. Controls look extruded from (raised) or pressed into (inset) the
+   page. Borderless. Pure CSS over stock shadcn.
+   ========================================================================== */
+
+:root[data-skin="neumorphic"] {
+  --app-font-sans: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+  --app-font-heading: var(--app-font-sans);
+  --app-font-mono: ui-monospace, "SF Mono", monospace;
+  --app-font-size: 14px;
+
+  --radius: 14px;
+
+  --background: #e0e5ec;
+  --foreground: #4b5563;
+  --card: #e0e5ec;
+  --card-foreground: #4b5563;
+  --popover: #e0e5ec;
+  --popover-foreground: #4b5563;
+  --primary: #6d5dfc;
+  --primary-foreground: #ffffff;
+  --secondary: #e0e5ec;
+  --secondary-foreground: #4b5563;
+  --muted: #e0e5ec;
+  --muted-foreground: #8a97a8;
+  --accent: #6d5dfc;
+  --accent-foreground: #ffffff;
+  --destructive: #e0526b;
+  --border: #d1d9e6;
+  --input: #d1d9e6;
+  --ring: #6d5dfc;
+  --sidebar: #e0e5ec;
+  --sidebar-foreground: #4b5563;
+  --sidebar-accent: #6d5dfc;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #d1d9e6;
+
+  --neu-dark: #a3b1c6;
+  --neu-light: #ffffff;
+  --neu-raised: 6px 6px 12px var(--neu-dark), -6px -6px 12px var(--neu-light);
+  --neu-raised-sm: 4px 4px 8px var(--neu-dark), -4px -4px 8px var(--neu-light);
+  --neu-inset: inset 4px 4px 8px var(--neu-dark), inset -4px -4px 8px var(--neu-light);
+  --neu-inset-sm: inset 2px 2px 5px var(--neu-dark), inset -2px -2px 5px var(--neu-light);
+}
+
+[data-skin="neumorphic"] body { background: var(--background); }
+[data-skin="neumorphic"] ::selection { background: #c9cfdb; color: #4b5563; }
+
+/* ---- Shell -------------------------------------------------------------- */
+[data-skin="neumorphic"] .app-bar {
+  background: var(--background);
+  border: 0;
+  border-radius: 18px;
+  box-shadow: var(--neu-raised);
+  backdrop-filter: none;
+}
+[data-skin="neumorphic"] .app-brand { font-weight: 700; color: #4b5563; }
+
+[data-skin="neumorphic"] .app-nav-inner {
+  border: 0;
+  border-radius: 18px;
+  background: var(--background);
+  box-shadow: var(--neu-raised);
+  padding: 12px;
+}
+[data-skin="neumorphic"] .app-nav a { border-radius: 10px; }
+[data-skin="neumorphic"] .app-nav a:hover { background: var(--background); color: #6d5dfc; box-shadow: var(--neu-inset-sm); }
+
+[data-skin="neumorphic"] .hero {
+  border: 0;
+  border-radius: 22px;
+  background: var(--background);
+  box-shadow: var(--neu-raised);
+}
+[data-skin="neumorphic"] .hero-title { color: #4b5563; }
+
+[data-skin="neumorphic"] .specimen {
+  border: 0;
+  border-radius: 22px;
+  background: var(--background);
+  box-shadow: var(--neu-raised);
+  overflow: visible;
+}
+[data-skin="neumorphic"] .specimen-head { border-bottom: 0; }
+[data-skin="neumorphic"] .specimen-title { color: #4b5563; font-weight: 700; }
+
+[data-skin="neumorphic"] .app-status {
+  border: 0;
+  border-radius: 16px;
+  background: var(--background);
+  box-shadow: var(--neu-raised-sm);
+}
+
+/* ---- Controls ----------------------------------------------------------- */
+[data-skin="neumorphic"] .group\/button {
+  border: 0;
+  border-radius: 12px;
+  background: var(--background);
+  color: #5a6473;
+  font-weight: 600;
+  box-shadow: var(--neu-raised-sm);
+  transition: box-shadow 120ms ease;
+}
+[data-skin="neumorphic"] .group\/button:hover { color: #6d5dfc; }
+[data-skin="neumorphic"] .group\/button:active:not(:disabled),
+[data-skin="neumorphic"] .group\/button[data-state="open"],
+[data-skin="neumorphic"] .group\/button[aria-expanded="true"] {
+  box-shadow: var(--neu-inset-sm);
+  color: #6d5dfc;
+}
+[data-skin="neumorphic"] .group\/button:focus-visible { outline: 0; box-shadow: var(--neu-inset-sm); }
+[data-skin="neumorphic"] .group\/button[data-variant="default"] { color: #6d5dfc; font-weight: 700; }
+[data-skin="neumorphic"] .group\/button[data-variant="destructive"] { color: #e0526b; }
+[data-skin="neumorphic"] .group\/button[data-variant="link"] { box-shadow: none; color: #6d5dfc; text-decoration: underline; }
+[data-skin="neumorphic"] .group\/button[data-variant="ghost"] { box-shadow: none; }
+[data-skin="neumorphic"] .group\/button[data-variant="ghost"]:hover { box-shadow: var(--neu-raised-sm); }
+
+[data-skin="neumorphic"] [data-slot="input"],
+[data-skin="neumorphic"] [data-slot="textarea"],
+[data-skin="neumorphic"] [data-slot="select-trigger"],
+[data-skin="neumorphic"] .skin-select {
+  border: 0;
+  border-radius: 12px;
+  background: var(--background);
+  color: #4b5563;
+  box-shadow: var(--neu-inset);
+}
+[data-skin="neumorphic"] [data-slot="input"]:focus-visible,
+[data-skin="neumorphic"] [data-slot="textarea"]:focus-visible,
+[data-skin="neumorphic"] [data-slot="select-trigger"]:focus-visible { outline: 0; box-shadow: var(--neu-inset), 0 0 0 2px rgba(109, 93, 252, 0.25); }
+
+[data-skin="neumorphic"] [data-slot="card"] {
+  border: 0;
+  border-radius: 20px;
+  background: var(--background);
+  box-shadow: var(--neu-raised);
+}
+
+[data-skin="neumorphic"] [data-slot="popover-content"],
+[data-skin="neumorphic"] [data-slot="dropdown-menu-content"],
+[data-skin="neumorphic"] [data-slot="context-menu-content"],
+[data-skin="neumorphic"] [data-slot="select-content"],
+[data-skin="neumorphic"] [data-slot="command"],
+[data-skin="neumorphic"] [data-slot="hover-card-content"] {
+  border: 0;
+  border-radius: 16px;
+  background: var(--background);
+  box-shadow: var(--neu-raised);
+}
+[data-skin="neumorphic"] [data-slot="tooltip-content"] {
+  border-radius: 10px;
+  background: var(--background);
+  color: #4b5563;
+  box-shadow: var(--neu-raised-sm);
+}
+[data-skin="neumorphic"] [data-slot="tooltip-content"] svg { fill: var(--background); }
+
+[data-skin="neumorphic"] [data-slot="dropdown-menu-item"][data-highlighted],
+[data-skin="neumorphic"] [data-slot="context-menu-item"][data-highlighted],
+[data-skin="neumorphic"] [data-slot="select-item"][data-highlighted],
+[data-skin="neumorphic"] [data-slot="command-item"][data-selected="true"] {
+  border-radius: 8px;
+  background: var(--background);
+  color: #6d5dfc;
+  box-shadow: var(--neu-inset-sm);
+}
+
+[data-skin="neumorphic"] [data-slot="dialog-content"],
+[data-skin="neumorphic"] [data-slot="alert-dialog-content"],
+[data-skin="neumorphic"] [data-slot="sheet-content"] {
+  border: 0;
+  border-radius: 24px;
+  background: var(--background);
+  box-shadow: 10px 10px 30px var(--neu-dark), -10px -10px 30px var(--neu-light);
+}
+
+[data-skin="neumorphic"] [data-slot="checkbox"] {
+  border: 0;
+  border-radius: 7px;
+  background: var(--background);
+  box-shadow: var(--neu-inset-sm);
+  color: #6d5dfc;
+}
+[data-skin="neumorphic"] [data-slot="checkbox"][data-state="checked"] { box-shadow: var(--neu-raised-sm); }
+[data-skin="neumorphic"] [data-slot="radio-group-item"] {
+  border: 0;
+  border-radius: 9999px;
+  background: var(--background);
+  box-shadow: var(--neu-inset-sm);
+  color: #6d5dfc;
+}
+
+[data-skin="neumorphic"] [data-slot="tabs-list"] {
+  border-radius: 14px;
+  background: var(--background);
+  box-shadow: var(--neu-inset);
+  padding: 5px;
+  gap: 4px;
+}
+[data-skin="neumorphic"] [data-slot="tabs-trigger"] {
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #6b7280;
+}
+[data-skin="neumorphic"] [data-slot="tabs-trigger"][data-state="active"] {
+  background: var(--background);
+  color: #6d5dfc;
+  box-shadow: var(--neu-raised-sm);
+  font-weight: 700;
+}
+
+[data-skin="neumorphic"] [data-slot="badge"] { border: 0; border-radius: 9999px; box-shadow: var(--neu-raised-sm); background: var(--background); color: #6d5dfc; }
+[data-skin="neumorphic"] [data-slot="badge"][data-variant="default"] { background: #6d5dfc; color: #fff; box-shadow: var(--neu-raised-sm); }
+
+[data-skin="neumorphic"] [data-slot="switch"] { border: 0; border-radius: 9999px; box-shadow: var(--neu-inset-sm); }
+
+[data-skin="neumorphic"] [data-slot="progress"] {
+  border-radius: 9999px;
+  background: var(--background);
+  box-shadow: var(--neu-inset-sm);
+}
+[data-skin="neumorphic"] [data-slot="progress-indicator"] { border-radius: 9999px; background: linear-gradient(90deg, #6d5dfc, #8b7dff); }
+
+[data-skin="neumorphic"] [data-slot="slider-track"] {
+  border-radius: 9999px;
+  background: var(--background);
+  box-shadow: var(--neu-inset-sm);
+}
+[data-skin="neumorphic"] [data-slot="slider-range"] { background: #6d5dfc; }
+[data-skin="neumorphic"] [data-slot="slider-thumb"] {
+  border: 0;
+  border-radius: 9999px;
+  background: var(--background);
+  box-shadow: var(--neu-raised-sm);
+}
+
+[data-skin="neumorphic"] [data-slot="alert"] { border: 0; border-radius: 16px; box-shadow: var(--neu-inset-sm); }
+[data-skin="neumorphic"] [data-slot="table"] { border-radius: 14px; overflow: hidden; }
