@@ -30,6 +30,11 @@
   --border: #0a0a0a;
   --input: #0a0a0a;
   --ring: #0a0a0a;
+  --chart-1: #0a0a0a;
+  --chart-2: #ffd400;
+  --chart-3: #ff3b30;
+  --chart-4: #2563eb;
+  --chart-5: #9b9b9b;
   --sidebar: #ffffff;
   --sidebar-foreground: #0a0a0a;
   --sidebar-accent: #ffd400;
@@ -244,3 +249,14 @@
 [data-skin="brutalist"] [data-slot="table"] { border: 2px solid #0a0a0a; }
 [data-skin="brutalist"] [data-slot="table-head"],
 [data-skin="brutalist"] [data-slot="table-cell"] { border-bottom: 1px solid #0a0a0a; }
+
+/* Chart: bars get the signature chunky black outline (layer-3 SVG CSS). The
+   bar FILLS come free from the --chart-* tokens above. */
+[data-skin="brutalist"] [data-slot="chart"] .recharts-bar-rectangle path {
+  stroke: #0a0a0a;
+  stroke-width: 2px;
+}
+[data-skin="brutalist"] [data-slot="chart"] .recharts-cartesian-axis-tick text {
+  font-weight: 700;
+  text-transform: uppercase;
+}

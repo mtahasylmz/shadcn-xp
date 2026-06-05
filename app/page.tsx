@@ -88,6 +88,29 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  type ChartConfig,
+} from "@/components/ui/chart"
+
+// ── Chart: ONE config, shared by every skin. The colors are token slots
+//    (var(--chart-N)); each skin sets those tokens, so the chart recolors per
+//    skin with zero changes here. This object is per-USAGE, not per-skin. ──
+const chartData = [
+  { month: "Jan", desktop: 186, mobile: 80 },
+  { month: "Feb", desktop: 305, mobile: 200 },
+  { month: "Mar", desktop: 237, mobile: 120 },
+  { month: "Apr", desktop: 173, mobile: 190 },
+  { month: "May", desktop: 209, mobile: 130 },
+  { month: "Jun", desktop: 264, mobile: 140 },
+]
+const chartConfig = {
+  desktop: { label: "Desktop", color: "var(--chart-1)" },
+  mobile: { label: "Mobile", color: "var(--chart-2)" },
+} satisfies ChartConfig
 
 const NAV = [
   ["buttons", "Buttons"],
@@ -104,6 +127,7 @@ const NAV = [
   ["menu", "Dropdown Menu"],
   ["overlays", "Tooltip & Popover"],
   ["ranges", "Slider & Progress"],
+  ["chart", "Chart"],
 ] as const
 
 export default function Page() {
@@ -489,6 +513,23 @@ export default function Page() {
                     </div>
                   </div>
                 </div>
+              </Specimen>
+
+              <Specimen id="chart" title="Chart" tag="recharts · token-driven">
+                <ChartContainer config={chartConfig} className="max-h-[260px] w-full">
+                  <BarChart accessibilityLayer data={chartData}>
+                    <CartesianGrid vertical={false} />
+                    <XAxis
+                      dataKey="month"
+                      tickLine={false}
+                      axisLine={false}
+                      tickMargin={8}
+                    />
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
+                    <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
+                  </BarChart>
+                </ChartContainer>
               </Specimen>
             </main>
           </div>

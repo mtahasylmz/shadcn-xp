@@ -30,6 +30,11 @@
   --border: #1f6f3a;
   --input: #1f6f3a;
   --ring: #2bff66;
+  --chart-1: #2bff66;
+  --chart-2: #17a843;
+  --chart-3: #7dff9f;
+  --chart-4: #0c6b27;
+  --chart-5: #b6ffca;
   --sidebar: #0c1810;
   --sidebar-foreground: #2bff66;
   --sidebar-accent: #2bff66;
@@ -240,3 +245,15 @@
 
 [data-skin="terminal"] [data-slot="alert"] { border: 1px solid var(--border); border-radius: 0; }
 [data-skin="terminal"] [data-slot="table"] { border: 1px solid var(--border); }
+
+/* Chart: phosphor glow on the bars + dashed grid (layer-3 SVG CSS). Fills come
+   free from the --chart-* tokens above. NOTE: the bar corner-radius is recharts
+   geometry set in JSX (radius={4}); CSS can't flatten it — that's a per-usage
+   prop, not a skin concern. */
+[data-skin="terminal"] [data-slot="chart"] .recharts-bar-rectangle path {
+  filter: drop-shadow(0 0 3px rgba(43, 255, 102, 0.85));
+}
+[data-skin="terminal"] [data-slot="chart"] .recharts-cartesian-grid line {
+  stroke: #1f6f3a;
+  stroke-dasharray: 2 3;
+}
