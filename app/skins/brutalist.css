@@ -5,7 +5,7 @@
    ========================================================================== */
 
 :root[data-skin="brutalist"] {
-  --app-font-sans: "Helvetica Neue", "Arial Black", Arial, sans-serif;
+  --app-font-sans: "Space Grotesk", "Helvetica Neue", "Arial Black", Arial, sans-serif;
   --app-font-heading: var(--app-font-sans);
   --app-font-mono: "Courier New", ui-monospace, monospace;
   --app-font-size: 14px;
@@ -41,8 +41,8 @@
   --sidebar-accent-foreground: #0a0a0a;
   --sidebar-border: #0a0a0a;
 
-  --bru-shadow: 4px 4px 0 0 #0a0a0a;
-  --bru-shadow-lg: 6px 6px 0 0 #0a0a0a;
+  --shadow: 4px 4px 0 0 #0a0a0a;
+  --shadow-lg: 6px 6px 0 0 #0a0a0a;
 }
 
 [data-skin="brutalist"] body { background: var(--background); }
@@ -53,7 +53,7 @@
   background: var(--accent);
   border: 3px solid #0a0a0a;
   border-radius: 0;
-  box-shadow: var(--bru-shadow);
+  box-shadow: var(--shadow);
   backdrop-filter: none;
 }
 [data-skin="brutalist"] .app-brand { font-weight: 900; text-transform: uppercase; letter-spacing: -0.02em; }
@@ -62,7 +62,7 @@
 [data-skin="brutalist"] .app-nav-inner {
   border: 3px solid #0a0a0a;
   border-radius: 0;
-  box-shadow: var(--bru-shadow);
+  box-shadow: var(--shadow);
   background: #fff;
 }
 [data-skin="brutalist"] .app-nav-title { font-weight: 900; color: #0a0a0a; }
@@ -72,7 +72,7 @@
 [data-skin="brutalist"] .hero {
   border: 3px solid #0a0a0a;
   border-radius: 0;
-  box-shadow: var(--bru-shadow-lg);
+  box-shadow: var(--shadow-lg);
   background: var(--accent);
 }
 [data-skin="brutalist"] .hero-kicker { color: #0a0a0a; font-weight: 700; }
@@ -81,7 +81,7 @@
 [data-skin="brutalist"] .specimen {
   border: 3px solid #0a0a0a;
   border-radius: 0;
-  box-shadow: var(--bru-shadow-lg);
+  box-shadow: var(--shadow-lg);
   background: #fff;
 }
 [data-skin="brutalist"] .specimen-head {
@@ -94,7 +94,7 @@
 [data-skin="brutalist"] .app-status {
   border: 3px solid #0a0a0a;
   border-radius: 0;
-  box-shadow: var(--bru-shadow);
+  box-shadow: var(--shadow);
   font-weight: 700;
   text-transform: uppercase;
   color: #0a0a0a;
@@ -109,10 +109,14 @@
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.01em;
-  box-shadow: var(--bru-shadow);
+  box-shadow: var(--shadow);
   transition: transform 60ms steps(2), box-shadow 60ms steps(2);
 }
-[data-skin="brutalist"] .group\/button:hover { background: var(--accent); }
+[data-skin="brutalist"] .group\/button:hover {
+  background: var(--accent);
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 0 #0a0a0a;
+}
 [data-skin="brutalist"] .group\/button:active:not(:disabled) {
   transform: translate(4px, 4px);
   box-shadow: 0 0 0 0 #0a0a0a;
@@ -140,14 +144,14 @@
 [data-skin="brutalist"] [data-slot="textarea"]:focus-visible,
 [data-skin="brutalist"] [data-slot="select-trigger"]:focus-visible {
   outline: 0;
-  box-shadow: var(--bru-shadow);
+  box-shadow: var(--shadow);
 }
 
 [data-skin="brutalist"] [data-slot="card"] {
   border: 3px solid #0a0a0a;
   border-radius: 0;
   background: #fff;
-  box-shadow: var(--bru-shadow-lg);
+  box-shadow: var(--shadow-lg);
 }
 
 [data-skin="brutalist"] [data-slot="popover-content"],
@@ -159,7 +163,7 @@
   border: 2px solid #0a0a0a;
   border-radius: 0;
   background: #fff;
-  box-shadow: var(--bru-shadow-lg);
+  box-shadow: var(--shadow-lg);
 }
 [data-skin="brutalist"] [data-slot="tooltip-content"] {
   border-radius: 0;
@@ -244,7 +248,7 @@
 [data-skin="brutalist"] [data-slot="alert"] {
   border: 2px solid #0a0a0a;
   border-radius: 0;
-  box-shadow: var(--bru-shadow);
+  box-shadow: var(--shadow);
 }
 [data-skin="brutalist"] [data-slot="table"] { border: 2px solid #0a0a0a; }
 [data-skin="brutalist"] [data-slot="table-head"],

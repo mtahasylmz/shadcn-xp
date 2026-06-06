@@ -6,7 +6,7 @@
    ========================================================================== */
 
 :root[data-skin="neumorphic"] {
-  --app-font-sans: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", sans-serif;
+  --app-font-sans: "Poppins", "Segoe UI", system-ui, -apple-system, sans-serif;
   --app-font-heading: var(--app-font-sans);
   --app-font-mono: ui-monospace, "SF Mono", monospace;
   --app-font-size: 14px;

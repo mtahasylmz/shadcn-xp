@@ -8,8 +8,9 @@ export const metadata: Metadata = {
     "One unmodified shadcn/ui component set, re-conceptualized by swappable CSS skins: Windows XP, Brutalist, Neumorphic, Terminal, Glassmorphism.",
 }
 
-// Set the active skin before first paint to avoid a flash of the default skin.
-const skinInit = `try{var s=localStorage.getItem('skin')||'xp';document.documentElement.setAttribute('data-skin',s)}catch(e){document.documentElement.setAttribute('data-skin','xp')}`
+// Set the active skin before first paint (no flash). A ?skin= URL param wins
+// over localStorage — that's how the compare iframes pin each side's skin.
+const skinInit = `try{var p=new URLSearchParams(location.search).get('skin');var s=p||localStorage.getItem('skin')||'xp';document.documentElement.setAttribute('data-skin',s)}catch(e){document.documentElement.setAttribute('data-skin','xp')}`
 
 export default function RootLayout({
   children,
@@ -20,6 +21,16 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: skinInit }} />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap"
+        />
       </head>
       <body>{children}</body>
     </html>

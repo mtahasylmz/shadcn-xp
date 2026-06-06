@@ -2,6 +2,9 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* Per-skin webfonts are loaded via <link> in app/layout.tsx (each skin's
+   --app-font-sans points at the right family). */
+
 /* Concept skins — each is a self-contained, drop-in overlay scoped under
    [data-skin="…"] on <html>. They layer on top of UNMODIFIED shadcn
    components by targeting stable data-slot / data-state hooks. */
@@ -419,4 +422,61 @@
 /* The faux window-caption bar some skins render inside dialogs (decoration). */
 .dialog-caption {
   display: none;
+}
+
+/* ---- /embed route (the strip rendered inside compare iframes) ----------- */
+.embed-root {
+  padding: 18px;
+  min-height: 100vh;
+}
+
+/* ---- Stock-vs-skinned compare panel ------------------------------------- */
+.compare {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  overflow: hidden;
+}
+.compare-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.compare-title {
+  font-weight: 600;
+  font-family: var(--app-font-heading);
+}
+.compare-body {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  background: var(--border);
+}
+@media (min-width: 720px) {
+  .compare-body {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.compare-pane {
+  margin: 0;
+  background: var(--card);
+  display: flex;
+  flex-direction: column;
+}
+.compare-pane figcaption {
+  padding: 7px 12px;
+  font-size: 11px;
+  font-family: var(--app-font-mono);
+  color: var(--muted-foreground);
+  border-bottom: 1px solid var(--border);
+}
+.compare-pane iframe {
+  width: 100%;
+  height: 540px;
+  border: 0;
+  display: block;
+  background: #fff;
 }

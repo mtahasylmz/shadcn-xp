@@ -14,6 +14,7 @@ import {
 
 import { Specimen } from "@/components/showcase/specimen"
 import { SkinSwitcher } from "@/components/showcase/skin-switcher"
+import { ComparePanel } from "@/components/showcase/compare-panel"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
@@ -186,6 +187,8 @@ export default function Page() {
                   . Switch skins in the top bar — the markup never changes.
                 </p>
               </section>
+
+              <ComparePanel />
 
               <Specimen id="buttons" title="Button" tag="variants · sizes · states" slots={["button"]}>
                 <div className="demo-col" style={{ gap: 16 }}>

@@ -23,7 +23,7 @@
   --secondary: rgba(255, 255, 255, 0.14);
   --secondary-foreground: #f4f6ff;
   --muted: rgba(255, 255, 255, 0.08);
-  --muted-foreground: rgba(244, 246, 255, 0.66);
+  --muted-foreground: rgba(244, 246, 255, 0.74);
   --accent: rgba(255, 255, 255, 0.2);
   --accent-foreground: #ffffff;
   --destructive: #ff6b81;
@@ -274,4 +274,16 @@
   background: rgba(255, 255, 255, 0.1);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
+}
+
+[data-skin="glass"] [data-slot="table"] { border-radius: 14px; overflow: hidden; }
+[data-skin="glass"] [data-slot="table-head"],
+[data-skin="glass"] [data-slot="table-cell"] {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+}
+[data-skin="glass"] [data-slot="table-row"]:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+[data-skin="glass"] [data-slot="table-header"] {
+  background: rgba(255, 255, 255, 0.06);
 }
