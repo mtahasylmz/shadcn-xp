@@ -9,6 +9,7 @@
    [data-skin="…"] on <html>. They layer on top of UNMODIFIED shadcn
    components by targeting stable data-slot / data-state hooks. */
 @import "./skins/xp.css";
+@import "./skins/xp-tokens.css";
 @import "./skins/brutalist.css";
 @import "./skins/neumorphic.css";
 @import "./skins/terminal.css";
@@ -459,6 +460,14 @@
   .compare-body {
     grid-template-columns: 1fr 1fr;
   }
+}
+@media (min-width: 900px) {
+  .compare-body.is-three {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+.compare-sub {
+  opacity: 0.7;
 }
 .compare-pane {
   margin: 0;
