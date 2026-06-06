@@ -1,0 +1,77 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "bosphorify-skins",
+  "homepage": "https://shadcn-skins.bosphorify.com",
+  "items": [
+    {
+      "name": "skin-xp",
+      "type": "registry:item",
+      "title": "Windows XP skin",
+      "description": "Skeuomorphic Windows XP (Luna) concept skin for shadcn/ui: beveled putty controls, navy title gradient, blue selection. A CSS overlay scoped to [data-skin=\"xp\"].",
+      "files": [
+        {
+          "path": "app/skins/xp.css",
+          "type": "registry:file",
+          "target": "app/skins/xp.css"
+        }
+      ],
+      "docs": "1) @import \"./skins/xp.css\"; in your globals.css.  2) Set data-skin=\"xp\" on <html>. Components are unchanged."
+    },
+    {
+      "name": "skin-brutalist",
+      "type": "registry:item",
+      "title": "Brutalist skin",
+      "description": "Brutalist concept skin: hard black borders, chunky offset shadows, uppercase grotesk, one loud accent. A CSS overlay scoped to [data-skin=\"brutalist\"].",
+      "files": [
+        {
+          "path": "app/skins/brutalist.css",
+          "type": "registry:file",
+          "target": "app/skins/brutalist.css"
+        }
+      ],
+      "docs": "1) @import \"./skins/brutalist.css\"; in your globals.css.  2) Set data-skin=\"brutalist\" on <html>."
+    },
+    {
+      "name": "skin-neumorphic",
+      "type": "registry:item",
+      "title": "Neumorphic skin",
+      "description": "Soft-UI concept skin: monochrome surface, depth from paired light/dark shadows, borderless. A CSS overlay scoped to [data-skin=\"neumorphic\"].",
+      "files": [
+        {
+          "path": "app/skins/neumorphic.css",
+          "type": "registry:file",
+          "target": "app/skins/neumorphic.css"
+        }
+      ],
+      "docs": "1) @import \"./skins/neumorphic.css\"; in your globals.css.  2) Set data-skin=\"neumorphic\" on <html>."
+    },
+    {
+      "name": "skin-terminal",
+      "type": "registry:item",
+      "title": "Terminal / TUI skin",
+      "description": "Terminal concept skin: phosphor green-on-black, monospace, [ bracketed ] buttons, CRT scanlines. A CSS overlay scoped to [data-skin=\"terminal\"].",
+      "files": [
+        {
+          "path": "app/skins/terminal.css",
+          "type": "registry:file",
+          "target": "app/skins/terminal.css"
+        }
+      ],
+      "docs": "1) @import \"./skins/terminal.css\"; in your globals.css.  2) Set data-skin=\"terminal\" on <html>."
+    },
+    {
+      "name": "skin-glass",
+      "type": "registry:item",
+      "title": "Glassmorphism skin",
+      "description": "Glass concept skin: frosted translucent panels, backdrop blur, over a vivid gradient. A CSS overlay scoped to [data-skin=\"glass\"].",
+      "files": [
+        {
+          "path": "app/skins/glass.css",
+          "type": "registry:file",
+          "target": "app/skins/glass.css"
+        }
+      ],
+      "docs": "1) @import \"./skins/glass.css\"; in your globals.css.  2) Set data-skin=\"glass\" on <html>."
+    }
+  ]
+}
