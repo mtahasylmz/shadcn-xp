@@ -319,8 +319,61 @@
   color: var(--muted-foreground);
   font-family: var(--app-font-mono);
 }
+.specimen-head-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+}
 .specimen-body {
   padding: 18px 16px;
+}
+
+/* "Show code" toggle — inherits the header's text color so it stays legible on
+   any skin's specimen header without being captured by skin button rules. */
+.code-toggle {
+  font: inherit;
+  font-size: 11px;
+  line-height: 1.4;
+  padding: 1px 7px;
+  cursor: pointer;
+  color: inherit;
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  opacity: 0.75;
+}
+.code-toggle:hover {
+  opacity: 1;
+}
+
+/* The revealed overlay CSS — always a neutral dark code block so it's readable
+   under every skin (skins don't target .skin-code). */
+.skin-code {
+  border-top: 1px solid var(--border);
+  background: #0b0f17;
+}
+.skin-code-note {
+  padding: 8px 14px;
+  border-bottom: 1px solid #1b2435;
+  color: #8aa0c0;
+  font-family: var(--app-font-mono);
+  font-size: 11px;
+}
+.skin-code-note code {
+  color: #e6edf6;
+}
+.skin-code pre {
+  margin: 0;
+  padding: 12px 14px;
+  max-height: 320px;
+  overflow: auto;
+  color: #d6deeb;
+  font-family: var(--app-font-mono);
+  font-size: 12px;
+  line-height: 1.55;
+  white-space: pre;
+  tab-size: 2;
 }
 
 .app-status {

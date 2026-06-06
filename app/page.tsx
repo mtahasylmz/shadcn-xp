@@ -187,7 +187,7 @@ export default function Page() {
                 </p>
               </section>
 
-              <Specimen id="buttons" title="Button" tag="variants · sizes · states">
+              <Specimen id="buttons" title="Button" tag="variants · sizes · states" slots={["button"]}>
                 <div className="demo-col" style={{ gap: 16 }}>
                   <div className="demo-col">
                     <span className="demo-label">variants</span>
@@ -219,7 +219,7 @@ export default function Page() {
                 </div>
               </Specimen>
 
-              <Specimen id="badges" title="Badge" tag="status pills">
+              <Specimen id="badges" title="Badge" tag="status pills" slots={["badge"]}>
                 <div className="demo-row">
                   <Badge>Default</Badge>
                   <Badge variant="secondary">Secondary</Badge>
@@ -228,7 +228,7 @@ export default function Page() {
                 </div>
               </Specimen>
 
-              <Specimen id="inputs" title="Text Fields" tag="input · textarea · label">
+              <Specimen id="inputs" title="Text Fields" tag="input · textarea · label" slots={["input", "textarea"]}>
                 <div className="demo-grid demo-grid-2">
                   <div className="demo-col">
                     <Label htmlFor="name">Name</Label>
@@ -245,7 +245,7 @@ export default function Page() {
                 </div>
               </Specimen>
 
-              <Specimen id="selection" title="Selection Controls" tag="checkbox · radio · switch">
+              <Specimen id="selection" title="Selection Controls" tag="checkbox · radio · switch" slots={["checkbox", "radio-group-item", "switch"]}>
                 <div className="demo-grid demo-grid-3">
                   <div className="demo-col">
                     <span className="demo-label">checkbox</span>
@@ -279,7 +279,7 @@ export default function Page() {
                 </div>
               </Specimen>
 
-              <Specimen id="select" title="Select" tag="dropdown list box">
+              <Specimen id="select" title="Select" tag="dropdown list box" slots={["select-trigger", "select-content", "select-item"]}>
                 <div style={{ maxWidth: 260 }}>
                   <Select>
                     <SelectTrigger>
@@ -302,7 +302,7 @@ export default function Page() {
                 </div>
               </Specimen>
 
-              <Specimen id="card" title="Card" tag="composed surface">
+              <Specimen id="card" title="Card" tag="composed surface" slots={["card"]}>
                 <Card style={{ maxWidth: 360 }}>
                   <CardHeader>
                     <CardTitle>Project settings</CardTitle>
@@ -321,7 +321,7 @@ export default function Page() {
                 </Card>
               </Specimen>
 
-              <Specimen id="tabs" title="Tabs" tag="segmented views">
+              <Specimen id="tabs" title="Tabs" tag="segmented views" slots={["tabs-list", "tabs-trigger"]}>
                 <Tabs defaultValue="general" style={{ maxWidth: 440 }} className="gap-0">
                   <TabsList>
                     <TabsTrigger value="general">General</TabsTrigger>
@@ -340,7 +340,7 @@ export default function Page() {
                 </Tabs>
               </Specimen>
 
-              <Specimen id="accordion" title="Accordion" tag="collapsible groups">
+              <Specimen id="accordion" title="Accordion" tag="collapsible groups" slots={["accordion-trigger", "accordion-content"]}>
                 <Accordion type="single" collapsible style={{ maxWidth: 520 }}>
                   <AccordionItem value="a">
                     <AccordionTrigger>What is the skin engine?</AccordionTrigger>
@@ -359,7 +359,7 @@ export default function Page() {
                 </Accordion>
               </Specimen>
 
-              <Specimen id="alert" title="Alert" tag="inline callouts">
+              <Specimen id="alert" title="Alert" tag="inline callouts" slots={["alert"]}>
                 <div className="demo-col" style={{ gap: 12 }}>
                   <Alert>
                     <Info />
@@ -378,7 +378,7 @@ export default function Page() {
                 </div>
               </Specimen>
 
-              <Specimen id="table" title="Table" tag="data grid">
+              <Specimen id="table" title="Table" tag="data grid" slots={["table", "table-head", "table-cell"]}>
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -406,7 +406,7 @@ export default function Page() {
                 </Table>
               </Specimen>
 
-              <Specimen id="dialog" title="Dialog" tag="modal window">
+              <Specimen id="dialog" title="Dialog" tag="modal window" slots={["dialog-content"]}>
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button>Open Dialog…</Button>
@@ -431,7 +431,7 @@ export default function Page() {
                 </Dialog>
               </Specimen>
 
-              <Specimen id="menu" title="Dropdown Menu" tag="context actions">
+              <Specimen id="menu" title="Dropdown Menu" tag="context actions" slots={["dropdown-menu-content", "dropdown-menu-item"]}>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="outline">
@@ -460,7 +460,7 @@ export default function Page() {
                 </DropdownMenu>
               </Specimen>
 
-              <Specimen id="overlays" title="Tooltip & Popover" tag="floating info">
+              <Specimen id="overlays" title="Tooltip & Popover" tag="floating info" slots={["tooltip-content", "popover-content"]}>
                 <div className="demo-row">
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -488,7 +488,7 @@ export default function Page() {
                 </div>
               </Specimen>
 
-              <Specimen id="ranges" title="Slider & Progress" tag="ranges">
+              <Specimen id="ranges" title="Slider & Progress" tag="ranges" slots={["slider-track", "slider-range", "slider-thumb", "progress", "progress-indicator"]}>
                 <div className="demo-col" style={{ gap: 22, maxWidth: 440 }}>
                   <div className="demo-col">
                     <span className="demo-label">slider</span>
@@ -515,7 +515,7 @@ export default function Page() {
                 </div>
               </Specimen>
 
-              <Specimen id="chart" title="Chart" tag="recharts · token-driven">
+              <Specimen id="chart" title="Chart" tag="recharts · token-driven" slots={["chart"]}>
                 <ChartContainer config={chartConfig} className="max-h-[260px] w-full">
                   <BarChart accessibilityLayer data={chartData}>
                     <CartesianGrid vertical={false} />
