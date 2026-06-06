@@ -81,6 +81,20 @@ components/
   showcase/           Specimen + SkinSwitcher (the thin wrapper layer)
 ```
 
+## Token editor (the tweakcn-style half)
+
+The preview includes a small **native token editor** (`components/showcase/token-editor.tsx`)
+that live-edits the active skin's CSS variables (color / `--radius` / font) and
+exports a shadcn `registry:theme` (`cssVars`) you can `npx shadcn add`. It does
+the *token* half — the same job as [tweakcn](https://tweakcn.com) (Apache-2.0) —
+but wired to the active skin so you watch tokens **and** the shape overlay update
+together. Edits apply as inline custom properties on `<html>`, scoped per skin.
+
+This makes the architecture's boundary tangible three ways: **Token editor**
+(change tokens live), **Show the delta** (stock → +tokens → +overlay), and
+**Compare with stock** (stock vs skinned). The overlay is the part no token
+editor can express.
+
 ## Component coverage
 
 Button, Badge, Input, Textarea, Label, Checkbox, Radio Group, Switch, Select,
