@@ -46,6 +46,18 @@
   --sidebar-accent: #316ac5;
   --sidebar-accent-foreground: #ffffff;
   --sidebar-border: #808080;
+
+  /* Being maximally generous: also set tweakcn's full --shadow-* scale to the
+     hardest, most "XP" single shadow a token allows. NB: button/input/card use
+     NO shadow utility, so this only reaches popover/select/dropdown/tabs. */
+  --shadow-2xs: 1px 1px 0 0 #808080;
+  --shadow-xs: 1px 1px 0 0 #808080;
+  --shadow-sm: 1px 1px 0 0 #808080;
+  --shadow: 1px 1px 0 0 #808080;
+  --shadow-md: 2px 2px 0 0 #808080;
+  --shadow-lg: 2px 2px 0 0 #404040;
+  --shadow-xl: 3px 3px 0 0 #404040;
+  --shadow-2xl: 3px 3px 0 0 #404040;
 }
 
 [data-skin="xp-tokens"] body {
