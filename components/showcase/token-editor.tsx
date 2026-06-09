@@ -40,6 +40,17 @@ type ShapeParam = {
 
 // The structural knobs — the part no token/theme tool can express.
 const SHAPE_PARAMS: Record<string, ShapeParam[]> = {
+  // Generic, concept-free dials. Neutral at default = stock; turn up to ADD
+  // structure (bevel→skeuomorphic, border+elevation→brutalist, blur+low
+  // opacity→glass). Concepts are presets of these + their irreducible extras.
+  base: [
+    { label: "Border width", varName: "--ui-border", min: 0, max: 4, step: 1, unit: "px" },
+    { label: "Bevel (3D)", varName: "--ui-bevel", min: 0, max: 3, step: 1, unit: "" },
+    { label: "Elevation", varName: "--ui-elevation", min: 0, max: 12, step: 1, unit: "" },
+    { label: "Frost blur", varName: "--ui-blur", min: 0, max: 24, step: 1, unit: "px" },
+    { label: "Surface opacity", varName: "--ui-surface", min: 0.3, max: 1, step: 0.05, unit: "" },
+    { label: "Press depth", varName: "--ui-press", min: 0, max: 4, step: 1, unit: "px" },
+  ],
   brutalist: [
     { label: "Shadow offset", varName: "--bru-offset", min: 0, max: 14, step: 1, unit: "px" },
     { label: "Border width", varName: "--bru-border", min: 0, max: 8, step: 1, unit: "px" },

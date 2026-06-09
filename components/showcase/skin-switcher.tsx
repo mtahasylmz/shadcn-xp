@@ -4,6 +4,7 @@ import * as React from "react"
 
 export const SKINS = [
   ["default", "Default (stock)"],
+  ["base", "Base (tunable, no concept)"],
   ["xp", "Windows XP"],
   ["brutalist", "Brutalist"],
   ["neumorphic", "Neumorphic"],

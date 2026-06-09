@@ -8,6 +8,7 @@
 /* Concept skins — each is a self-contained, drop-in overlay scoped under
    [data-skin="…"] on <html>. They layer on top of UNMODIFIED shadcn
    components by targeting stable data-slot / data-state hooks. */
+@import "./skins/base.css";
 @import "./skins/xp.css";
 @import "./skins/xp-tokens.css";
 @import "./skins/brutalist.css";

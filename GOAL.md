@@ -52,6 +52,29 @@ So a user **customizing a skin** chooses from:
 2. **Shape params** — the structural sliders unique to that concept (this is the
    differentiator made tunable).
 
+## The "base" skin — generic, concept-free, fully tunable (verified)
+
+Tested the question: _can shape be tunable WITHOUT a concept?_ Answer, empirically:
+
+- **Yes for the _continuous_ structural primitives.** `[data-skin="base"]` exposes
+  universal dials — `--ui-border`, `--ui-bevel` (0=flat→3D), `--ui-elevation`,
+  `--ui-blur`, `--ui-surface` (opacity), `--ui-press`, plus `--radius`. **Every
+  one neutral at default**, so all-default ≈ stock ("no skin"); turning them up
+  _adds_ structure. Verified: cranking bevel+elevation+border turns flat stock
+  into beveled/elevated skeuomorphic controls — concept-free.
+- **No for the _discrete_, concept-specific bits.** Scanlines, window titlebars,
+  `[ bracketed ]` text, the exact XP gradient chrome, notched corners — these
+  can't be a generic dial; they _are_ the concept.
+
+**So the model:** a generic **base** (the continuous shape spectrum, fully
+tunable, neutral=stock) + named **concepts** that are presets of that space PLUS
+their irreducible extras. "Customizing a skin" = token pickers + the base dials +
+any concept-specific knobs.
+
+Portability note: the base skin's value is its `[data-slot]` rules, which apply to
+ANY real shadcn app (the `.app/.specimen` shell rules are showcase-only and inert
+elsewhere). Installs as a drop-in, same as a tweakcn token theme.
+
 ## Non-goals
 
 - Competing with tweakcn on recolor. (Use it; export `cssVars`.)
