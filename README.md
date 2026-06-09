@@ -81,6 +81,28 @@ components/
   showcase/           Specimen + SkinSwitcher (the thin wrapper layer)
 ```
 
+## Drop-in on any shadcn app (verified)
+
+A skin installs onto a real, stock shadcn project the same way you'd add a
+tweakcn token theme — verified end-to-end against a fresh `shadcn init` app:
+
+```bash
+# 1. install a skin from the registry (writes app/skins/<skin>.css, untouched components)
+npx shadcn add https://<host>/r/skin-xp.json     # or skin-base, skin-brutalist, …
+```
+```css
+/* 2. globals.css — import it */
+@import "./skins/xp.css";
+```
+```html
+<!-- 3. activate it -->
+<html data-skin="xp">
+```
+
+That's it — every shadcn component reskins, zero component changes. (The skin's
+`.app/.specimen` shell rules are showcase-only and sit inert in a real app; the
+`[data-slot]` rules are what do the work.)
+
 ## Token editor (the tweakcn-style half)
 
 The preview includes a small **native token editor** (`components/showcase/token-editor.tsx`)

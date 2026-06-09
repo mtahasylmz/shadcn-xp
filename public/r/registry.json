@@ -4,6 +4,20 @@
   "homepage": "https://shadcn-skins.bosphorify.com",
   "items": [
     {
+      "name": "skin-base",
+      "type": "registry:item",
+      "title": "Base skin (tunable, no concept)",
+      "description": "Generic, concept-free skin with universal structural dials (border, bevel, elevation, blur, surface opacity, press) — neutral at default = stock shadcn, turn them up to add structure. Scoped to [data-skin=\"base\"].",
+      "files": [
+        {
+          "path": "app/skins/base.css",
+          "type": "registry:file",
+          "target": "app/skins/base.css"
+        }
+      ],
+      "docs": "1) @import \"./skins/base.css\"; in your globals.css.  2) Set data-skin=\"base\" on <html>.  3) Tune --ui-border/-bevel/-elevation/-blur/-surface/-press + --radius."
+    },
+    {
       "name": "skin-xp",
       "type": "registry:item",
       "title": "Windows XP skin",
