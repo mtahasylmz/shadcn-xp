@@ -44,10 +44,25 @@
 
   --neu-dark: #a3b1c6;
   --neu-light: #ffffff;
-  --neu-raised: 6px 6px 12px var(--neu-dark), -6px -6px 12px var(--neu-light);
-  --neu-raised-sm: 4px 4px 8px var(--neu-dark), -4px -4px 8px var(--neu-light);
-  --neu-inset: inset 4px 4px 8px var(--neu-dark), inset -4px -4px 8px var(--neu-light);
-  --neu-inset-sm: inset 2px 2px 5px var(--neu-dark), inset -2px -2px 5px var(--neu-light);
+
+  /* Tunable shape knobs (sliders in the editor) */
+  --neu-distance: 6px;   /* how far controls extrude */
+  --neu-blur: 12px;      /* shadow softness */
+  --neu-d2: calc(var(--neu-distance) * 0.66);
+  --neu-b2: calc(var(--neu-blur) * 0.66);
+
+  --neu-raised:
+    var(--neu-distance) var(--neu-distance) var(--neu-blur) var(--neu-dark),
+    calc(var(--neu-distance) * -1) calc(var(--neu-distance) * -1) var(--neu-blur) var(--neu-light);
+  --neu-raised-sm:
+    var(--neu-d2) var(--neu-d2) var(--neu-b2) var(--neu-dark),
+    calc(var(--neu-d2) * -1) calc(var(--neu-d2) * -1) var(--neu-b2) var(--neu-light);
+  --neu-inset:
+    inset var(--neu-d2) var(--neu-d2) var(--neu-b2) var(--neu-dark),
+    inset calc(var(--neu-d2) * -1) calc(var(--neu-d2) * -1) var(--neu-b2) var(--neu-light);
+  --neu-inset-sm:
+    inset calc(var(--neu-distance) * 0.33) calc(var(--neu-distance) * 0.33) calc(var(--neu-blur) * 0.42) var(--neu-dark),
+    inset calc(var(--neu-distance) * -0.33) calc(var(--neu-distance) * -0.33) calc(var(--neu-blur) * 0.42) var(--neu-light);
 }
 
 [data-skin="neumorphic"] body { background: var(--background); }
