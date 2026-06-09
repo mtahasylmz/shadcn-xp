@@ -1,0 +1,166 @@
+/* ==========================================================================
+   SKIN: Mac OS X Aqua   ·   [data-skin="aqua"]
+   Glossy gel controls, pinstripe surfaces, candy-blue default, soft rounded
+   everything. Lucida Grande-ish type. Pure CSS over stock shadcn.
+   ========================================================================== */
+
+:root[data-skin="aqua"] {
+  --app-font-sans: "Lucida Grande", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --app-font-heading: var(--app-font-sans);
+  --app-font-mono: "Monaco", "Menlo", monospace;
+  --app-font-size: 13px;
+
+  --radius: 9px;
+
+  --background: #ced9e8;
+  --foreground: #1a1a1a;
+  --card: #ffffff;
+  --card-foreground: #1a1a1a;
+  --popover: #ffffff;
+  --popover-foreground: #1a1a1a;
+  --primary: #2e6ff2;
+  --primary-foreground: #ffffff;
+  --secondary: #f3f5f8;
+  --secondary-foreground: #1a1a1a;
+  --muted: #e7ecf3;
+  --muted-foreground: #5b6577;
+  --accent: #3b82f6;
+  --accent-foreground: #ffffff;
+  --destructive: #d83a2f;
+  --border: #9aa7bd;
+  --input: #9aa7bd;
+  --ring: #2e6ff2;
+  --chart-1: #2e6ff2;
+  --chart-2: #19b3e6;
+  --chart-3: #34c759;
+  --chart-4: #ff9500;
+  --chart-5: #ff3b30;
+  --sidebar: #dde4ef;
+  --sidebar-foreground: #1a1a1a;
+  --sidebar-accent: #2e6ff2;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #9aa7bd;
+
+  /* Tunable shape knobs */
+  --aqua-gloss: 0.5;           /* strength of the top gel highlight */
+  --aqua-pinstripe:
+    repeating-linear-gradient(0deg, #d7e0ee 0 3px, #cdd8e8 3px 4px);
+}
+
+[data-skin="aqua"] body {
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.35) 0 3px, rgba(255,255,255,0) 3px 4px),
+    linear-gradient(#d7e0ee, #c2cfe2);
+}
+[data-skin="aqua"] ::selection { background: #b6d3ff; color: #06224f; }
+
+/* ---- Shell -------------------------------------------------------------- */
+[data-skin="aqua"] .app-bar {
+  background: linear-gradient(#fbfdff, #dfe6f1);
+  border: 1px solid #9aa7bd;
+  border-radius: 12px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.9), 0 2px 6px rgba(20,40,80,.18);
+  backdrop-filter: none;
+}
+[data-skin="aqua"] .app-nav-inner,
+[data-skin="aqua"] .hero,
+[data-skin="aqua"] .specimen,
+[data-skin="aqua"] .app-status {
+  background: #fff;
+  border: 1px solid #9aa7bd;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(20,40,80,.16), inset 0 1px 0 rgba(255,255,255,.9);
+}
+[data-skin="aqua"] .specimen-head {
+  background: var(--aqua-pinstripe);
+  border-bottom: 1px solid #9aa7bd;
+  border-radius: 12px 12px 0 0;
+}
+[data-skin="aqua"] .hero { background: linear-gradient(#1a1a1a, #000); }
+[data-skin="aqua"] .hero-kicker { color: #5ac8fa; }
+[data-skin="aqua"] .hero-title { color: #fff; }
+[data-skin="aqua"] .hero-sub { color: #c9d4e6; }
+[data-skin="aqua"] .app-nav a { border-radius: 6px; }
+[data-skin="aqua"] .app-nav a:hover { background: #2e6ff2; color: #fff; }
+
+/* ---- Controls — glossy gel --------------------------------------------- */
+[data-skin="aqua"] .group\/button {
+  border: 1px solid #8ca0c4;
+  border-radius: 999px;
+  color: #1c2530;
+  background:
+    linear-gradient(rgba(255,255,255,calc(var(--aqua-gloss) + 0.4)), rgba(255,255,255,0) 48%),
+    linear-gradient(#ffffff, #d7deea);
+  box-shadow: inset 0 1px 0 #fff, 0 1px 2px rgba(20,40,80,.25);
+  font-weight: 600;
+}
+[data-skin="aqua"] .group\/button:hover { filter: brightness(1.04); }
+[data-skin="aqua"] .group\/button:active:not(:disabled) { box-shadow: inset 0 2px 4px rgba(0,0,0,.2); }
+[data-skin="aqua"] .group\/button:focus-visible { outline: 0; box-shadow: inset 0 1px 0 #fff, 0 0 0 3px rgba(46,111,242,.5); }
+[data-skin="aqua"] .group\/button[data-variant="default"] {
+  border-color: #1f54c4;
+  color: #fff;
+  background:
+    linear-gradient(rgba(255,255,255,calc(var(--aqua-gloss) + 0.45)), rgba(255,255,255,0) 50%),
+    linear-gradient(#5b9bff, #1e63ea);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.7), 0 1px 3px rgba(20,60,160,.5);
+  text-shadow: 0 -1px 0 rgba(0,0,0,.2);
+}
+[data-skin="aqua"] .group\/button[data-variant="destructive"] {
+  border-color: #a81e16; color: #fff;
+  background: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,0) 50%), linear-gradient(#ff6a5e, #d12b22);
+}
+[data-skin="aqua"] .group\/button[data-variant="ghost"],
+[data-skin="aqua"] .group\/button[data-variant="link"] { background: none; border-color: transparent; box-shadow: none; }
+[data-skin="aqua"] .group\/button[data-variant="link"] { color: #2e6ff2; text-decoration: underline; }
+
+[data-skin="aqua"] [data-slot="input"],
+[data-skin="aqua"] [data-slot="textarea"],
+[data-skin="aqua"] [data-slot="select-trigger"],
+[data-skin="aqua"] .skin-select {
+  border: 1px solid #9aa7bd;
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: inset 0 1px 3px rgba(20,40,80,.18);
+}
+[data-skin="aqua"] [data-slot="input"]:focus-visible,
+[data-skin="aqua"] [data-slot="textarea"]:focus-visible,
+[data-skin="aqua"] [data-slot="select-trigger"]:focus-visible { outline: 0; box-shadow: inset 0 1px 3px rgba(20,40,80,.18), 0 0 0 3px rgba(46,111,242,.45); }
+
+[data-skin="aqua"] [data-slot="card"] { border: 1px solid #9aa7bd; border-radius: 12px; background: #fff; box-shadow: 0 2px 8px rgba(20,40,80,.16); }
+
+[data-skin="aqua"] [data-slot="popover-content"],
+[data-skin="aqua"] [data-slot="dropdown-menu-content"],
+[data-skin="aqua"] [data-slot="context-menu-content"],
+[data-skin="aqua"] [data-slot="select-content"],
+[data-skin="aqua"] [data-slot="command"],
+[data-skin="aqua"] [data-slot="hover-card-content"],
+[data-skin="aqua"] [data-slot="dialog-content"],
+[data-skin="aqua"] [data-slot="alert-dialog-content"],
+[data-skin="aqua"] [data-slot="sheet-content"] {
+  border: 1px solid #8ca0c4;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 12px 32px rgba(10,30,70,.3);
+}
+[data-skin="aqua"] [data-slot="tooltip-content"] { border-radius: 7px; background: #ffffcc; color: #000; border: 1px solid #b9b98a; }
+[data-skin="aqua"] [data-slot="tooltip-content"] svg { fill: #ffffcc; }
+[data-skin="aqua"] [data-slot="dropdown-menu-item"][data-highlighted],
+[data-skin="aqua"] [data-slot="context-menu-item"][data-highlighted],
+[data-skin="aqua"] [data-slot="select-item"][data-highlighted],
+[data-skin="aqua"] [data-slot="command-item"][data-selected="true"] {
+  border-radius: 5px; background: linear-gradient(#5b9bff, #1e63ea); color: #fff;
+}
+[data-skin="aqua"] [data-slot="checkbox"] { border: 1px solid #8ca0c4; border-radius: 5px; background: linear-gradient(#fff,#e3e9f2); box-shadow: inset 0 1px 2px rgba(20,40,80,.2); color: #1e63ea; }
+[data-skin="aqua"] [data-slot="checkbox"][data-state="checked"] { background: linear-gradient(#5b9bff, #1e63ea); color: #fff; }
+[data-skin="aqua"] [data-slot="radio-group-item"] { border: 1px solid #8ca0c4; background: linear-gradient(#fff,#e3e9f2); box-shadow: inset 0 1px 2px rgba(20,40,80,.2); color: #1e63ea; }
+[data-skin="aqua"] [data-slot="tabs-list"] { border-radius: 999px; background: linear-gradient(#eef2f8,#dde4ef); padding: 4px; gap: 3px; border: 1px solid #9aa7bd; }
+[data-skin="aqua"] [data-slot="tabs-trigger"] { border-radius: 999px; }
+[data-skin="aqua"] [data-slot="tabs-trigger"][data-state="active"] { background: linear-gradient(#fff,#dde6f3); box-shadow: inset 0 1px 0 #fff, 0 1px 2px rgba(20,40,80,.25); font-weight: 600; }
+[data-skin="aqua"] [data-slot="badge"] { border-radius: 999px; border: 1px solid #8ca0c4; background: linear-gradient(#fff,#e3e9f2); }
+[data-skin="aqua"] [data-slot="badge"][data-variant="default"] { background: linear-gradient(#5b9bff,#1e63ea); border-color: #1f54c4; }
+[data-skin="aqua"] [data-slot="progress"] { border-radius: 999px; background: linear-gradient(#dfe6f1,#fff); box-shadow: inset 0 1px 2px rgba(20,40,80,.25); }
+[data-skin="aqua"] [data-slot="progress-indicator"] { border-radius: 999px; background: linear-gradient(#7fb0ff,#2e6ff2); }
+[data-skin="aqua"] [data-slot="slider-track"] { border-radius: 999px; background: linear-gradient(#dfe6f1,#fff); box-shadow: inset 0 1px 2px rgba(20,40,80,.25); }
+[data-skin="aqua"] [data-slot="slider-range"] { background: linear-gradient(#7fb0ff,#2e6ff2); }
+[data-skin="aqua"] [data-slot="slider-thumb"] { border: 1px solid #8ca0c4; background: radial-gradient(circle at 50% 30%, #fff, #d7deea); box-shadow: 0 1px 2px rgba(20,40,80,.4); }

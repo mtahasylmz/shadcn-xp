@@ -1,0 +1,170 @@
+/* ==========================================================================
+   SKIN: Windows 98   ·   [data-skin="win98"]
+   Classic grey, hard 4-edge 3D bevels (sharper/greyer than XP's Luna), solid
+   navy→azure title gradient, MS-Sans-ish type. Pure CSS over stock shadcn.
+   ========================================================================== */
+
+:root[data-skin="win98"] {
+  --app-font-sans: "Tahoma", "MS Sans Serif", "Pixelated MS Sans Serif", Geneva, sans-serif;
+  --app-font-heading: var(--app-font-sans);
+  --app-font-mono: "Fixedsys", "Courier New", monospace;
+  --app-font-size: 13px;
+
+  --radius: 0px;
+
+  --background: #c0c0c0;
+  --foreground: #000000;
+  --card: #c0c0c0;
+  --card-foreground: #000000;
+  --popover: #c0c0c0;
+  --popover-foreground: #000000;
+  --primary: #000080;
+  --primary-foreground: #ffffff;
+  --secondary: #c0c0c0;
+  --secondary-foreground: #000000;
+  --muted: #c0c0c0;
+  --muted-foreground: #404040;
+  --accent: #000080;
+  --accent-foreground: #ffffff;
+  --destructive: #a80000;
+  --border: #808080;
+  --input: #808080;
+  --ring: #000080;
+  --chart-1: #000080;
+  --chart-2: #008080;
+  --chart-3: #008000;
+  --chart-4: #808000;
+  --chart-5: #800000;
+  --sidebar: #c0c0c0;
+  --sidebar-foreground: #000000;
+  --sidebar-accent: #000080;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #808080;
+
+  /* Tunable shape knobs */
+  --w98-bevel: 2px;             /* bevel thickness */
+  --w98-face: #c0c0c0;
+  --w98-raised:
+    inset -1px -1px 0 0 #000000, inset 1px 1px 0 0 #ffffff,
+    inset -2px -2px 0 0 #808080, inset 2px 2px 0 0 #dfdfdf;
+  --w98-sunken:
+    inset -1px -1px 0 0 #ffffff, inset 1px 1px 0 0 #000000,
+    inset -2px -2px 0 0 #dfdfdf, inset 2px 2px 0 0 #808080;
+  --w98-field:
+    inset -1px -1px 0 0 #ffffff, inset 1px 1px 0 0 #808080,
+    inset -2px -2px 0 0 #dfdfdf, inset 2px 2px 0 0 #000000;
+}
+
+[data-skin="win98"] body { background: #008080; font-size: 13px; }  /* teal desktop */
+[data-skin="win98"] ::selection { background: #000080; color: #fff; }
+
+/* ---- Shell → window chrome --------------------------------------------- */
+[data-skin="win98"] .app-bar,
+[data-skin="win98"] .app-nav-inner,
+[data-skin="win98"] .hero,
+[data-skin="win98"] .specimen,
+[data-skin="win98"] .app-status {
+  background: var(--w98-face);
+  border: 0;
+  border-radius: 0;
+  box-shadow: var(--w98-raised);
+}
+[data-skin="win98"] .app-bar { backdrop-filter: none; }
+[data-skin="win98"] .app-brand { font-weight: 700; }
+[data-skin="win98"] .stage-head {
+  display: flex;
+  padding: 2px 3px;
+  color: #fff;
+  font-weight: 700;
+  background: linear-gradient(to right, #000080, #1084d0);
+}
+[data-skin="win98"] .specimen-head {
+  border-bottom: 0;
+  color: #fff;
+  background: linear-gradient(to right, #000080, #1084d0);
+  margin: 3px;
+  padding: 2px 6px;
+}
+[data-skin="win98"] .specimen-title { font-weight: 700; }
+[data-skin="win98"] .specimen-tag { color: #c8c8e0; }
+[data-skin="win98"] .app-nav a { border-radius: 0; }
+[data-skin="win98"] .app-nav a:hover { background: #000080; color: #fff; }
+[data-skin="win98"] .hero { background: #000; box-shadow: var(--w98-field); }
+[data-skin="win98"] .hero-kicker { color: #00ff00; font-weight: 700; }
+[data-skin="win98"] .hero-title { display: none; }
+[data-skin="win98"] .hero-sub { color: #c0c0c0; font-family: var(--app-font-mono); }
+
+/* ---- Controls ----------------------------------------------------------- */
+[data-skin="win98"] .group\/button {
+  border: 0;
+  border-radius: 0;
+  background: var(--w98-face);
+  color: #000;
+  box-shadow: var(--w98-raised);
+  transition: none;
+}
+[data-skin="win98"] .group\/button:active:not(:disabled),
+[data-skin="win98"] .group\/button[data-state="open"],
+[data-skin="win98"] .group\/button[aria-expanded="true"] {
+  box-shadow: var(--w98-sunken);
+  padding-top: 1px;
+  padding-left: 1px;
+}
+[data-skin="win98"] .group\/button:focus-visible { outline: 1px dotted #000; outline-offset: -4px; }
+[data-skin="win98"] .group\/button[data-variant="default"] { font-weight: 700; }
+[data-skin="win98"] .group\/button[data-variant="destructive"] { color: var(--destructive); }
+[data-skin="win98"] .group\/button[data-variant="link"] { background: none; box-shadow: none; color: #0000ee; text-decoration: underline; }
+
+[data-skin="win98"] [data-slot="input"],
+[data-skin="win98"] [data-slot="textarea"],
+[data-skin="win98"] [data-slot="select-trigger"],
+[data-skin="win98"] .skin-select {
+  border: 0;
+  border-radius: 0;
+  background: #fff;
+  color: #000;
+  box-shadow: var(--w98-field);
+}
+[data-skin="win98"] [data-slot="card"] { border: 0; border-radius: 0; background: var(--w98-face); box-shadow: var(--w98-raised); }
+
+[data-skin="win98"] [data-slot="popover-content"],
+[data-skin="win98"] [data-slot="dropdown-menu-content"],
+[data-skin="win98"] [data-slot="context-menu-content"],
+[data-skin="win98"] [data-slot="select-content"],
+[data-skin="win98"] [data-slot="command"],
+[data-skin="win98"] [data-slot="hover-card-content"] {
+  border: 0;
+  border-radius: 0;
+  background: var(--w98-face);
+  box-shadow: var(--w98-raised);
+}
+[data-skin="win98"] [data-slot="tooltip-content"] {
+  border-radius: 0; background: #ffffe1; color: #000; border: 1px solid #000;
+}
+[data-skin="win98"] [data-slot="tooltip-content"] svg { fill: #ffffe1; }
+[data-skin="win98"] [data-slot="dropdown-menu-item"][data-highlighted],
+[data-skin="win98"] [data-slot="context-menu-item"][data-highlighted],
+[data-skin="win98"] [data-slot="select-item"][data-highlighted],
+[data-skin="win98"] [data-slot="command-item"][data-selected="true"] {
+  border-radius: 0; background: #000080; color: #fff;
+}
+[data-skin="win98"] [data-slot="dialog-content"],
+[data-skin="win98"] [data-slot="alert-dialog-content"],
+[data-skin="win98"] [data-slot="sheet-content"] {
+  border-radius: 0; background: var(--w98-face); box-shadow: var(--w98-raised), 2px 2px 0 0 rgba(0,0,0,.4);
+  border: 0;
+}
+[data-skin="win98"] [data-slot="checkbox"] { border: 0; border-radius: 0; background: #fff; box-shadow: var(--w98-field); color: #000080; }
+[data-skin="win98"] [data-slot="radio-group-item"] { border: 0; background: #fff; box-shadow: var(--w98-field); color: #000080; }
+[data-skin="win98"] [data-slot="tabs-list"] { border-radius: 0; background: transparent; gap: 2px; padding: 0; align-items: flex-end; border-bottom: 1px solid #808080; }
+[data-skin="win98"] [data-slot="tabs-trigger"] {
+  border-radius: 0; background: var(--w98-face); color: #000;
+  box-shadow: var(--w98-raised); margin-top: 2px; border: 0;
+}
+[data-skin="win98"] [data-slot="tabs-trigger"][data-state="active"] { margin-top: 0; font-weight: 700; }
+[data-skin="win98"] [data-slot="badge"] { border-radius: 0; box-shadow: var(--w98-raised); border: 0; }
+[data-skin="win98"] [data-slot="switch"] { border-radius: 0; box-shadow: var(--w98-field); }
+[data-skin="win98"] [data-slot="progress"] { border-radius: 0; background: #fff; box-shadow: var(--w98-field); }
+[data-skin="win98"] [data-slot="progress-indicator"] { border-radius: 0; background: #000080; }
+[data-skin="win98"] [data-slot="slider-track"] { border-radius: 0; background: #fff; box-shadow: var(--w98-field); }
+[data-skin="win98"] [data-slot="slider-thumb"] { border-radius: 0; background: var(--w98-face); box-shadow: var(--w98-raised); border: 0; }

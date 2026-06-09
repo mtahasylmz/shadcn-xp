@@ -1,0 +1,124 @@
+/* ==========================================================================
+   SKIN: 8-bit Pixel   ·   [data-skin="pixel"]
+   Chunky pixel borders (stepped box-shadows), Press Start 2P, flat retro
+   palette, pixelated rendering, press-to-shift. Pure CSS over stock shadcn.
+   ========================================================================== */
+
+:root[data-skin="pixel"] {
+  --app-font-sans: "Press Start 2P", "VT323", "Courier New", monospace;
+  --app-font-heading: var(--app-font-sans);
+  --app-font-mono: "Press Start 2P", monospace;
+  --app-font-size: 11px;
+
+  --radius: 0px;
+
+  --background: #1a1c2c;
+  --foreground: #f4f4f4;
+  --card: #29366f;
+  --card-foreground: #f4f4f4;
+  --popover: #29366f;
+  --popover-foreground: #f4f4f4;
+  --primary: #ef7d57;
+  --primary-foreground: #1a1c2c;
+  --secondary: #41a6f6;
+  --secondary-foreground: #1a1c2c;
+  --muted: #333c57;
+  --muted-foreground: #94b0c2;
+  --accent: #38b764;
+  --accent-foreground: #1a1c2c;
+  --destructive: #b13e53;
+  --border: #f4f4f4;
+  --input: #f4f4f4;
+  --ring: #ffcd75;
+  --chart-1: #ef7d57;
+  --chart-2: #41a6f6;
+  --chart-3: #38b764;
+  --chart-4: #ffcd75;
+  --chart-5: #b13e53;
+  --sidebar: #29366f;
+  --sidebar-foreground: #f4f4f4;
+  --sidebar-accent: #38b764;
+  --sidebar-accent-foreground: #1a1c2c;
+  --sidebar-border: #f4f4f4;
+
+  /* Tunable shape knobs */
+  --px: 3px;             /* pixel unit (border thickness) */
+  --px-border:
+    calc(var(--px) * -1) 0 0 0 #f4f4f4, var(--px) 0 0 0 #f4f4f4,
+    0 calc(var(--px) * -1) 0 0 #f4f4f4, 0 var(--px) 0 0 #f4f4f4;
+}
+
+[data-skin="pixel"] body { background: #1a1c2c; image-rendering: pixelated; line-height: 1.7; }
+[data-skin="pixel"] ::selection { background: #ffcd75; color: #1a1c2c; }
+
+[data-skin="pixel"] .app-bar,
+[data-skin="pixel"] .app-nav-inner,
+[data-skin="pixel"] .hero,
+[data-skin="pixel"] .specimen,
+[data-skin="pixel"] .app-status {
+  background: var(--card); border: 0; border-radius: 0;
+  box-shadow: var(--px-border); margin: var(--px); backdrop-filter: none;
+}
+[data-skin="pixel"] .specimen-head { border-bottom: var(--px) solid #f4f4f4; }
+[data-skin="pixel"] .specimen-title { color: #ffcd75; }
+[data-skin="pixel"] .specimen-tag { color: #94b0c2; }
+[data-skin="pixel"] .hero { background: #000; }
+[data-skin="pixel"] .hero-kicker { color: #38b764; }
+[data-skin="pixel"] .hero-title { display: none; }
+[data-skin="pixel"] .hero-sub { color: #94b0c2; font-size: 11px; line-height: 1.9; }
+[data-skin="pixel"] .app-nav a { border-radius: 0; }
+[data-skin="pixel"] .app-nav a:hover { background: #38b764; color: #1a1c2c; }
+
+[data-skin="pixel"] .group\/button {
+  border: 0; border-radius: 0;
+  background: var(--primary); color: #1a1c2c;
+  box-shadow: var(--px-border); transition: none;
+}
+[data-skin="pixel"] .group\/button:hover { filter: brightness(1.1); }
+[data-skin="pixel"] .group\/button:active:not(:disabled) { transform: translateY(var(--px)); }
+[data-skin="pixel"] .group\/button:focus-visible { outline: var(--px) dotted #ffcd75; outline-offset: var(--px); }
+[data-skin="pixel"] .group\/button[data-variant="secondary"] { background: #41a6f6; }
+[data-skin="pixel"] .group\/button[data-variant="outline"],
+[data-skin="pixel"] .group\/button[data-variant="ghost"] { background: #333c57; color: #f4f4f4; }
+[data-skin="pixel"] .group\/button[data-variant="destructive"] { background: #b13e53; color: #f4f4f4; }
+[data-skin="pixel"] .group\/button[data-variant="link"] { box-shadow: none; background: none; color: #41a6f6; text-decoration: underline; }
+
+[data-skin="pixel"] [data-slot="input"],
+[data-skin="pixel"] [data-slot="textarea"],
+[data-skin="pixel"] [data-slot="select-trigger"],
+[data-skin="pixel"] .skin-select {
+  border: 0; border-radius: 0; background: #f4f4f4; color: #1a1c2c;
+  box-shadow:
+    calc(var(--px) * -1) 0 0 0 #94b0c2, var(--px) 0 0 0 #94b0c2,
+    0 calc(var(--px) * -1) 0 0 #94b0c2, 0 var(--px) 0 0 #94b0c2;
+}
+[data-skin="pixel"] [data-slot="input"]::placeholder { color: #6b7a99; }
+[data-skin="pixel"] [data-slot="card"] { border: 0; border-radius: 0; background: var(--card); box-shadow: var(--px-border); }
+[data-skin="pixel"] [data-slot="popover-content"],
+[data-skin="pixel"] [data-slot="dropdown-menu-content"],
+[data-skin="pixel"] [data-slot="context-menu-content"],
+[data-skin="pixel"] [data-slot="select-content"],
+[data-skin="pixel"] [data-slot="command"],
+[data-skin="pixel"] [data-slot="hover-card-content"],
+[data-skin="pixel"] [data-slot="dialog-content"],
+[data-skin="pixel"] [data-slot="alert-dialog-content"],
+[data-skin="pixel"] [data-slot="sheet-content"] {
+  border: var(--px) solid #f4f4f4; border-radius: 0; background: var(--card);
+}
+[data-skin="pixel"] [data-slot="tooltip-content"] { border: var(--px) solid #f4f4f4; border-radius: 0; background: #1a1c2c; color: #f4f4f4; }
+[data-skin="pixel"] [data-slot="dropdown-menu-item"][data-highlighted],
+[data-skin="pixel"] [data-slot="context-menu-item"][data-highlighted],
+[data-skin="pixel"] [data-slot="select-item"][data-highlighted],
+[data-skin="pixel"] [data-slot="command-item"][data-selected="true"] { border-radius: 0; background: #38b764; color: #1a1c2c; }
+[data-skin="pixel"] [data-slot="checkbox"] { border: var(--px) solid #f4f4f4; border-radius: 0; background: #1a1c2c; color: #38b764; }
+[data-skin="pixel"] [data-slot="radio-group-item"] { border: var(--px) solid #f4f4f4; border-radius: 0; background: #1a1c2c; color: #38b764; }
+[data-skin="pixel"] [data-slot="tabs-list"] { border-radius: 0; border-bottom: var(--px) solid #f4f4f4; gap: var(--px); }
+[data-skin="pixel"] [data-slot="tabs-trigger"] { border-radius: 0; color: #94b0c2; }
+[data-skin="pixel"] [data-slot="tabs-trigger"][data-state="active"] { background: #ffcd75; color: #1a1c2c; }
+[data-skin="pixel"] [data-slot="badge"] { border-radius: 0; box-shadow: var(--px-border); }
+[data-skin="pixel"] [data-slot="switch"] { border: var(--px) solid #f4f4f4; border-radius: 0; background: #1a1c2c; }
+[data-skin="pixel"] [data-slot="progress"] { border: var(--px) solid #f4f4f4; border-radius: 0; background: #1a1c2c; }
+[data-skin="pixel"] [data-slot="progress-indicator"] { border-radius: 0; background: #38b764; }
+[data-skin="pixel"] [data-slot="slider-track"] { border: var(--px) solid #f4f4f4; border-radius: 0; background: #1a1c2c; }
+[data-skin="pixel"] [data-slot="slider-range"] { background: #ef7d57; }
+[data-skin="pixel"] [data-slot="slider-thumb"] { border: var(--px) solid #1a1c2c; border-radius: 0; background: #ffcd75; }

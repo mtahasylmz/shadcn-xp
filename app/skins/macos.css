@@ -1,0 +1,138 @@
+/* ==========================================================================
+   SKIN: macOS (modern / Big Sur)   ·   [data-skin="macos"]
+   Clean translucent vibrancy, SF-style type, soft rounded corners, subtle
+   depth, system blue accent. Pure CSS over stock shadcn.
+   ========================================================================== */
+
+:root[data-skin="macos"] {
+  --app-font-sans: -apple-system, "SF Pro Text", "Helvetica Neue", "Inter", system-ui, sans-serif;
+  --app-font-heading: var(--app-font-sans);
+  --app-font-mono: "SF Mono", "Menlo", monospace;
+  --app-font-size: 14px;
+
+  --radius: 9px;
+
+  --background: #ececee;
+  --foreground: #1d1d1f;
+  --card: #ffffff;
+  --card-foreground: #1d1d1f;
+  --popover: #f6f6f8;
+  --popover-foreground: #1d1d1f;
+  --primary: #0a84ff;
+  --primary-foreground: #ffffff;
+  --secondary: #ffffff;
+  --secondary-foreground: #1d1d1f;
+  --muted: #f0f0f3;
+  --muted-foreground: #86868b;
+  --accent: #0a84ff;
+  --accent-foreground: #ffffff;
+  --destructive: #ff3b30;
+  --border: #d6d6db;
+  --input: #c9c9cf;
+  --ring: #0a84ff;
+  --chart-1: #0a84ff;
+  --chart-2: #5ac8fa;
+  --chart-3: #34c759;
+  --chart-4: #ff9f0a;
+  --chart-5: #ff375f;
+  --sidebar: #f2f2f4;
+  --sidebar-foreground: #1d1d1f;
+  --sidebar-accent: #0a84ff;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #d6d6db;
+
+  /* Tunable shape knobs */
+  --mac-radius: 9px;
+  --mac-elevation: 10;
+  --mac-drop: 0 calc(var(--mac-elevation) * 1px) calc(var(--mac-elevation) * 3px) rgba(0,0,0,.14);
+}
+
+[data-skin="macos"] body { background: linear-gradient(150deg, #e9eef6, #e7e3ee 60%, #f0e9ee); }
+[data-skin="macos"] ::selection { background: rgba(10,132,255,.28); }
+
+[data-skin="macos"] .app-bar {
+  background: rgba(255,255,255,.7);
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 14px;
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  box-shadow: var(--mac-drop);
+}
+[data-skin="macos"] .app-nav-inner,
+[data-skin="macos"] .hero,
+[data-skin="macos"] .specimen,
+[data-skin="macos"] .app-status {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.07);
+  border-radius: 14px;
+  box-shadow: var(--mac-drop);
+}
+[data-skin="macos"] .specimen-head { border-bottom: 1px solid #ececef; }
+[data-skin="macos"] .hero { background: linear-gradient(135deg,#1d1d1f,#3a3a3c); }
+[data-skin="macos"] .hero-kicker { color: #64d2ff; }
+[data-skin="macos"] .hero-title { color: #fff; }
+[data-skin="macos"] .hero-sub { color: #c7c7cc; }
+[data-skin="macos"] .app-nav a { border-radius: 7px; }
+[data-skin="macos"] .app-nav a:hover { background: #0a84ff; color: #fff; }
+
+[data-skin="macos"] .group\/button {
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 8px;
+  background: linear-gradient(#fff,#f3f3f5);
+  color: #1d1d1f;
+  box-shadow: 0 1px 1.5px rgba(0,0,0,.12);
+  font-weight: 500;
+}
+[data-skin="macos"] .group\/button:hover { background: linear-gradient(#fff,#ececf0); }
+[data-skin="macos"] .group\/button:active:not(:disabled) { background: #e6e6ea; }
+[data-skin="macos"] .group\/button:focus-visible { outline: 0; box-shadow: 0 0 0 3.5px rgba(10,132,255,.4); }
+[data-skin="macos"] .group\/button[data-variant="default"] { border-color: transparent; background: linear-gradient(#3a9bff,#0a84ff); color: #fff; box-shadow: 0 1px 2px rgba(10,90,200,.4); }
+[data-skin="macos"] .group\/button[data-variant="default"]:hover { background: linear-gradient(#2a90ff,#0a78ee); }
+[data-skin="macos"] .group\/button[data-variant="destructive"] { background: linear-gradient(#ff5b52,#ff3b30); color: #fff; border-color: transparent; }
+[data-skin="macos"] .group\/button[data-variant="ghost"],
+[data-skin="macos"] .group\/button[data-variant="link"] { background: none; border-color: transparent; box-shadow: none; }
+[data-skin="macos"] .group\/button[data-variant="link"] { color: #0a84ff; }
+
+[data-skin="macos"] [data-slot="input"],
+[data-skin="macos"] [data-slot="textarea"],
+[data-skin="macos"] [data-slot="select-trigger"],
+[data-skin="macos"] .skin-select {
+  border: 1px solid #c9c9cf; border-radius: 7px; background: #fff;
+  box-shadow: 0 1px 1px rgba(0,0,0,.04) inset;
+}
+[data-skin="macos"] [data-slot="input"]:focus-visible,
+[data-skin="macos"] [data-slot="textarea"]:focus-visible,
+[data-skin="macos"] [data-slot="select-trigger"]:focus-visible { outline: 0; border-color: #0a84ff; box-shadow: 0 0 0 3.5px rgba(10,132,255,.35); }
+
+[data-skin="macos"] [data-slot="card"] { border: 1px solid rgba(0,0,0,.07); border-radius: 14px; background: #fff; box-shadow: var(--mac-drop); }
+[data-skin="macos"] [data-slot="popover-content"],
+[data-skin="macos"] [data-slot="dropdown-menu-content"],
+[data-skin="macos"] [data-slot="context-menu-content"],
+[data-skin="macos"] [data-slot="select-content"],
+[data-skin="macos"] [data-slot="command"],
+[data-skin="macos"] [data-slot="hover-card-content"] {
+  border: 1px solid rgba(0,0,0,.1); border-radius: 11px;
+  background: rgba(246,246,248,.85);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  box-shadow: 0 14px 40px rgba(0,0,0,.22);
+}
+[data-skin="macos"] [data-slot="tooltip-content"] { border-radius: 7px; background: rgba(40,40,42,.92); color: #fff; }
+[data-skin="macos"] [data-slot="dialog-content"],
+[data-skin="macos"] [data-slot="alert-dialog-content"],
+[data-skin="macos"] [data-slot="sheet-content"] { border-radius: 16px; background: rgba(246,246,248,.9); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px); box-shadow: 0 24px 60px rgba(0,0,0,.3); }
+[data-skin="macos"] [data-slot="dropdown-menu-item"][data-highlighted],
+[data-skin="macos"] [data-slot="context-menu-item"][data-highlighted],
+[data-skin="macos"] [data-slot="select-item"][data-highlighted],
+[data-skin="macos"] [data-slot="command-item"][data-selected="true"] { border-radius: 6px; background: #0a84ff; color: #fff; }
+[data-skin="macos"] [data-slot="checkbox"] { border: 1px solid #c9c9cf; border-radius: 5px; }
+[data-skin="macos"] [data-slot="checkbox"][data-state="checked"] { background: #0a84ff; border-color: #0a84ff; }
+[data-skin="macos"] [data-slot="tabs-list"] { border-radius: 9px; background: rgba(120,120,128,.12); padding: 3px; gap: 3px; }
+[data-skin="macos"] [data-slot="tabs-trigger"] { border-radius: 7px; }
+[data-skin="macos"] [data-slot="tabs-trigger"][data-state="active"] { background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.18); font-weight: 600; }
+[data-skin="macos"] [data-slot="badge"] { border-radius: 999px; }
+[data-skin="macos"] [data-slot="switch"] { border-radius: 999px; }
+[data-skin="macos"] [data-slot="progress"] { border-radius: 999px; }
+[data-skin="macos"] [data-slot="progress-indicator"] { background: #0a84ff; }
+[data-skin="macos"] [data-slot="slider-range"] { background: #0a84ff; }
+[data-skin="macos"] [data-slot="slider-thumb"] { background: #fff; border: 0; box-shadow: 0 1px 4px rgba(0,0,0,.3); }

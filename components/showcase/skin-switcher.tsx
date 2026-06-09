@@ -6,10 +6,20 @@ export const SKINS = [
   ["default", "Default (stock)"],
   ["base", "Base (tunable, no concept)"],
   ["xp", "Windows XP"],
+  ["win98", "Windows 98"],
+  ["aqua", "Mac OS X Aqua"],
+  ["macos", "macOS (modern)"],
+  ["material", "Material 3"],
   ["brutalist", "Brutalist"],
   ["neumorphic", "Neumorphic"],
-  ["terminal", "Terminal"],
+  ["clay", "Claymorphism"],
   ["glass", "Glassmorphism"],
+  ["terminal", "Terminal"],
+  ["cyberpunk", "Cyberpunk"],
+  ["pixel", "8-bit Pixel"],
+  ["synthwave", "Synthwave"],
+  ["editorial", "Editorial"],
+  ["swiss", "Swiss"],
 ] as const
 
 export type SkinId = (typeof SKINS)[number][0]

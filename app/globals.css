@@ -11,10 +11,20 @@
 @import "./skins/base.css";
 @import "./skins/xp.css";
 @import "./skins/xp-tokens.css";
+@import "./skins/win98.css";
+@import "./skins/aqua.css";
+@import "./skins/macos.css";
+@import "./skins/material.css";
 @import "./skins/brutalist.css";
 @import "./skins/neumorphic.css";
 @import "./skins/terminal.css";
 @import "./skins/glass.css";
+@import "./skins/clay.css";
+@import "./skins/cyberpunk.css";
+@import "./skins/pixel.css";
+@import "./skins/editorial.css";
+@import "./skins/synthwave.css";
+@import "./skins/swiss.css";
 
 @custom-variant dark (&:is(.dark *));
 

@@ -1,0 +1,123 @@
+/* ==========================================================================
+   SKIN: Editorial   ·   [data-skin="editorial"]
+   Ink on cream, refined serif, hairline rules, letterpress restraint. The
+   "newspaper / book" concept. Pure CSS over stock shadcn.
+   ========================================================================== */
+
+:root[data-skin="editorial"] {
+  --app-font-sans: "Playfair Display", "Georgia", "Times New Roman", serif;
+  --app-font-heading: "Playfair Display", "Georgia", serif;
+  --app-font-mono: "Courier New", monospace;
+  --app-font-size: 15px;
+
+  --radius: 2px;
+
+  --background: #f4efe3;
+  --foreground: #1c1812;
+  --card: #fbf8f0;
+  --card-foreground: #1c1812;
+  --popover: #fbf8f0;
+  --popover-foreground: #1c1812;
+  --primary: #1c1812;
+  --primary-foreground: #fbf8f0;
+  --secondary: #ece5d4;
+  --secondary-foreground: #1c1812;
+  --muted: #e7e0cf;
+  --muted-foreground: #6b6253;
+  --accent: #8a1c1c;
+  --accent-foreground: #fbf8f0;
+  --destructive: #8a1c1c;
+  --border: #c9bfa8;
+  --input: #b3a98f;
+  --ring: #8a1c1c;
+  --chart-1: #1c1812;
+  --chart-2: #8a1c1c;
+  --chart-3: #4a5a3a;
+  --chart-4: #9a7b2e;
+  --chart-5: #6b6253;
+  --sidebar: #fbf8f0;
+  --sidebar-foreground: #1c1812;
+  --sidebar-accent: #ece5d4;
+  --sidebar-accent-foreground: #1c1812;
+  --sidebar-border: #c9bfa8;
+
+  /* Tunable shape knobs */
+  --ed-rule: 1px;        /* hairline rule weight */
+}
+
+[data-skin="editorial"] body { background: #f4efe3; }
+[data-skin="editorial"] ::selection { background: #1c1812; color: #f4efe3; }
+
+[data-skin="editorial"] .app-bar {
+  background: #fbf8f0; border: 0; border-bottom: 3px double #1c1812; border-radius: 0;
+  box-shadow: none; backdrop-filter: none;
+}
+[data-skin="editorial"] .app-brand { font-weight: 800; letter-spacing: -.01em; }
+[data-skin="editorial"] .app-nav-inner,
+[data-skin="editorial"] .hero,
+[data-skin="editorial"] .specimen,
+[data-skin="editorial"] .app-status {
+  background: #fbf8f0; border: var(--ed-rule) solid #c9bfa8; border-radius: 2px; box-shadow: none;
+}
+[data-skin="editorial"] .specimen-head { border-bottom: 2px solid #1c1812; }
+[data-skin="editorial"] .specimen-title { font-weight: 800; font-size: 16px; }
+[data-skin="editorial"] .specimen-tag { font-style: italic; color: #6b6253; }
+[data-skin="editorial"] .hero { background: #1c1812; }
+[data-skin="editorial"] .hero-kicker { color: #d9c9a8; font-style: italic; font-family: var(--app-font-mono); }
+[data-skin="editorial"] .hero-title { color: #fbf8f0; }
+[data-skin="editorial"] .hero-sub { color: #cfc3aa; }
+[data-skin="editorial"] .app-nav a { border-radius: 0; border-bottom: 1px solid #e7e0cf; }
+[data-skin="editorial"] .app-nav a:hover { background: #1c1812; color: #fbf8f0; }
+
+[data-skin="editorial"] .group\/button {
+  border: var(--ed-rule) solid #1c1812; border-radius: 2px;
+  background: transparent; color: #1c1812; font-weight: 600;
+  box-shadow: none; letter-spacing: .02em;
+}
+[data-skin="editorial"] .group\/button:hover { background: #1c1812; color: #fbf8f0; }
+[data-skin="editorial"] .group\/button:active:not(:disabled) { background: #3a342a; }
+[data-skin="editorial"] .group\/button:focus-visible { outline: 1px solid #8a1c1c; outline-offset: 2px; }
+[data-skin="editorial"] .group\/button[data-variant="default"] { background: #1c1812; color: #fbf8f0; }
+[data-skin="editorial"] .group\/button[data-variant="default"]:hover { background: #3a342a; }
+[data-skin="editorial"] .group\/button[data-variant="destructive"] { border-color: #8a1c1c; color: #8a1c1c; }
+[data-skin="editorial"] .group\/button[data-variant="destructive"]:hover { background: #8a1c1c; color: #fbf8f0; }
+[data-skin="editorial"] .group\/button[data-variant="link"] { border: 0; color: #8a1c1c; text-decoration: underline; text-underline-offset: 3px; }
+
+[data-skin="editorial"] [data-slot="input"],
+[data-skin="editorial"] [data-slot="textarea"],
+[data-skin="editorial"] [data-slot="select-trigger"],
+[data-skin="editorial"] .skin-select {
+  border: 0; border-bottom: var(--ed-rule) solid #1c1812; border-radius: 0; background: transparent;
+}
+[data-skin="editorial"] [data-slot="input"]:focus-visible,
+[data-skin="editorial"] [data-slot="textarea"]:focus-visible,
+[data-skin="editorial"] [data-slot="select-trigger"]:focus-visible { outline: 0; border-bottom-color: #8a1c1c; box-shadow: 0 1px 0 0 #8a1c1c; }
+
+[data-skin="editorial"] [data-slot="card"] { border: var(--ed-rule) solid #c9bfa8; border-radius: 2px; background: #fbf8f0; box-shadow: none; }
+[data-skin="editorial"] [data-slot="popover-content"],
+[data-skin="editorial"] [data-slot="dropdown-menu-content"],
+[data-skin="editorial"] [data-slot="context-menu-content"],
+[data-skin="editorial"] [data-slot="select-content"],
+[data-skin="editorial"] [data-slot="command"],
+[data-skin="editorial"] [data-slot="hover-card-content"],
+[data-skin="editorial"] [data-slot="dialog-content"],
+[data-skin="editorial"] [data-slot="alert-dialog-content"],
+[data-skin="editorial"] [data-slot="sheet-content"] {
+  border: var(--ed-rule) solid #1c1812; border-radius: 2px; background: #fbf8f0; box-shadow: 4px 4px 0 0 rgba(28,24,18,.12);
+}
+[data-skin="editorial"] [data-slot="tooltip-content"] { border-radius: 2px; background: #1c1812; color: #fbf8f0; font-style: italic; }
+[data-skin="editorial"] [data-slot="dropdown-menu-item"][data-highlighted],
+[data-skin="editorial"] [data-slot="context-menu-item"][data-highlighted],
+[data-skin="editorial"] [data-slot="select-item"][data-highlighted],
+[data-skin="editorial"] [data-slot="command-item"][data-selected="true"] { border-radius: 0; background: #1c1812; color: #fbf8f0; }
+[data-skin="editorial"] [data-slot="checkbox"] { border: 1px solid #1c1812; border-radius: 1px; }
+[data-skin="editorial"] [data-slot="checkbox"][data-state="checked"] { background: #1c1812; }
+[data-skin="editorial"] [data-slot="tabs-list"] { border-radius: 0; border-bottom: 2px solid #1c1812; gap: 0; }
+[data-skin="editorial"] [data-slot="tabs-trigger"] { border-radius: 0; font-style: italic; }
+[data-skin="editorial"] [data-slot="tabs-trigger"][data-state="active"] { border-bottom: 3px solid #8a1c1c; font-weight: 700; font-style: normal; }
+[data-skin="editorial"] [data-slot="badge"] { border-radius: 1px; border: 1px solid #1c1812; background: transparent; color: #1c1812; text-transform: uppercase; font-size: 10px; letter-spacing: .08em; }
+[data-skin="editorial"] [data-slot="badge"][data-variant="default"] { background: #1c1812; color: #fbf8f0; }
+[data-skin="editorial"] [data-slot="progress"] { border-radius: 0; background: #e7e0cf; border: 1px solid #1c1812; }
+[data-skin="editorial"] [data-slot="progress-indicator"] { background: #1c1812; }
+[data-skin="editorial"] [data-slot="slider-range"] { background: #1c1812; }
+[data-skin="editorial"] [data-slot="slider-thumb"] { border: 1px solid #1c1812; background: #fbf8f0; }

@@ -1,0 +1,125 @@
+/* ==========================================================================
+   SKIN: Swiss   ·   [data-skin="swiss"]
+   International Typographic Style: Helvetica, strict grid, flat, generous
+   space, one bold red accent, hairline rules. Pure CSS over stock shadcn.
+   ========================================================================== */
+
+:root[data-skin="swiss"] {
+  --app-font-sans: "Helvetica Neue", "Inter", Helvetica, Arial, sans-serif;
+  --app-font-heading: var(--app-font-sans);
+  --app-font-mono: "Roboto Mono", monospace;
+  --app-font-size: 14px;
+
+  --radius: 0px;
+
+  --background: #ffffff;
+  --foreground: #111111;
+  --card: #ffffff;
+  --card-foreground: #111111;
+  --popover: #ffffff;
+  --popover-foreground: #111111;
+  --primary: #e30613;
+  --primary-foreground: #ffffff;
+  --secondary: #f2f2f2;
+  --secondary-foreground: #111111;
+  --muted: #f2f2f2;
+  --muted-foreground: #767676;
+  --accent: #e30613;
+  --accent-foreground: #ffffff;
+  --destructive: #e30613;
+  --border: #111111;
+  --input: #111111;
+  --ring: #e30613;
+  --chart-1: #e30613;
+  --chart-2: #111111;
+  --chart-3: #767676;
+  --chart-4: #c8c8c8;
+  --chart-5: #f2f2f2;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #111111;
+  --sidebar-accent: #e30613;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #111111;
+
+  /* Tunable shape knobs */
+  --sw-rule: 1px;        /* hairline weight */
+}
+
+[data-skin="swiss"] body { background: #fff; }
+[data-skin="swiss"] ::selection { background: #e30613; color: #fff; }
+
+[data-skin="swiss"] .app-bar {
+  background: #fff; border: 0; border-bottom: 2px solid #111; border-radius: 0; box-shadow: none; backdrop-filter: none;
+}
+[data-skin="swiss"] .app-brand { font-weight: 700; letter-spacing: -.02em; text-transform: uppercase; }
+[data-skin="swiss"] .app-nav-inner,
+[data-skin="swiss"] .hero,
+[data-skin="swiss"] .specimen,
+[data-skin="swiss"] .app-status {
+  background: #fff; border: var(--sw-rule) solid #111; border-radius: 0; box-shadow: none;
+}
+[data-skin="swiss"] .specimen-head { border-bottom: var(--sw-rule) solid #111; }
+[data-skin="swiss"] .specimen-title { font-weight: 700; text-transform: uppercase; letter-spacing: -.01em; }
+[data-skin="swiss"] .specimen-tag { color: #767676; }
+[data-skin="swiss"] .hero { background: #e30613; border-color: #e30613; }
+[data-skin="swiss"] .hero-kicker { color: #fff; opacity: .85; }
+[data-skin="swiss"] .hero-title { color: #fff; text-transform: uppercase; letter-spacing: -.02em; }
+[data-skin="swiss"] .hero-sub { color: #ffd9dc; }
+[data-skin="swiss"] .app-nav a { border-radius: 0; }
+[data-skin="swiss"] .app-nav a:hover { background: #e30613; color: #fff; }
+
+[data-skin="swiss"] .group\/button {
+  border: var(--sw-rule) solid #111; border-radius: 0;
+  background: #fff; color: #111; font-weight: 600; box-shadow: none;
+}
+[data-skin="swiss"] .group\/button:hover { background: #111; color: #fff; }
+[data-skin="swiss"] .group\/button:active:not(:disabled) { background: #333; }
+[data-skin="swiss"] .group\/button:focus-visible { outline: 2px solid #e30613; outline-offset: 2px; }
+[data-skin="swiss"] .group\/button[data-variant="default"] { background: #e30613; color: #fff; border-color: #e30613; }
+[data-skin="swiss"] .group\/button[data-variant="default"]:hover { background: #b80510; }
+[data-skin="swiss"] .group\/button[data-variant="destructive"] { background: #111; color: #fff; }
+[data-skin="swiss"] .group\/button[data-variant="ghost"] { border-color: transparent; }
+[data-skin="swiss"] .group\/button[data-variant="ghost"]:hover { background: #f2f2f2; color: #111; }
+[data-skin="swiss"] .group\/button[data-variant="link"] { border: 0; color: #e30613; text-decoration: underline; }
+
+[data-skin="swiss"] [data-slot="input"],
+[data-skin="swiss"] [data-slot="textarea"],
+[data-skin="swiss"] [data-slot="select-trigger"],
+[data-skin="swiss"] .skin-select {
+  border: 0; border-bottom: var(--sw-rule) solid #111; border-radius: 0; background: transparent;
+}
+[data-skin="swiss"] [data-slot="input"]:focus-visible,
+[data-skin="swiss"] [data-slot="textarea"]:focus-visible,
+[data-skin="swiss"] [data-slot="select-trigger"]:focus-visible { outline: 0; border-bottom: 2px solid #e30613; }
+
+[data-skin="swiss"] [data-slot="card"] { border: var(--sw-rule) solid #111; border-radius: 0; background: #fff; box-shadow: none; }
+[data-skin="swiss"] [data-slot="popover-content"],
+[data-skin="swiss"] [data-slot="dropdown-menu-content"],
+[data-skin="swiss"] [data-slot="context-menu-content"],
+[data-skin="swiss"] [data-slot="select-content"],
+[data-skin="swiss"] [data-slot="command"],
+[data-skin="swiss"] [data-slot="hover-card-content"],
+[data-skin="swiss"] [data-slot="dialog-content"],
+[data-skin="swiss"] [data-slot="alert-dialog-content"],
+[data-skin="swiss"] [data-slot="sheet-content"] {
+  border: var(--sw-rule) solid #111; border-radius: 0; background: #fff; box-shadow: none;
+}
+[data-skin="swiss"] [data-slot="tooltip-content"] { border-radius: 0; background: #111; color: #fff; }
+[data-skin="swiss"] [data-slot="dropdown-menu-item"][data-highlighted],
+[data-skin="swiss"] [data-slot="context-menu-item"][data-highlighted],
+[data-skin="swiss"] [data-slot="select-item"][data-highlighted],
+[data-skin="swiss"] [data-slot="command-item"][data-selected="true"] { border-radius: 0; background: #e30613; color: #fff; }
+[data-skin="swiss"] [data-slot="checkbox"] { border: var(--sw-rule) solid #111; border-radius: 0; }
+[data-skin="swiss"] [data-slot="checkbox"][data-state="checked"] { background: #e30613; border-color: #e30613; }
+[data-skin="swiss"] [data-slot="radio-group-item"] { border: var(--sw-rule) solid #111; color: #e30613; }
+[data-skin="swiss"] [data-slot="tabs-list"] { border-radius: 0; border-bottom: 2px solid #111; gap: 0; }
+[data-skin="swiss"] [data-slot="tabs-trigger"] { border-radius: 0; text-transform: uppercase; letter-spacing: .02em; font-weight: 600; }
+[data-skin="swiss"] [data-slot="tabs-trigger"][data-state="active"] { border-bottom: 3px solid #e30613; }
+[data-skin="swiss"] [data-slot="badge"] { border-radius: 0; border: 1px solid #111; background: #fff; color: #111; text-transform: uppercase; font-size: 10px; letter-spacing: .06em; }
+[data-skin="swiss"] [data-slot="badge"][data-variant="default"] { background: #e30613; border-color: #e30613; color: #fff; }
+[data-skin="swiss"] [data-slot="switch"] { border-radius: 0; border: 1px solid #111; }
+[data-skin="swiss"] [data-slot="progress"] { border-radius: 0; background: #f2f2f2; border: 1px solid #111; }
+[data-skin="swiss"] [data-slot="progress-indicator"] { background: #e30613; }
+[data-skin="swiss"] [data-slot="slider-track"] { border-radius: 0; background: #f2f2f2; border: 1px solid #111; }
+[data-skin="swiss"] [data-slot="slider-range"] { background: #e30613; }
+[data-skin="swiss"] [data-slot="slider-thumb"] { border: 1px solid #111; border-radius: 0; background: #e30613; }

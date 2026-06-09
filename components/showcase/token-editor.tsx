@@ -64,6 +64,37 @@ const SHAPE_PARAMS: Record<string, ShapeParam[]> = {
     { label: "Extrusion", varName: "--neu-distance", min: 1, max: 16, step: 1, unit: "px" },
     { label: "Softness", varName: "--neu-blur", min: 2, max: 36, step: 1, unit: "px" },
   ],
+  aqua: [
+    { label: "Gel gloss", varName: "--aqua-gloss", min: 0, max: 0.6, step: 0.05, unit: "" },
+  ],
+  macos: [
+    { label: "Elevation", varName: "--mac-elevation", min: 0, max: 24, step: 1, unit: "" },
+  ],
+  material: [
+    { label: "Elevation", varName: "--md-elevation", min: 0, max: 16, step: 1, unit: "" },
+    { label: "Corner", varName: "--md-shape", min: 0, max: 28, step: 1, unit: "px" },
+  ],
+  clay: [
+    { label: "Puffiness", varName: "--clay-puff", min: 2, max: 16, step: 1, unit: "" },
+    { label: "Corner", varName: "--clay-radius", min: 8, max: 40, step: 1, unit: "px" },
+  ],
+  cyberpunk: [
+    { label: "Corner notch", varName: "--cy-notch", min: 0, max: 24, step: 1, unit: "px" },
+    { label: "Neon glow", varName: "--cy-glow", min: 0, max: 24, step: 1, unit: "px" },
+  ],
+  pixel: [
+    { label: "Pixel size", varName: "--px", min: 1, max: 6, step: 1, unit: "px" },
+  ],
+  synthwave: [
+    { label: "Neon glow", varName: "--sw-glow", min: 0, max: 24, step: 1, unit: "px" },
+    { label: "Corner", varName: "--sw-radius", min: 0, max: 16, step: 1, unit: "px" },
+  ],
+  editorial: [
+    { label: "Rule weight", varName: "--ed-rule", min: 1, max: 4, step: 1, unit: "px" },
+  ],
+  swiss: [
+    { label: "Rule weight", varName: "--sw-rule", min: 1, max: 5, step: 1, unit: "px" },
+  ],
 }
 
 const TOKEN_VARS = FIELDS.map((f) => f.varName)
