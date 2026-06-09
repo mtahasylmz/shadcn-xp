@@ -2,12 +2,17 @@
    SKIN: Editorial   ·   [data-skin="editorial"]
    Ink on cream, refined serif, hairline rules, letterpress restraint. The
    "newspaper / book" concept. Pure CSS over stock shadcn.
+
+   Knobs live in :root[data-skin="editorial"]; every literal hex/radius routes
+   through a token so the editor genuinely retunes the cascade. Shadows and
+   double-rules are composed from knob vars via calc().
    ========================================================================== */
 
 :root[data-skin="editorial"] {
-  --app-font-sans: "Playfair Display", "Georgia", "Times New Roman", serif;
+  /* Typography: book serif for body/labels, display serif reserved for heads. */
+  --app-font-sans: "Iris", "Georgia", "Times New Roman", serif;
   --app-font-heading: "Playfair Display", "Georgia", serif;
-  --app-font-mono: "Courier New", monospace;
+  --app-font-mono: "Courier New", "Courier", monospace;
   --app-font-size: 15px;
 
   --radius: 2px;
@@ -23,8 +28,8 @@
   --secondary: #ece5d4;
   --secondary-foreground: #1c1812;
   --muted: #e7e0cf;
-  --muted-foreground: #6b6253;
-  --accent: #8a1c1c;
+  --muted-foreground: #585042;        /* darkened for WCAG on cream */
+  --accent: #8a1c1c;                  /* oxblood */
   --accent-foreground: #fbf8f0;
   --destructive: #8a1c1c;
   --border: #c9bfa8;
@@ -34,66 +39,264 @@
   --chart-2: #8a1c1c;
   --chart-3: #4a5a3a;
   --chart-4: #9a7b2e;
-  --chart-5: #6b6253;
+  --chart-5: #585042;
   --sidebar: #fbf8f0;
   --sidebar-foreground: #1c1812;
   --sidebar-accent: #ece5d4;
   --sidebar-accent-foreground: #1c1812;
   --sidebar-border: #c9bfa8;
 
-  /* Tunable shape knobs */
-  --ed-rule: 1px;        /* hairline rule weight */
+  /* ---- Tunable shape knobs (range-slider friendly) ---------------------- */
+  --ed-rule: 1px;                 /* hairline rule weight                     */
+  --ed-rule-heavy: 2px;           /* masthead / section-head / tabs rule      */
+  --ed-radius: 2px;               /* corner softness (kept tight for print)   */
+  --ed-shadow-offset: 4px;        /* letterpress drop offset                  */
+  --ed-press-depth: 0.10;         /* letterpress shadow opacity (0..1)        */
+  --ed-tracking: 0.08em;          /* small-caps / label letterspacing         */
+  --ed-tab-underline: 3px;        /* active tab accent underline              */
+  --ed-accent-weight: 3px;        /* accent hairline thickness on heads       */
+
+  /* ---- Composed (derived from knobs) ------------------------------------ */
+  --ed-ink: var(--foreground);
+  --ed-press: color-mix(in srgb, var(--foreground) calc(var(--ed-press-depth) * 100%), transparent);
+  --ed-press-soft: color-mix(in srgb, var(--foreground) calc(var(--ed-press-depth) * 60%), transparent);
+  /* Subtle consistent letterpress lift for panels/cards */
+  --ed-shadow: 1px 2px 0 0 var(--ed-press-soft);
+  /* Hard offset drop for floating surfaces */
+  --ed-shadow-pop: calc(var(--ed-shadow-offset) * 1) calc(var(--ed-shadow-offset) * 1) 0 0 var(--ed-press);
+  /* Faint paper grain — laid-paper hairlines, knob-tinted */
+  --ed-grain:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent calc(var(--app-font-size) * 1.6 - 1px),
+      var(--ed-press-soft) calc(var(--app-font-size) * 1.6 - 1px),
+      var(--ed-press-soft) calc(var(--app-font-size) * 1.6)
+    );
 }
 
-[data-skin="editorial"] body { background: #f4efe3; }
-[data-skin="editorial"] ::selection { background: #1c1812; color: #f4efe3; }
+[data-skin="editorial"] body {
+  background:
+    radial-gradient(120% 80% at 50% -10%, color-mix(in srgb, var(--card) 55%, transparent), transparent 60%),
+    var(--background);
+}
+[data-skin="editorial"] ::selection { background: var(--foreground); color: var(--background); }
 
+/* ---- Masthead -------------------------------------------------------------
+   Double-rule under the brand, like a newspaper nameplate. The double rule is
+   composed from --ed-rule-heavy via box-shadow so the gap scales with the knob. */
 [data-skin="editorial"] .app-bar {
-  background: #fbf8f0; border: 0; border-bottom: 3px double #1c1812; border-radius: 0;
-  box-shadow: none; backdrop-filter: none;
+  background:
+    linear-gradient(to bottom, var(--card), color-mix(in srgb, var(--card) 92%, var(--foreground)));
+  border: 0;
+  border-bottom: var(--ed-rule-heavy) solid var(--foreground);
+  box-shadow:
+    0 calc(var(--ed-rule-heavy) + 2px) 0 calc(-1 * var(--ed-rule-heavy)) var(--card),
+    0 calc(var(--ed-rule-heavy) + 2px + var(--ed-rule)) 0 calc(-1 * var(--ed-rule-heavy)) var(--foreground);
+  border-radius: 0;
+  backdrop-filter: none;
 }
-[data-skin="editorial"] .app-brand { font-weight: 800; letter-spacing: -.01em; }
+[data-skin="editorial"] .app-brand {
+  font-family: var(--app-font-heading);
+  font-weight: 800;
+  letter-spacing: -.01em;
+  font-feature-settings: "liga" 1, "dlig" 1;
+}
+
 [data-skin="editorial"] .app-nav-inner,
-[data-skin="editorial"] .hero,
 [data-skin="editorial"] .specimen,
 [data-skin="editorial"] .app-status {
-  background: #fbf8f0; border: var(--ed-rule) solid #c9bfa8; border-radius: 2px; box-shadow: none;
+  background: var(--card);
+  border: var(--ed-rule) solid var(--border);
+  border-radius: var(--ed-radius);
+  box-shadow: var(--ed-shadow);
 }
-[data-skin="editorial"] .specimen-head { border-bottom: 2px solid #1c1812; }
-[data-skin="editorial"] .specimen-title { font-weight: 800; font-size: 16px; }
-[data-skin="editorial"] .specimen-tag { font-style: italic; color: #6b6253; }
-[data-skin="editorial"] .hero { background: #1c1812; }
-[data-skin="editorial"] .hero-kicker { color: #d9c9a8; font-style: italic; font-family: var(--app-font-mono); }
-[data-skin="editorial"] .hero-title { color: #fbf8f0; }
-[data-skin="editorial"] .hero-sub { color: #cfc3aa; }
-[data-skin="editorial"] .app-nav a { border-radius: 0; border-bottom: 1px solid #e7e0cf; }
-[data-skin="editorial"] .app-nav a:hover { background: #1c1812; color: #fbf8f0; }
 
+/* Section head: heavy top rule + oxblood accent hairline = print column head. */
+[data-skin="editorial"] .specimen-head {
+  border-bottom: var(--ed-rule-heavy) solid var(--foreground);
+  box-shadow: 0 var(--ed-accent-weight) 0 calc(-1 * (var(--ed-accent-weight) - var(--ed-rule))) var(--accent);
+  position: relative;
+}
+[data-skin="editorial"] .specimen-title {
+  font-family: var(--app-font-heading);
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -.01em;
+}
+[data-skin="editorial"] .specimen-tag {
+  font-style: italic;
+  color: var(--muted-foreground);
+  font-family: var(--app-font-mono);
+}
+
+/* Microlabels ("variants", "sizes & icons", "checkbox") → print section heads */
+[data-skin="editorial"] .specimen .specimen-row > .specimen-label,
+[data-skin="editorial"] .specimen-sublabel,
+[data-skin="editorial"] .specimen small,
+[data-skin="editorial"] .specimen figcaption {
+  font-variant: small-caps;
+  letter-spacing: var(--ed-tracking);
+  color: var(--muted-foreground);
+}
+
+/* ---- Hero / pull-quote block --------------------------------------------- */
+[data-skin="editorial"] .hero {
+  background:
+    linear-gradient(135deg, var(--foreground), color-mix(in srgb, var(--foreground) 84%, var(--accent)));
+  border: var(--ed-rule) solid var(--foreground);
+  border-radius: var(--ed-radius);
+  box-shadow: var(--ed-shadow-pop);
+}
+[data-skin="editorial"] .hero-kicker {
+  color: color-mix(in srgb, var(--accent) 50%, #d9c9a8);
+  font-style: italic;
+  font-family: var(--app-font-mono);
+  letter-spacing: var(--ed-tracking);
+  text-transform: uppercase;
+}
+[data-skin="editorial"] .hero-title {
+  color: var(--card);
+  font-family: var(--app-font-heading);
+}
+/* Editorial drop-cap on the lede */
+[data-skin="editorial"] .hero-sub { color: color-mix(in srgb, var(--card) 80%, var(--accent)); }
+[data-skin="editorial"] .hero-sub::first-letter {
+  font-family: var(--app-font-heading);
+  font-size: 3.2em;
+  line-height: .8;
+  float: left;
+  padding: 0.05em 0.12em 0 0;
+  color: var(--accent);
+  font-weight: 800;
+}
+
+[data-skin="editorial"] .app-nav a {
+  border-radius: 0;
+  border-bottom: var(--ed-rule) solid var(--muted);
+}
+[data-skin="editorial"] .app-nav a:hover { background: var(--foreground); color: var(--card); }
+
+/* ==========================================================================
+   BUTTONS — five visually distinct variants
+   ========================================================================== */
 [data-skin="editorial"] .group\/button {
-  border: var(--ed-rule) solid #1c1812; border-radius: 2px;
-  background: transparent; color: #1c1812; font-weight: 600;
-  box-shadow: none; letter-spacing: .02em;
+  border: var(--ed-rule) solid var(--foreground);
+  border-radius: var(--ed-radius);
+  background: transparent;
+  color: var(--foreground);
+  font-weight: 600;
+  box-shadow: none;
+  letter-spacing: .02em;
 }
-[data-skin="editorial"] .group\/button:hover { background: #1c1812; color: #fbf8f0; }
-[data-skin="editorial"] .group\/button:active:not(:disabled) { background: #3a342a; }
-[data-skin="editorial"] .group\/button:focus-visible { outline: 1px solid #8a1c1c; outline-offset: 2px; }
-[data-skin="editorial"] .group\/button[data-variant="default"] { background: #1c1812; color: #fbf8f0; }
-[data-skin="editorial"] .group\/button[data-variant="default"]:hover { background: #3a342a; }
-[data-skin="editorial"] .group\/button[data-variant="destructive"] { border-color: #8a1c1c; color: #8a1c1c; }
-[data-skin="editorial"] .group\/button[data-variant="destructive"]:hover { background: #8a1c1c; color: #fbf8f0; }
-[data-skin="editorial"] .group\/button[data-variant="link"] { border: 0; color: #8a1c1c; text-decoration: underline; text-underline-offset: 3px; }
+[data-skin="editorial"] .group\/button:hover { background: var(--foreground); color: var(--card); }
+[data-skin="editorial"] .group\/button:active:not(:disabled) {
+  background: color-mix(in srgb, var(--foreground) 80%, var(--card));
+  box-shadow: inset 0 var(--ed-rule-heavy) 0 0 var(--ed-press);
+}
+[data-skin="editorial"] .group\/button:focus-visible {
+  outline: var(--ed-rule) solid var(--accent);
+  outline-offset: 2px;
+}
 
+/* default — solid ink, letterpress lift */
+[data-skin="editorial"] .group\/button[data-variant="default"] {
+  background: var(--foreground);
+  color: var(--card);
+  box-shadow: var(--ed-shadow);
+}
+[data-skin="editorial"] .group\/button[data-variant="default"]:hover {
+  background: color-mix(in srgb, var(--foreground) 82%, var(--card));
+}
+
+/* secondary — filled cream chip, hairline border */
+[data-skin="editorial"] .group\/button[data-variant="secondary"] {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  border-color: var(--border);
+  box-shadow: var(--ed-shadow);
+}
+[data-skin="editorial"] .group\/button[data-variant="secondary"]:hover {
+  background: color-mix(in srgb, var(--secondary) 80%, var(--foreground));
+}
+
+/* outline — open ruled box on muted ground */
+[data-skin="editorial"] .group\/button[data-variant="outline"] {
+  background: color-mix(in srgb, var(--card) 70%, transparent);
+  color: var(--foreground);
+  border: var(--ed-rule) solid var(--input);
+}
+[data-skin="editorial"] .group\/button[data-variant="outline"]:hover {
+  background: var(--secondary);
+  border-color: var(--foreground);
+}
+
+/* ghost — borderless, accent on hover */
+[data-skin="editorial"] .group\/button[data-variant="ghost"] {
+  background: transparent;
+  border-color: transparent;
+  color: var(--foreground);
+}
+[data-skin="editorial"] .group\/button[data-variant="ghost"]:hover {
+  background: var(--muted);
+  color: var(--accent);
+}
+
+/* destructive — oxblood, distinct from ink */
+[data-skin="editorial"] .group\/button[data-variant="destructive"] {
+  border-color: var(--destructive);
+  color: var(--destructive);
+  background: transparent;
+}
+[data-skin="editorial"] .group\/button[data-variant="destructive"]:hover {
+  background: var(--destructive);
+  color: var(--accent-foreground);
+}
+
+/* link — underlined oxblood */
+[data-skin="editorial"] .group\/button[data-variant="link"] {
+  border: 0;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: var(--ed-rule);
+}
+[data-skin="editorial"] .group\/button[data-variant="link"]:hover {
+  background: transparent;
+  text-decoration-thickness: var(--ed-rule-heavy);
+}
+
+/* ==========================================================================
+   FORM FIELDS — ruled-line inputs
+   ========================================================================== */
 [data-skin="editorial"] [data-slot="input"],
 [data-skin="editorial"] [data-slot="textarea"],
 [data-skin="editorial"] [data-slot="select-trigger"],
 [data-skin="editorial"] .skin-select {
-  border: 0; border-bottom: var(--ed-rule) solid #1c1812; border-radius: 0; background: transparent;
+  border: 0;
+  border-bottom: var(--ed-rule) solid var(--foreground);
+  border-radius: 0;
+  background: transparent;
 }
 [data-skin="editorial"] [data-slot="input"]:focus-visible,
 [data-skin="editorial"] [data-slot="textarea"]:focus-visible,
-[data-skin="editorial"] [data-slot="select-trigger"]:focus-visible { outline: 0; border-bottom-color: #8a1c1c; box-shadow: 0 1px 0 0 #8a1c1c; }
+[data-skin="editorial"] [data-slot="select-trigger"]:focus-visible {
+  outline: 0;
+  border-bottom-color: var(--accent);
+  box-shadow: 0 var(--ed-rule) 0 0 var(--accent);
+}
 
-[data-skin="editorial"] [data-slot="card"] { border: var(--ed-rule) solid #c9bfa8; border-radius: 2px; background: #fbf8f0; box-shadow: none; }
+/* ==========================================================================
+   SURFACES
+   ========================================================================== */
+[data-skin="editorial"] [data-slot="card"] {
+  border: var(--ed-rule) solid var(--border);
+  border-radius: var(--ed-radius);
+  background: var(--card);
+  box-shadow: var(--ed-shadow);
+}
+
+/* Floating surfaces: ink hairline + hard letterpress drop */
 [data-skin="editorial"] [data-slot="popover-content"],
 [data-skin="editorial"] [data-slot="dropdown-menu-content"],
 [data-skin="editorial"] [data-slot="context-menu-content"],
@@ -103,21 +306,99 @@
 [data-skin="editorial"] [data-slot="dialog-content"],
 [data-skin="editorial"] [data-slot="alert-dialog-content"],
 [data-skin="editorial"] [data-slot="sheet-content"] {
-  border: var(--ed-rule) solid #1c1812; border-radius: 2px; background: #fbf8f0; box-shadow: 4px 4px 0 0 rgba(28,24,18,.12);
+  border: var(--ed-rule) solid var(--foreground);
+  border-radius: var(--ed-radius);
+  background:
+    linear-gradient(to bottom, var(--card), color-mix(in srgb, var(--card) 94%, var(--foreground)));
+  box-shadow: var(--ed-shadow-pop);
 }
-[data-skin="editorial"] [data-slot="tooltip-content"] { border-radius: 2px; background: #1c1812; color: #fbf8f0; font-style: italic; }
+
+[data-skin="editorial"] [data-slot="tooltip-content"] {
+  border-radius: var(--ed-radius);
+  background: var(--foreground);
+  color: var(--card);
+  font-style: italic;
+}
+
 [data-skin="editorial"] [data-slot="dropdown-menu-item"][data-highlighted],
 [data-skin="editorial"] [data-slot="context-menu-item"][data-highlighted],
 [data-skin="editorial"] [data-slot="select-item"][data-highlighted],
-[data-skin="editorial"] [data-slot="command-item"][data-selected="true"] { border-radius: 0; background: #1c1812; color: #fbf8f0; }
-[data-skin="editorial"] [data-slot="checkbox"] { border: 1px solid #1c1812; border-radius: 1px; }
-[data-skin="editorial"] [data-slot="checkbox"][data-state="checked"] { background: #1c1812; }
-[data-skin="editorial"] [data-slot="tabs-list"] { border-radius: 0; border-bottom: 2px solid #1c1812; gap: 0; }
-[data-skin="editorial"] [data-slot="tabs-trigger"] { border-radius: 0; font-style: italic; }
-[data-skin="editorial"] [data-slot="tabs-trigger"][data-state="active"] { border-bottom: 3px solid #8a1c1c; font-weight: 700; font-style: normal; }
-[data-skin="editorial"] [data-slot="badge"] { border-radius: 1px; border: 1px solid #1c1812; background: transparent; color: #1c1812; text-transform: uppercase; font-size: 10px; letter-spacing: .08em; }
-[data-skin="editorial"] [data-slot="badge"][data-variant="default"] { background: #1c1812; color: #fbf8f0; }
-[data-skin="editorial"] [data-slot="progress"] { border-radius: 0; background: #e7e0cf; border: 1px solid #1c1812; }
-[data-skin="editorial"] [data-slot="progress-indicator"] { background: #1c1812; }
-[data-skin="editorial"] [data-slot="slider-range"] { background: #1c1812; }
-[data-skin="editorial"] [data-slot="slider-thumb"] { border: 1px solid #1c1812; background: #fbf8f0; }
+[data-skin="editorial"] [data-slot="command-item"][data-selected="true"] {
+  border-radius: 0;
+  background: var(--foreground);
+  color: var(--card);
+}
+
+/* ==========================================================================
+   CONTROLS
+   ========================================================================== */
+[data-skin="editorial"] [data-slot="checkbox"] {
+  border: var(--ed-rule) solid var(--foreground);
+  border-radius: calc(var(--ed-radius) / 2);
+}
+[data-skin="editorial"] [data-slot="checkbox"][data-state="checked"] {
+  background: var(--foreground);
+  border-color: var(--foreground);
+}
+
+[data-skin="editorial"] [data-slot="tabs-list"] {
+  border-radius: 0;
+  border-bottom: var(--ed-rule-heavy) solid var(--foreground);
+  gap: 0;
+  background: transparent;
+}
+[data-skin="editorial"] [data-slot="tabs-trigger"] {
+  border-radius: 0;
+  font-style: italic;
+  color: var(--muted-foreground);
+}
+[data-skin="editorial"] [data-slot="tabs-trigger"][data-state="active"] {
+  border-bottom: var(--ed-tab-underline) solid var(--accent);
+  font-weight: 700;
+  font-style: normal;
+  color: var(--foreground);
+}
+
+[data-skin="editorial"] [data-slot="badge"] {
+  border-radius: calc(var(--ed-radius) / 2);
+  border: var(--ed-rule) solid var(--foreground);
+  background: transparent;
+  color: var(--foreground);
+  text-transform: uppercase;
+  font-family: var(--app-font-mono);
+  font-size: 10px;
+  letter-spacing: var(--ed-tracking);
+}
+[data-skin="editorial"] [data-slot="badge"][data-variant="default"] {
+  background: var(--foreground);
+  color: var(--card);
+}
+[data-skin="editorial"] [data-slot="badge"][data-variant="destructive"] {
+  background: var(--destructive);
+  color: var(--accent-foreground);
+  border-color: var(--destructive);
+}
+
+[data-skin="editorial"] [data-slot="progress"] {
+  border-radius: 0;
+  background: var(--muted);
+  border: var(--ed-rule) solid var(--foreground);
+}
+[data-skin="editorial"] [data-slot="progress-indicator"] {
+  background:
+    repeating-linear-gradient(
+      45deg,
+      var(--foreground) 0,
+      var(--foreground) 6px,
+      color-mix(in srgb, var(--foreground) 82%, var(--accent)) 6px,
+      color-mix(in srgb, var(--foreground) 82%, var(--accent)) 12px
+    );
+}
+
+[data-skin="editorial"] [data-slot="slider-range"] { background: var(--foreground); }
+[data-skin="editorial"] [data-slot="slider-thumb"] {
+  border: var(--ed-rule) solid var(--foreground);
+  background: var(--card);
+  border-radius: var(--ed-radius);
+  box-shadow: var(--ed-shadow);
+}

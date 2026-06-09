@@ -1,6 +1,7 @@
 /* ==========================================================================
    SKIN: Cyberpunk   ·   [data-skin="cyberpunk"]
-   Dark slate, neon cyan/magenta glow, clipped angular corners, techno mono.
+   Night City HUD: dark slate, neon cyan/magenta glow, chamfered corners,
+   scanline texture, gradient-border notches, techno mono.
    Pure CSS over stock shadcn.
    ========================================================================== */
 
@@ -23,10 +24,11 @@
   --secondary: #14182a;
   --secondary-foreground: #e7faff;
   --muted: #14182a;
-  --muted-foreground: #7d8bb0;
+  --muted-foreground: #8ea3c4;
   --accent: #ff2e97;
   --accent-foreground: #14040e;
-  --destructive: #ff3b3b;
+  --destructive: #ff5470;
+  --destructive-foreground: #14040e;
   --border: #2bd6e6;
   --input: #28406a;
   --ring: #00f0ff;
@@ -41,65 +43,237 @@
   --sidebar-accent-foreground: #14040e;
   --sidebar-border: #2bd6e6;
 
-  /* Tunable shape knobs */
-  --cy-notch: 10px;       /* angular corner cut */
-  --cy-glow: 8px;         /* neon glow radius */
-  --cy-clip: polygon(var(--cy-notch) 0, 100% 0, 100% calc(100% - var(--cy-notch)), calc(100% - var(--cy-notch)) 100%, 0 100%, 0 var(--cy-notch));
+  /* ---- Tunable shape knobs (consumed below) ---- */
+  --cy-notch: 12px;        /* panel chamfer cut */
+  --cy-notch-sm: 8px;      /* button / control chamfer cut */
+  --cy-glow: 9px;          /* neon glow radius */
+  --cy-border-width: 1px;  /* universal hairline weight */
+  --cy-scanline: 0.05;     /* scanline overlay opacity (0 = off) */
+  --cy-text-glow: 10px;    /* heading / label neon blur */
+
+  /* Derived surfaces routed through tokens */
+  --cy-bg: var(--background);
+  --cy-panel: var(--card);
+  --cy-edge: var(--primary);
+
+  /* Panel chamfer (large notch) */
+  --cy-clip: polygon(
+    var(--cy-notch) 0, 100% 0,
+    100% calc(100% - var(--cy-notch)),
+    calc(100% - var(--cy-notch)) 100%,
+    0 100%, 0 var(--cy-notch)
+  );
+  /* Control chamfer (small notch) */
+  --cy-clip-sm: polygon(
+    var(--cy-notch-sm) 0, 100% 0,
+    100% calc(100% - var(--cy-notch-sm)),
+    calc(100% - var(--cy-notch-sm)) 100%,
+    0 100%, 0 var(--cy-notch-sm)
+  );
+
+  /* Reusable scanline texture (gated by --cy-scanline) */
+  --cy-scanlines: repeating-linear-gradient(
+    0deg,
+    transparent 0 2px,
+    color-mix(in srgb, var(--primary) calc(var(--cy-scanline) * 100%), transparent) 2px 3px
+  );
 }
 
-[data-skin="cyberpunk"] body { background: #06060c; color: #e7faff; }
-[data-skin="cyberpunk"] ::selection { background: #ff2e97; color: #fff; }
-[data-skin="cyberpunk"] * { text-shadow: 0 0 1px rgba(0,240,255,.18); }
+[data-skin="cyberpunk"] body {
+  background: var(--cy-bg);
+  color: var(--foreground);
+}
+[data-skin="cyberpunk"] ::selection { background: var(--accent); color: #fff; }
 
+/* Glow is scoped to headings, titles and neon labels only — not every node */
+[data-skin="cyberpunk"] .hero-kicker,
+[data-skin="cyberpunk"] .hero-title,
+[data-skin="cyberpunk"] .specimen-title,
+[data-skin="cyberpunk"] [data-slot="tabs-trigger"][data-state="active"] {
+  text-shadow: 0 0 var(--cy-text-glow) currentColor;
+}
+
+/* ----- Shell surfaces ----- */
 [data-skin="cyberpunk"] .app-bar,
 [data-skin="cyberpunk"] .app-nav-inner,
 [data-skin="cyberpunk"] .hero,
 [data-skin="cyberpunk"] .specimen,
 [data-skin="cyberpunk"] .app-status {
-  background: #0f1320; border: 1px solid #1f9fb8; border-radius: 0;
+  position: relative;
+  background: var(--cy-panel);
+  border: var(--cy-border-width) solid var(--cy-edge);
+  border-radius: var(--radius);
   clip-path: var(--cy-clip);
-  box-shadow: 0 0 14px rgba(0,240,255,.12), inset 0 0 20px rgba(0,240,255,.05);
+  background-image: var(--cy-scanlines);
+  box-shadow:
+    0 0 calc(var(--cy-glow) * 1.6) color-mix(in srgb, var(--primary) 14%, transparent),
+    inset 0 0 calc(var(--cy-glow) * 2.4) color-mix(in srgb, var(--primary) 6%, transparent);
   backdrop-filter: none;
 }
-[data-skin="cyberpunk"] .specimen-head { border-bottom: 1px solid #1f9fb8; background: linear-gradient(90deg, rgba(0,240,255,.12), transparent); }
-[data-skin="cyberpunk"] .specimen-title { color: #00f0ff; }
-[data-skin="cyberpunk"] .specimen-title::before { content: "▮ "; color: #ff2e97; }
-[data-skin="cyberpunk"] .specimen-tag { color: #ff2e97; }
-[data-skin="cyberpunk"] .hero { background: #06060c; }
-[data-skin="cyberpunk"] .hero-kicker { color: #00f0ff; text-shadow: 0 0 8px #00f0ff; }
-[data-skin="cyberpunk"] .hero-title { color: #ff2e97; text-shadow: 0 0 12px rgba(255,46,151,.6); }
-[data-skin="cyberpunk"] .hero-sub { color: #9fd9e6; }
-[data-skin="cyberpunk"] .app-nav a { border-radius: 0; }
-[data-skin="cyberpunk"] .app-nav a::before { content: "> "; color: #1f9fb8; }
-[data-skin="cyberpunk"] .app-nav a:hover { background: #ff2e97; color: #06060c; }
 
-[data-skin="cyberpunk"] .group\/button {
-  border: 1px solid #00f0ff; border-radius: 0;
-  clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
-  background: rgba(0,240,255,.08); color: #00f0ff;
-  text-transform: uppercase; letter-spacing: .08em; font-weight: 600;
-  box-shadow: 0 0 var(--cy-glow) rgba(0,240,255,.5), inset 0 0 12px rgba(0,240,255,.12);
+/* Re-draw the neon edge OVER the clip so the angled cut keeps its glow.
+   clip-path crops the real border; a gradient-border pseudo restores it. */
+[data-skin="cyberpunk"] .app-bar::after,
+[data-skin="cyberpunk"] .specimen::after,
+[data-skin="cyberpunk"] .hero::after,
+[data-skin="cyberpunk"] [data-slot="card"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  clip-path: var(--cy-clip);
+  padding: var(--cy-border-width);
+  background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--accent) 60%, var(--primary)));
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
 }
-[data-skin="cyberpunk"] .group\/button:hover { background: #00f0ff; color: #04121a; box-shadow: 0 0 18px #00f0ff; }
-[data-skin="cyberpunk"] .group\/button:active:not(:disabled) { background: #00c4d0; }
-[data-skin="cyberpunk"] .group\/button:focus-visible { outline: 1px dashed #ff2e97; outline-offset: 2px; }
-[data-skin="cyberpunk"] .group\/button[data-variant="default"] { background: #00f0ff; color: #04121a; }
-[data-skin="cyberpunk"] .group\/button[data-variant="destructive"] { border-color: #ff3b3b; color: #ff3b3b; box-shadow: 0 0 var(--cy-glow) rgba(255,59,59,.5); background: rgba(255,59,59,.08); }
-[data-skin="cyberpunk"] .group\/button[data-variant="ghost"] { border-color: transparent; box-shadow: none; background: transparent; }
-[data-skin="cyberpunk"] .group\/button[data-variant="link"] { border: 0; box-shadow: none; clip-path: none; background: none; text-transform: none; color: #ff2e97; text-decoration: underline; }
 
+[data-skin="cyberpunk"] .specimen-head {
+  position: relative;
+  border-bottom: var(--cy-border-width) solid var(--cy-edge);
+  background: linear-gradient(90deg, color-mix(in srgb, var(--primary) 12%, transparent), transparent);
+}
+/* Magenta HUD accent bar across the panel header */
+[data-skin="cyberpunk"] .specimen-head::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: var(--cy-border-width);
+  background: var(--accent);
+  box-shadow: 0 0 calc(var(--cy-glow) * 0.8) var(--accent);
+}
+[data-skin="cyberpunk"] .specimen-title { color: var(--primary); }
+[data-skin="cyberpunk"] .specimen-title::before { content: "▮ "; color: var(--accent); }
+[data-skin="cyberpunk"] .specimen-tag { color: var(--accent); }
+
+[data-skin="cyberpunk"] .hero { background: var(--cy-bg); }
+[data-skin="cyberpunk"] .hero-kicker { color: var(--primary); }
+[data-skin="cyberpunk"] .hero-title { color: var(--accent); }
+[data-skin="cyberpunk"] .hero-sub { color: color-mix(in srgb, var(--primary) 60%, var(--foreground)); }
+
+[data-skin="cyberpunk"] .app-nav a { border-radius: var(--radius); }
+[data-skin="cyberpunk"] .app-nav a::before { content: "> "; color: var(--border); }
+[data-skin="cyberpunk"] .app-nav a:hover { background: var(--accent); color: var(--cy-bg); }
+
+/* ----- Buttons (notch now driven by --cy-notch-sm) ----- */
+[data-skin="cyberpunk"] .group\/button {
+  border: var(--cy-border-width) solid var(--primary);
+  border-radius: var(--radius);
+  clip-path: var(--cy-clip-sm);
+  background: color-mix(in srgb, var(--primary) 8%, transparent);
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-weight: 600;
+  transition: background .12s, color .12s, box-shadow .12s, transform .08s;
+  box-shadow:
+    0 0 var(--cy-glow) color-mix(in srgb, var(--primary) 50%, transparent),
+    inset 0 0 calc(var(--cy-glow) * 1.3) color-mix(in srgb, var(--primary) 12%, transparent);
+}
+[data-skin="cyberpunk"] .group\/button:hover {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  box-shadow: 0 0 calc(var(--cy-glow) * 2) var(--primary);
+  transform: skewX(-2deg);
+}
+[data-skin="cyberpunk"] .group\/button:active:not(:disabled) {
+  background: color-mix(in srgb, var(--primary) 80%, #000);
+  transform: translateY(1px);
+}
+[data-skin="cyberpunk"] .group\/button:focus-visible { outline: var(--cy-border-width) dashed var(--accent); outline-offset: 2px; }
+
+/* Default = solid neon fill */
+[data-skin="cyberpunk"] .group\/button[data-variant="default"] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+/* Secondary = magenta accent, distinct from cyan family */
+[data-skin="cyberpunk"] .group\/button[data-variant="secondary"] {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  box-shadow:
+    0 0 var(--cy-glow) color-mix(in srgb, var(--accent) 50%, transparent),
+    inset 0 0 calc(var(--cy-glow) * 1.3) color-mix(in srgb, var(--accent) 12%, transparent);
+}
+[data-skin="cyberpunk"] .group\/button[data-variant="secondary"]:hover {
+  background: var(--accent);
+  color: var(--accent-foreground);
+  box-shadow: 0 0 calc(var(--cy-glow) * 2) var(--accent);
+}
+/* Outline = transparent, hairline cyan frame only */
+[data-skin="cyberpunk"] .group\/button[data-variant="outline"] {
+  background: transparent;
+  border-color: var(--primary);
+  color: var(--primary);
+  box-shadow: inset 0 0 0 var(--cy-border-width) color-mix(in srgb, var(--primary) 40%, transparent);
+}
+[data-skin="cyberpunk"] .group\/button[data-variant="outline"]:hover {
+  background: color-mix(in srgb, var(--primary) 14%, transparent);
+  color: var(--primary);
+}
+/* Destructive = neon red */
+[data-skin="cyberpunk"] .group\/button[data-variant="destructive"] {
+  border-color: var(--destructive);
+  color: var(--destructive);
+  background: color-mix(in srgb, var(--destructive) 10%, transparent);
+  box-shadow: 0 0 var(--cy-glow) color-mix(in srgb, var(--destructive) 50%, transparent);
+}
+[data-skin="cyberpunk"] .group\/button[data-variant="destructive"]:hover {
+  background: var(--destructive);
+  color: var(--destructive-foreground);
+  box-shadow: 0 0 calc(var(--cy-glow) * 2) var(--destructive);
+}
+/* Ghost = bare */
+[data-skin="cyberpunk"] .group\/button[data-variant="ghost"] {
+  border-color: transparent;
+  box-shadow: none;
+  background: transparent;
+  clip-path: none;
+}
+[data-skin="cyberpunk"] .group\/button[data-variant="ghost"]:hover {
+  background: color-mix(in srgb, var(--primary) 12%, transparent);
+}
+/* Link */
+[data-skin="cyberpunk"] .group\/button[data-variant="link"] {
+  border: 0; box-shadow: none; clip-path: none; background: none;
+  text-transform: none; color: var(--accent); text-decoration: underline;
+}
+
+/* ----- Inputs ----- */
 [data-skin="cyberpunk"] [data-slot="input"],
 [data-skin="cyberpunk"] [data-slot="textarea"],
 [data-skin="cyberpunk"] [data-slot="select-trigger"],
 [data-skin="cyberpunk"] .skin-select {
-  border: 1px solid #28406a; border-radius: 0; background: #080b14; color: #e7faff;
-  box-shadow: inset 0 0 10px rgba(0,240,255,.08);
+  border: var(--cy-border-width) solid var(--input);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--background) 60%, #000);
+  color: var(--foreground);
+  box-shadow: inset 0 0 calc(var(--cy-glow) * 1.1) color-mix(in srgb, var(--primary) 8%, transparent);
 }
 [data-skin="cyberpunk"] [data-slot="input"]:focus-visible,
 [data-skin="cyberpunk"] [data-slot="textarea"]:focus-visible,
-[data-skin="cyberpunk"] [data-slot="select-trigger"]:focus-visible { outline: 0; border-color: #00f0ff; box-shadow: 0 0 10px rgba(0,240,255,.5); }
+[data-skin="cyberpunk"] [data-slot="select-trigger"]:focus-visible {
+  outline: 0;
+  border-color: var(--ring);
+  box-shadow: 0 0 calc(var(--cy-glow) * 1.1) color-mix(in srgb, var(--ring) 50%, transparent);
+}
 
-[data-skin="cyberpunk"] [data-slot="card"] { border: 1px solid #1f9fb8; border-radius: 0; background: #0f1320; clip-path: var(--cy-clip); box-shadow: 0 0 16px rgba(0,240,255,.12); }
+/* ----- Card ----- */
+[data-skin="cyberpunk"] [data-slot="card"] {
+  position: relative;
+  border: var(--cy-border-width) solid var(--cy-edge);
+  border-radius: var(--radius);
+  background: var(--cy-panel);
+  clip-path: var(--cy-clip);
+  background-image: var(--cy-scanlines);
+  box-shadow: 0 0 calc(var(--cy-glow) * 1.8) color-mix(in srgb, var(--primary) 14%, transparent);
+}
+
+/* ----- Overlays ----- */
 [data-skin="cyberpunk"] [data-slot="popover-content"],
 [data-skin="cyberpunk"] [data-slot="dropdown-menu-content"],
 [data-skin="cyberpunk"] [data-slot="context-menu-content"],
@@ -109,25 +283,102 @@
 [data-skin="cyberpunk"] [data-slot="dialog-content"],
 [data-skin="cyberpunk"] [data-slot="alert-dialog-content"],
 [data-skin="cyberpunk"] [data-slot="sheet-content"] {
-  border: 1px solid #00f0ff; border-radius: 0; background: #0f1320;
-  box-shadow: 0 0 24px rgba(0,240,255,.3);
+  border: var(--cy-border-width) solid var(--primary);
+  border-radius: var(--radius);
+  background: var(--popover);
+  background-image: var(--cy-scanlines);
+  box-shadow: 0 0 calc(var(--cy-glow) * 2.6) color-mix(in srgb, var(--primary) 30%, transparent);
 }
-[data-skin="cyberpunk"] [data-slot="tooltip-content"] { border: 1px solid #ff2e97; border-radius: 0; background: #14040e; color: #ff2e97; }
+[data-skin="cyberpunk"] [data-slot="tooltip-content"] {
+  border: var(--cy-border-width) solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--accent-foreground);
+  color: var(--accent);
+}
 [data-skin="cyberpunk"] [data-slot="dropdown-menu-item"][data-highlighted],
 [data-skin="cyberpunk"] [data-slot="context-menu-item"][data-highlighted],
 [data-skin="cyberpunk"] [data-slot="select-item"][data-highlighted],
-[data-skin="cyberpunk"] [data-slot="command-item"][data-selected="true"] { border-radius: 0; background: #ff2e97; color: #06060c; }
-[data-skin="cyberpunk"] [data-slot="checkbox"] { border: 1px solid #00f0ff; border-radius: 0; background: #080b14; color: #04121a; }
-[data-skin="cyberpunk"] [data-slot="checkbox"][data-state="checked"] { background: #00f0ff; }
-[data-skin="cyberpunk"] [data-slot="radio-group-item"] { border: 1px solid #00f0ff; background: #080b14; color: #00f0ff; }
-[data-skin="cyberpunk"] [data-slot="tabs-list"] { border-radius: 0; border-bottom: 1px solid #1f9fb8; gap: 0; }
-[data-skin="cyberpunk"] [data-slot="tabs-trigger"] { border-radius: 0; color: #7d8bb0; text-transform: uppercase; letter-spacing: .06em; }
-[data-skin="cyberpunk"] [data-slot="tabs-trigger"][data-state="active"] { background: #00f0ff; color: #04121a; box-shadow: 0 0 12px rgba(0,240,255,.5); }
-[data-skin="cyberpunk"] [data-slot="badge"] { border-radius: 0; border: 1px solid #00f0ff; background: transparent; color: #00f0ff; }
-[data-skin="cyberpunk"] [data-slot="badge"][data-variant="default"] { background: #ff2e97; border-color: #ff2e97; color: #06060c; }
-[data-skin="cyberpunk"] [data-slot="switch"] { border: 1px solid #00f0ff; border-radius: 0; background: #080b14; }
-[data-skin="cyberpunk"] [data-slot="progress"] { border: 1px solid #1f9fb8; border-radius: 0; background: #080b14; }
-[data-skin="cyberpunk"] [data-slot="progress-indicator"] { background: #00f0ff; box-shadow: 0 0 10px #00f0ff; }
-[data-skin="cyberpunk"] [data-slot="slider-track"] { border: 1px solid #1f9fb8; border-radius: 0; background: #080b14; }
-[data-skin="cyberpunk"] [data-slot="slider-range"] { background: #00f0ff; box-shadow: 0 0 8px #00f0ff; }
-[data-skin="cyberpunk"] [data-slot="slider-thumb"] { border: 0; border-radius: 0; background: #ff2e97; box-shadow: 0 0 10px #ff2e97; }
+[data-skin="cyberpunk"] [data-slot="command-item"][data-selected="true"] {
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--cy-bg);
+}
+
+/* ----- Selection controls ----- */
+[data-skin="cyberpunk"] [data-slot="checkbox"] {
+  border: var(--cy-border-width) solid var(--primary);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--background) 60%, #000);
+  color: var(--primary-foreground);
+}
+[data-skin="cyberpunk"] [data-slot="checkbox"][data-state="checked"] {
+  background: var(--primary);
+  box-shadow: 0 0 var(--cy-glow) color-mix(in srgb, var(--primary) 60%, transparent);
+}
+[data-skin="cyberpunk"] [data-slot="radio-group-item"] {
+  border: var(--cy-border-width) solid var(--primary);
+  background: color-mix(in srgb, var(--background) 60%, #000);
+  color: var(--primary);
+}
+
+/* ----- Tabs ----- */
+[data-skin="cyberpunk"] [data-slot="tabs-list"] {
+  border-radius: var(--radius);
+  border-bottom: var(--cy-border-width) solid var(--cy-edge);
+  gap: 0;
+}
+[data-skin="cyberpunk"] [data-slot="tabs-trigger"] {
+  border-radius: var(--radius);
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+[data-skin="cyberpunk"] [data-slot="tabs-trigger"][data-state="active"] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  box-shadow: 0 0 calc(var(--cy-glow) * 1.3) color-mix(in srgb, var(--primary) 50%, transparent);
+}
+
+/* ----- Badges ----- */
+[data-skin="cyberpunk"] [data-slot="badge"] {
+  border-radius: var(--radius);
+  border: var(--cy-border-width) solid var(--primary);
+  background: transparent;
+  color: var(--primary);
+}
+[data-skin="cyberpunk"] [data-slot="badge"][data-variant="default"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--cy-bg);
+}
+
+/* ----- Switch / Progress / Slider ----- */
+[data-skin="cyberpunk"] [data-slot="switch"] {
+  border: var(--cy-border-width) solid var(--primary);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--background) 60%, #000);
+}
+[data-skin="cyberpunk"] [data-slot="progress"] {
+  border: var(--cy-border-width) solid var(--cy-edge);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--background) 60%, #000);
+}
+[data-skin="cyberpunk"] [data-slot="progress-indicator"] {
+  background: var(--primary);
+  box-shadow: 0 0 var(--cy-glow) var(--primary);
+}
+[data-skin="cyberpunk"] [data-slot="slider-track"] {
+  border: var(--cy-border-width) solid var(--cy-edge);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--background) 60%, #000);
+}
+[data-skin="cyberpunk"] [data-slot="slider-range"] {
+  background: var(--primary);
+  box-shadow: 0 0 var(--cy-glow) var(--primary);
+}
+[data-skin="cyberpunk"] [data-slot="slider-thumb"] {
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--accent);
+  box-shadow: 0 0 var(--cy-glow) var(--accent);
+}

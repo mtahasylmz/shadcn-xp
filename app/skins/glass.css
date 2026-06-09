@@ -1,7 +1,9 @@
 /* ==========================================================================
    SKIN: Glassmorphism   ·   [data-skin="glass"]
    Frosted translucent surfaces, backdrop blur, hairline light borders, soft
-   glows, over a vivid gradient. Depth via blur instead of bevels. Pure CSS.
+   glows, over a vivid gradient. Depth via blur instead of bevels. Every glass
+   pane gets a bright top lip AND a faint dark bottom edge so it reads as a
+   real sheet of glass. Pure CSS.
    ========================================================================== */
 
 :root[data-skin="glass"] {
@@ -23,7 +25,8 @@
   --secondary: rgba(255, 255, 255, 0.14);
   --secondary-foreground: #f4f6ff;
   --muted: rgba(255, 255, 255, 0.08);
-  --muted-foreground: rgba(244, 246, 255, 0.74);
+  /* Lifted from 0.74 -> 0.88 so kicker/sub/tags clear the WCAG floor on frost */
+  --muted-foreground: rgba(244, 246, 255, 0.88);
   --accent: rgba(255, 255, 255, 0.2);
   --accent-foreground: #ffffff;
   --destructive: #ff6b81;
@@ -35,26 +38,43 @@
   --chart-3: #f0abfc;
   --chart-4: #fde68a;
   --chart-5: #bbf7d0;
-  --sidebar: rgba(255, 255, 255, 0.12);
+  --sidebar: rgba(255, 255, 255, 0.1);
   --sidebar-foreground: #f4f6ff;
   --sidebar-accent: rgba(255, 255, 255, 0.2);
   --sidebar-accent-foreground: #ffffff;
   --sidebar-border: rgba(255, 255, 255, 0.24);
 
-  /* Tunable shape knobs (sliders in the editor) */
-  --glass-blur-px: 14px;       /* backdrop-filter blur amount */
-  --glass-alpha: 0.12;         /* surface opacity */
-  --glass-border-alpha: 0.28;  /* border opacity */
+  /* === Tunable shape knobs (editor sliders) ============================== */
+  --glass-blur-px: 14px;        /* backdrop-filter blur radius */
+  --glass-saturate: 160%;       /* backdrop saturation boost */
+  --glass-alpha: 0.12;          /* base surface opacity (frost thickness) */
+  --glass-border-alpha: 0.28;   /* hairline border opacity — governs ALL edges */
+  --glass-elevation: 32px;      /* drop-shadow spread (pane float height) */
+  --glass-sheen: 0.35;          /* top-lip highlight strength */
 
-  --glass-blur: saturate(160%) blur(var(--glass-blur-px));
+  /* === Composed values (built from the knobs above) ===================== */
+  --glass-blur: saturate(var(--glass-saturate)) blur(var(--glass-blur-px));
+  --glass-blur-soft: saturate(var(--glass-saturate)) blur(calc(var(--glass-blur-px) * 0.6));
   --glass-bg: rgba(255, 255, 255, var(--glass-alpha));
-  --glass-bg-strong: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.06));
-  --glass-border: 1px solid rgba(255, 255, 255, var(--glass-border-alpha));
-  --glass-glow: 0 8px 32px rgba(13, 6, 40, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.35);
+  /* nested / popover panes: thicker frost so stacked alpha never goes muddy */
+  --glass-bg-strong: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.1));
+  --glass-border-color: rgba(255, 255, 255, var(--glass-border-alpha));
+  --glass-border: 1px solid var(--glass-border-color);
+  /* hairline a touch fainter than the main border, derived from the same knob */
+  --glass-hairline: rgba(255, 255, 255, calc(var(--glass-border-alpha) * 0.65));
+  /* signature glass edges: bright top lip + faint dark bottom edge + float */
+  --glass-edge:
+    inset 0 1px 0 0 rgba(255, 255, 255, var(--glass-sheen)),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.15);
+  --glass-glow:
+    0 calc(var(--glass-elevation) * 0.25) var(--glass-elevation) rgba(13, 6, 40, 0.45),
+    var(--glass-edge);
+  /* text legibility lift on bright frosted surfaces */
+  --glass-text-shadow: 0 1px 2px rgba(13, 6, 40, 0.4);
 }
 
 [data-skin="glass"] body {
-  color: #f4f6ff;
+  color: var(--foreground);
   background: linear-gradient(135deg, #5b21b6 0%, #2563eb 45%, #06b6d4 100%) fixed;
 }
 /* floating color blobs for the frost to refract */
@@ -75,7 +95,7 @@
 [data-skin="glass"] .app-bar {
   background: var(--glass-bg);
   border: var(--glass-border);
-  border-radius: 18px;
+  border-radius: calc(var(--radius) + 2px);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
   box-shadow: var(--glass-glow);
@@ -83,103 +103,204 @@
 [data-skin="glass"] .app-brand { font-weight: 700; }
 [data-skin="glass"] .app-bar-controls label { color: var(--muted-foreground); }
 
+/* Sidebar: read as a glass pane OVER the blob, not the saturated blob itself.
+   Brighter base + stronger local blur + bright top lip + dark bottom edge. */
 [data-skin="glass"] .app-nav-inner {
-  background: var(--glass-bg);
+  background: rgba(255, 255, 255, calc(var(--glass-alpha) - 0.02));
   border: var(--glass-border);
-  border-radius: 18px;
-  -webkit-backdrop-filter: var(--glass-blur);
-  backdrop-filter: var(--glass-blur);
-  box-shadow: var(--glass-glow);
+  border-radius: calc(var(--radius) + 2px);
+  -webkit-backdrop-filter: saturate(var(--glass-saturate)) blur(calc(var(--glass-blur-px) + 6px));
+  backdrop-filter: saturate(var(--glass-saturate)) blur(calc(var(--glass-blur-px) + 6px));
+  box-shadow:
+    0 calc(var(--glass-elevation) * 0.25) var(--glass-elevation) rgba(13, 6, 40, 0.45),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.15);
 }
 [data-skin="glass"] .app-nav-title { color: var(--muted-foreground); }
-[data-skin="glass"] .app-nav a { border-radius: 10px; }
-[data-skin="glass"] .app-nav a:hover { background: rgba(255, 255, 255, 0.18); color: #fff; }
+[data-skin="glass"] .app-nav a { border-radius: calc(var(--radius) * 0.625); }
+[data-skin="glass"] .app-nav a:hover {
+  background: rgba(255, 255, 255, calc(var(--glass-border-alpha) * 0.65));
+  color: #fff;
+}
 
 [data-skin="glass"] .hero {
   background: var(--glass-bg);
   border: var(--glass-border);
-  border-radius: 22px;
+  border-radius: calc(var(--radius) + 6px);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
   box-shadow: var(--glass-glow);
 }
-[data-skin="glass"] .hero-kicker { color: rgba(244, 246, 255, 0.8); }
-[data-skin="glass"] .hero-sub { color: var(--muted-foreground); }
+[data-skin="glass"] .hero-kicker {
+  color: var(--muted-foreground);
+  text-shadow: var(--glass-text-shadow);
+}
+[data-skin="glass"] .hero-sub {
+  color: var(--muted-foreground);
+  text-shadow: var(--glass-text-shadow);
+}
 
 [data-skin="glass"] .specimen {
   background: var(--glass-bg);
   border: var(--glass-border);
-  border-radius: 20px;
+  border-radius: calc(var(--radius) + 4px);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
   box-shadow: var(--glass-glow);
 }
-[data-skin="glass"] .specimen-head { border-bottom: 1px solid rgba(255, 255, 255, 0.18); }
-[data-skin="glass"] .specimen-tag { color: var(--muted-foreground); }
+[data-skin="glass"] .specimen-head { border-bottom: 1px solid var(--glass-hairline); }
+[data-skin="glass"] .specimen-tag {
+  color: var(--muted-foreground);
+  text-shadow: var(--glass-text-shadow);
+}
 
 [data-skin="glass"] .app-status {
   background: var(--glass-bg);
   border: var(--glass-border);
-  border-radius: 14px;
+  border-radius: calc(var(--radius) - 2px);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
   color: var(--muted-foreground);
+  text-shadow: var(--glass-text-shadow);
 }
 
 /* ---- Controls ----------------------------------------------------------- */
 [data-skin="glass"] .group\/button {
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 11px;
-  background: rgba(255, 255, 255, 0.14);
-  color: #f4f6ff;
+  border: var(--glass-border);
+  border-radius: calc(var(--radius) * 0.7);
+  background: var(--secondary);
+  color: var(--foreground);
   font-weight: 600;
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.3);
-  transition: background 140ms ease, box-shadow 140ms ease;
+  -webkit-backdrop-filter: var(--glass-blur-soft);
+  backdrop-filter: var(--glass-blur-soft);
+  box-shadow: var(--glass-edge);
+  transition: background 140ms ease, box-shadow 140ms ease, transform 100ms ease;
 }
-[data-skin="glass"] .group\/button:hover { background: rgba(255, 255, 255, 0.26); }
-[data-skin="glass"] .group\/button:active:not(:disabled) { background: rgba(255, 255, 255, 0.12); }
-[data-skin="glass"] .group\/button:focus-visible { outline: 0; box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4); }
+[data-skin="glass"] .group\/button:hover {
+  background: rgba(255, 255, 255, calc(var(--glass-border-alpha) * 0.93));
+}
+[data-skin="glass"] .group\/button:active:not(:disabled) {
+  background: var(--secondary);
+  transform: translateY(1px);
+}
+[data-skin="glass"] .group\/button:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.45);
+}
+
+/* DEFAULT — bright bevelled glass lozenge with an outer glow halo.
+   Distinctly more luminous than the flat default badge. */
 [data-skin="glass"] .group\/button[data-variant="default"] {
-  background: rgba(255, 255, 255, 0.92);
-  color: #2a1b66;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.85) 100%);
+  color: var(--primary-foreground);
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.25),
+    0 0 24px rgba(255, 255, 255, 0.25),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
 }
-[data-skin="glass"] .group\/button[data-variant="default"]:hover { background: #ffffff; }
-[data-skin="glass"] .group\/button[data-variant="destructive"] { background: rgba(255, 107, 129, 0.85); color: #2a0a12; }
-[data-skin="glass"] .group\/button[data-variant="ghost"] { background: transparent; border-color: transparent; box-shadow: none; }
-[data-skin="glass"] .group\/button[data-variant="ghost"]:hover { background: rgba(255, 255, 255, 0.16); }
-[data-skin="glass"] .group\/button[data-variant="link"] { background: transparent; border: 0; box-shadow: none; color: #d7e3ff; text-decoration: underline; }
+[data-skin="glass"] .group\/button[data-variant="default"]:hover {
+  background: #ffffff;
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.28),
+    0 0 30px rgba(255, 255, 255, 0.35),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+}
+
+/* SECONDARY — translucent frosted fill, no glow */
+[data-skin="glass"] .group\/button[data-variant="secondary"] {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  border-color: var(--glass-border-color);
+  box-shadow: var(--glass-edge);
+}
+[data-skin="glass"] .group\/button[data-variant="secondary"]:hover {
+  background: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.12));
+}
+
+/* OUTLINE — clear pane: transparent fill, hairline frame only */
+[data-skin="glass"] .group\/button[data-variant="outline"] {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--glass-border-color);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, var(--glass-sheen));
+}
+[data-skin="glass"] .group\/button[data-variant="outline"]:hover {
+  background: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.04));
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+/* DESTRUCTIVE — tinted rose glass with matching glow */
+[data-skin="glass"] .group\/button[data-variant="destructive"] {
+  background: linear-gradient(180deg, rgba(255, 107, 129, 0.95) 0%, rgba(255, 107, 129, 0.78) 100%);
+  color: #2a0a12;
+  border-color: rgba(255, 170, 185, 0.65);
+  box-shadow:
+    0 6px 18px rgba(120, 10, 30, 0.4),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.45);
+}
+[data-skin="glass"] .group\/button[data-variant="destructive"]:hover {
+  background: linear-gradient(180deg, #ff7d90 0%, rgba(255, 107, 129, 0.85) 100%);
+}
+
+/* GHOST — no fill, no edge until hovered */
+[data-skin="glass"] .group\/button[data-variant="ghost"] {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+[data-skin="glass"] .group\/button[data-variant="ghost"]:hover {
+  background: rgba(255, 255, 255, calc(var(--glass-border-alpha) * 0.55));
+}
+
+/* LINK — no chrome */
+[data-skin="glass"] .group\/button[data-variant="link"] {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  color: #d7e3ff;
+  text-decoration: underline;
+}
 
 [data-skin="glass"] [data-slot="input"],
 [data-skin="glass"] [data-slot="textarea"],
 [data-skin="glass"] [data-slot="select-trigger"],
 [data-skin="glass"] .skin-select {
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  border-radius: 11px;
-  background: rgba(255, 255, 255, 0.1);
-  color: #f4f6ff;
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  border: var(--glass-border);
+  border-radius: calc(var(--radius) * 0.7);
+  background: rgba(255, 255, 255, calc(var(--glass-alpha) - 0.02));
+  color: var(--foreground);
+  -webkit-backdrop-filter: var(--glass-blur-soft);
+  backdrop-filter: var(--glass-blur-soft);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, calc(var(--glass-sheen) * 0.6)),
+              inset 0 -1px 0 0 rgba(0, 0, 0, 0.12);
 }
 [data-skin="glass"] [data-slot="input"]::placeholder,
-[data-skin="glass"] [data-slot="textarea"]::placeholder { color: rgba(244, 246, 255, 0.55); }
+[data-skin="glass"] [data-slot="textarea"]::placeholder { color: rgba(244, 246, 255, 0.6); }
 [data-skin="glass"] [data-slot="input"]:focus-visible,
 [data-skin="glass"] [data-slot="textarea"]:focus-visible,
 [data-skin="glass"] [data-slot="select-trigger"]:focus-visible {
   outline: 0;
   border-color: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.18);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
 }
 
 [data-skin="glass"] [data-slot="card"] {
   border: var(--glass-border);
-  border-radius: 18px;
+  border-radius: calc(var(--radius) + 2px);
   background: var(--glass-bg);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
   box-shadow: var(--glass-glow);
+}
+/* Nested panes must not compound translucency into mud — thicken the frost. */
+[data-skin="glass"] [data-slot="card"] [data-slot="card"],
+[data-skin="glass"] .specimen [data-slot="card"],
+[data-skin="glass"] [data-slot="card"] .specimen {
+  background: var(--glass-bg-strong);
 }
 
 [data-skin="glass"] [data-slot="popover-content"],
@@ -189,20 +310,22 @@
 [data-skin="glass"] [data-slot="command"],
 [data-skin="glass"] [data-slot="hover-card-content"] {
   border: var(--glass-border);
-  border-radius: 14px;
+  border-radius: calc(var(--radius) - 2px);
   background: rgba(30, 27, 75, 0.6);
-  color: #f4f6ff;
+  color: var(--foreground);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.4),
+    var(--glass-edge);
 }
 [data-skin="glass"] [data-slot="tooltip-content"] {
   border: var(--glass-border);
-  border-radius: 10px;
+  border-radius: calc(var(--radius) * 0.625);
   background: rgba(20, 16, 50, 0.8);
-  color: #f4f6ff;
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
+  color: var(--foreground);
+  -webkit-backdrop-filter: var(--glass-blur-soft);
+  backdrop-filter: var(--glass-blur-soft);
 }
 [data-skin="glass"] [data-slot="tooltip-content"] svg { fill: rgba(20, 16, 50, 0.8); }
 
@@ -210,8 +333,8 @@
 [data-skin="glass"] [data-slot="context-menu-item"][data-highlighted],
 [data-skin="glass"] [data-slot="select-item"][data-highlighted],
 [data-skin="glass"] [data-slot="command-item"][data-selected="true"] {
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.2);
+  border-radius: calc(var(--radius) * 0.5);
+  background: var(--accent);
   color: #fff;
 }
 
@@ -219,52 +342,77 @@
 [data-skin="glass"] [data-slot="alert-dialog-content"],
 [data-skin="glass"] [data-slot="sheet-content"] {
   border: var(--glass-border);
-  border-radius: 22px;
+  border-radius: calc(var(--radius) + 6px);
   background: rgba(30, 27, 75, 0.62);
-  color: #f4f6ff;
+  color: var(--foreground);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
+  box-shadow:
+    0 24px 70px rgba(0, 0, 0, 0.5),
+    var(--glass-edge);
 }
 
 [data-skin="glass"] [data-slot="checkbox"] {
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.12);
-  color: #2a1b66;
+  border: 1px solid var(--glass-border-color);
+  border-radius: calc(var(--radius) * 0.375);
+  background: var(--glass-bg);
+  color: var(--primary-foreground);
 }
 [data-skin="glass"] [data-slot="checkbox"][data-state="checked"] { background: #ffffff; }
 [data-skin="glass"] [data-slot="radio-group-item"] {
-  border: 1px solid rgba(255, 255, 255, 0.4);
+  border: 1px solid var(--glass-border-color);
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--glass-bg);
   color: #ffffff;
 }
 
 [data-skin="glass"] [data-slot="tabs-list"] {
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: calc(var(--radius) * 0.75);
+  background: rgba(255, 255, 255, calc(var(--glass-alpha) - 0.02));
+  border: 1px solid var(--glass-hairline);
   padding: 4px;
   gap: 4px;
 }
-[data-skin="glass"] [data-slot="tabs-trigger"] { border: 0; border-radius: 9px; background: transparent; color: rgba(244, 246, 255, 0.75); }
-[data-skin="glass"] [data-slot="tabs-trigger"][data-state="active"] { background: rgba(255, 255, 255, 0.22); color: #fff; box-shadow: inset 0 1px 0 rgba(255,255,255,0.4); }
+[data-skin="glass"] [data-slot="tabs-trigger"] {
+  border: 0;
+  border-radius: calc(var(--radius) * 0.56);
+  background: transparent;
+  color: var(--muted-foreground);
+}
+[data-skin="glass"] [data-slot="tabs-trigger"][data-state="active"] {
+  background: rgba(255, 255, 255, calc(var(--glass-border-alpha) * 0.78));
+  color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, var(--glass-sheen));
+}
 
 [data-skin="glass"] [data-slot="badge"] {
   border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.16);
-  color: #f4f6ff;
+  border: 1px solid var(--glass-border-color);
+  background: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.04));
+  color: var(--foreground);
 }
-[data-skin="glass"] [data-slot="badge"][data-variant="default"] { background: rgba(255, 255, 255, 0.9); color: #2a1b66; }
+/* Flat label fill — deliberately less luminous than the default button. */
+[data-skin="glass"] [data-slot="badge"][data-variant="default"] {
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--primary-foreground);
+  box-shadow: none;
+}
 
-[data-skin="glass"] [data-slot="switch"] { border: 1px solid rgba(255, 255, 255, 0.3); background: rgba(255, 255, 255, 0.12); }
+[data-skin="glass"] [data-slot="switch"] {
+  border: 1px solid var(--glass-border-color);
+  background: var(--glass-bg);
+}
 
-[data-skin="glass"] [data-slot="progress"] { border-radius: 9999px; background: rgba(255, 255, 255, 0.14); }
+[data-skin="glass"] [data-slot="progress"] {
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.02));
+}
 [data-skin="glass"] [data-slot="progress-indicator"] { border-radius: 9999px; background: rgba(255, 255, 255, 0.9); }
 
-[data-skin="glass"] [data-slot="slider-track"] { border-radius: 9999px; background: rgba(255, 255, 255, 0.18); }
+[data-skin="glass"] [data-slot="slider-track"] {
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, calc(var(--glass-border-alpha) * 0.64));
+}
 [data-skin="glass"] [data-slot="slider-range"] { background: rgba(255, 255, 255, 0.9); }
 [data-skin="glass"] [data-slot="slider-thumb"] {
   border: 1px solid rgba(255, 255, 255, 0.6);
@@ -275,20 +423,21 @@
 
 [data-skin="glass"] [data-slot="alert"] {
   border: var(--glass-border);
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.1);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  border-radius: calc(var(--radius) - 2px);
+  background: rgba(255, 255, 255, calc(var(--glass-alpha) - 0.02));
+  -webkit-backdrop-filter: var(--glass-blur-soft);
+  backdrop-filter: var(--glass-blur-soft);
+  box-shadow: var(--glass-edge);
 }
 
-[data-skin="glass"] [data-slot="table"] { border-radius: 14px; overflow: hidden; }
+[data-skin="glass"] [data-slot="table"] { border-radius: calc(var(--radius) - 2px); overflow: hidden; }
 [data-skin="glass"] [data-slot="table-head"],
 [data-skin="glass"] [data-slot="table-cell"] {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  border-bottom: 1px solid var(--glass-hairline);
 }
 [data-skin="glass"] [data-slot="table-row"]:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, calc(var(--glass-alpha) - 0.04));
 }
 [data-skin="glass"] [data-slot="table-header"] {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, calc(var(--glass-alpha) - 0.06));
 }

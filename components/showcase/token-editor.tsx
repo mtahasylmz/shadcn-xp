@@ -95,6 +95,10 @@ const SHAPE_PARAMS: Record<string, ShapeParam[]> = {
   swiss: [
     { label: "Rule weight", varName: "--sw-rule", min: 1, max: 5, step: 1, unit: "px" },
   ],
+  terminal: [
+    { label: "Phosphor glow", varName: "--term-glow", min: 0, max: 10, step: 1, unit: "" },
+    { label: "Scanlines", varName: "--term-scan", min: 0, max: 0.5, step: 0.02, unit: "" },
+  ],
 }
 
 const TOKEN_VARS = FIELDS.map((f) => f.varName)

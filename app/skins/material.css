@@ -1,7 +1,7 @@
 /* ==========================================================================
    SKIN: Material 3   ·   [data-skin="material"]
-   Tonal surfaces, soft elevation, pill-shaped controls, bold primary, Roboto.
-   Pure CSS over stock shadcn.
+   Tonal surfaces, soft elevation, state-layer overlays, M3 shape scale, Roboto.
+   Pure CSS over stock shadcn. Every knob in :root is consumed below.
    ========================================================================== */
 
 :root[data-skin="material"] {
@@ -10,8 +10,18 @@
   --app-font-mono: "Roboto Mono", monospace;
   --app-font-size: 14px;
 
-  --radius: 16px;
+  /* ---- Tunable shape knobs (consumed throughout) ---- */
+  --md-shape-sm: 8px;     /* inputs, menus, badges */
+  --md-shape: 20px;       /* standard control corner (filled button) */
+  --md-shape-lg: 28px;    /* cards, app-bar, dialogs */
+  --md-shape-full: 999px; /* pills: tabs, switch, FAB, progress */
+  --md-elevation: 6;      /* master elevation scalar -> drives all shadows */
+  --md-state-opacity: 0.08; /* M3 state-layer alpha (hover) */
+  --md-tint: 5;           /* tonal surface tint percentage (surface elevation) */
 
+  --radius: var(--md-shape-lg);
+
+  /* M3 baseline color roles */
   --background: #fef7ff;
   --foreground: #1d1b20;
   --card: #f7f2fa;
@@ -27,9 +37,11 @@
   --accent: #625b71;
   --accent-foreground: #ffffff;
   --destructive: #b3261e;
+  --destructive-foreground: #ffffff;
   --border: #cac4d0;
   --input: #79747e;
   --ring: #6750a4;
+  --ring-offset: 2px;
   --chart-1: #6750a4;
   --chart-2: #386a20;
   --chart-3: #006a6a;
@@ -41,59 +53,192 @@
   --sidebar-accent-foreground: #1d192b;
   --sidebar-border: #cac4d0;
 
-  /* Tunable shape knobs */
-  --md-elevation: 6;
-  --md-shape: 20px;       /* control corner */
-  --md-e1: 0 1px 2px rgba(0,0,0,.3), 0 1px 3px 1px rgba(0,0,0,.15);
-  --md-e2: 0 calc(var(--md-elevation) * .4px) calc(var(--md-elevation) * 1.4px) rgba(0,0,0,.16), 0 1px 2px rgba(0,0,0,.2);
+  /* ---- Composed elevation tokens (derived from --md-elevation) ---- */
+  /* Level 1: raised buttons / inline controls (soft, M3-correct) */
+  --md-e1:
+    0 1px 2px rgba(0,0,0,.30),
+    0 calc(var(--md-elevation) * .16px) calc(var(--md-elevation) * .5px) 1px rgba(0,0,0,.15);
+  /* Level 2: floating surfaces (app-bar, panels) */
+  --md-e2:
+    0 1px 2px rgba(0,0,0,.30),
+    0 calc(var(--md-elevation) * .4px) calc(var(--md-elevation) * 1.4px) calc(var(--md-elevation) * .12px) rgba(0,0,0,.15);
+  /* Level 3: menus / dialogs */
+  --md-e3:
+    0 calc(var(--md-elevation) * .2px) calc(var(--md-elevation) * .5px) rgba(0,0,0,.30),
+    0 calc(var(--md-elevation) * .8px) calc(var(--md-elevation) * 2.4px) calc(var(--md-elevation) * .4px) rgba(0,0,0,.15);
+  /* Card shadow: deliberately light; M3 cards lean on tonal tint not shadow */
+  --md-e-card: 0 1px 3px rgba(0,0,0,.10);
+
+  /* Tonal surface tint: primary mixed into the surface for elevation read */
+  --md-surface-1: color-mix(in srgb, var(--primary) calc(var(--md-tint) * 1%), var(--card));
+  --md-surface-2: color-mix(in srgb, var(--primary) calc(var(--md-tint) * 1.6%), var(--card));
 }
 
-[data-skin="material"] body { background: #fef7ff; }
-[data-skin="material"] ::selection { background: #e8def8; color: #1d192b; }
+[data-skin="material"] body {
+  background: var(--background);
+  letter-spacing: .0089em;
+}
+[data-skin="material"] ::selection { background: var(--secondary); color: var(--secondary-foreground); }
 
+/* ---- Shell: app-bar / panels (level 2 + tonal tint) ---- */
 [data-skin="material"] .app-bar {
-  background: #f3edf7; border: 0; border-radius: 28px; box-shadow: var(--md-e2); backdrop-filter: none;
+  background: var(--md-surface-2);
+  border: 0;
+  border-radius: var(--md-shape-lg);
+  box-shadow: var(--md-e2);
+  backdrop-filter: none;
 }
 [data-skin="material"] .app-nav-inner,
-[data-skin="material"] .hero,
 [data-skin="material"] .specimen,
 [data-skin="material"] .app-status {
-  background: var(--card); border: 0; border-radius: 24px; box-shadow: var(--md-e2);
+  background: var(--md-surface-1);
+  border: 0;
+  border-radius: var(--md-shape-lg);
+  box-shadow: var(--md-e-card);
 }
-[data-skin="material"] .specimen-head { border-bottom: 1px solid #e7e0ec; }
-[data-skin="material"] .hero { background: #6750a4; }
-[data-skin="material"] .hero-kicker { color: #d0bcff; }
-[data-skin="material"] .hero-title { color: #fff; }
+[data-skin="material"] .specimen-head { border-bottom: 1px solid var(--muted); }
+
+[data-skin="material"] .hero {
+  background:
+    radial-gradient(120% 140% at 85% -20%, color-mix(in srgb, #fff 22%, var(--primary)) 0%, transparent 55%),
+    linear-gradient(160deg, var(--primary) 0%, color-mix(in srgb, #000 16%, var(--primary)) 100%);
+  border: 0;
+  border-radius: var(--md-shape-lg);
+  box-shadow: var(--md-e2);
+}
+[data-skin="material"] .hero-kicker { color: #d0bcff; letter-spacing: .06em; text-transform: uppercase; }
+[data-skin="material"] .hero-title { color: #fff; font-weight: 500; }
 [data-skin="material"] .hero-sub { color: #e7deff; }
-[data-skin="material"] .app-nav a { border-radius: 999px; }
-[data-skin="material"] .app-nav a:hover { background: #e8def8; color: #1d192b; }
 
-[data-skin="material"] .group\/button {
-  border: 0; border-radius: var(--md-shape);
-  background: var(--primary); color: #fff;
-  box-shadow: var(--md-e1);
-  font-weight: 600; letter-spacing: .02em;
+[data-skin="material"] .specimen-title,
+[data-skin="material"] .stage-title { font-weight: 500; letter-spacing: 0; }
+
+/* ---- Nav: pill rows with state layer ---- */
+[data-skin="material"] .app-nav a {
+  border-radius: var(--md-shape-full);
+  position: relative;
+  transition: background-color .15s ease;
 }
-[data-skin="material"] .group\/button:hover { box-shadow: var(--md-e2); filter: brightness(1.06); }
-[data-skin="material"] .group\/button:active:not(:disabled) { box-shadow: none; filter: brightness(.96); }
-[data-skin="material"] .group\/button:focus-visible { outline: 0; box-shadow: 0 0 0 3px rgba(103,80,164,.4); }
-[data-skin="material"] .group\/button[data-variant="secondary"] { background: #e8def8; color: #1d192b; box-shadow: none; }
-[data-skin="material"] .group\/button[data-variant="outline"] { background: transparent; color: #6750a4; border: 1px solid #79747e; box-shadow: none; }
-[data-skin="material"] .group\/button[data-variant="ghost"] { background: transparent; color: #6750a4; box-shadow: none; }
-[data-skin="material"] .group\/button[data-variant="destructive"] { background: #b3261e; color: #fff; }
-[data-skin="material"] .group\/button[data-variant="link"] { background: none; color: #6750a4; box-shadow: none; text-decoration: underline; }
+[data-skin="material"] .app-nav a:hover {
+  background: color-mix(in srgb, var(--primary) calc(var(--md-state-opacity) * 100%), transparent);
+  color: var(--secondary-foreground);
+}
 
+/* ==========================================================================
+   BUTTONS — distinct M3 variants with translucent state layers
+   ========================================================================== */
+[data-skin="material"] .group\/button {
+  position: relative;
+  isolation: isolate;
+  border: 0;
+  border-radius: var(--md-shape-full); /* M3 filled button = full stadium */
+  height: 40px;
+  padding-inline: 24px;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  box-shadow: var(--md-e1);
+  font-weight: 500;
+  letter-spacing: .006em; /* ~0.1px label-large tracking, not toy 2% */
+  transition: box-shadow .18s ease, background-color .15s ease;
+}
+/* State layer: translucent overlay (the M3 signature) */
+[data-skin="material"] .group\/button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: 0;
+  transition: opacity .15s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+[data-skin="material"] .group\/button:hover::after { opacity: var(--md-state-opacity); }
+[data-skin="material"] .group\/button:hover { box-shadow: var(--md-e2); }
+[data-skin="material"] .group\/button:active:not(:disabled)::after { opacity: calc(var(--md-state-opacity) * 1.5); }
+[data-skin="material"] .group\/button:active:not(:disabled) { box-shadow: var(--md-e1); }
+[data-skin="material"] .group\/button:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: var(--ring-offset);
+  box-shadow: var(--md-e1);
+}
+
+/* Filled tonal: secondary container, no elevation */
+[data-skin="material"] .group\/button[data-variant="secondary"] {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  box-shadow: none;
+}
+[data-skin="material"] .group\/button[data-variant="secondary"]:hover { box-shadow: var(--md-e1); }
+
+/* Outlined: outline-color border, primary label, no fill */
+[data-skin="material"] .group\/button[data-variant="outline"] {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--input);
+  box-shadow: none;
+}
+[data-skin="material"] .group\/button[data-variant="outline"]:hover { box-shadow: none; }
+[data-skin="material"] .group\/button[data-variant="outline"]:hover::after { opacity: var(--md-state-opacity); }
+
+/* Text button (ghost): no container, primary label */
+[data-skin="material"] .group\/button[data-variant="ghost"] {
+  background: transparent;
+  color: var(--primary);
+  box-shadow: none;
+  padding-inline: 12px;
+}
+[data-skin="material"] .group\/button[data-variant="ghost"]:hover { box-shadow: none; }
+
+/* Destructive: error container */
+[data-skin="material"] .group\/button[data-variant="destructive"] {
+  background: var(--destructive);
+  color: var(--destructive-foreground);
+}
+
+/* Link */
+[data-skin="material"] .group\/button[data-variant="link"] {
+  background: none;
+  color: var(--primary);
+  box-shadow: none;
+  height: auto;
+  padding-inline: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+[data-skin="material"] .group\/button[data-variant="link"]::after { content: none; }
+
+/* ==========================================================================
+   INPUTS — M3 outlined fields (4px top radius signature)
+   ========================================================================== */
 [data-skin="material"] [data-slot="input"],
 [data-skin="material"] [data-slot="textarea"],
 [data-skin="material"] [data-slot="select-trigger"],
 [data-skin="material"] .skin-select {
-  border: 1px solid #79747e; border-radius: 8px; background: #fff;
+  border: 1px solid var(--input);
+  border-radius: var(--md-shape-sm) var(--md-shape-sm) calc(var(--md-shape-sm) / 2) calc(var(--md-shape-sm) / 2);
+  background: var(--card);
+  color: var(--foreground);
 }
+[data-skin="material"] [data-slot="input"]::placeholder,
+[data-skin="material"] [data-slot="textarea"]::placeholder { color: var(--muted-foreground); }
 [data-skin="material"] [data-slot="input"]:focus-visible,
 [data-skin="material"] [data-slot="textarea"]:focus-visible,
-[data-skin="material"] [data-slot="select-trigger"]:focus-visible { outline: 0; border-color: #6750a4; box-shadow: inset 0 0 0 1px #6750a4; }
+[data-skin="material"] [data-slot="select-trigger"]:focus-visible {
+  outline: 0;
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
 
-[data-skin="material"] [data-slot="card"] { border: 0; border-radius: 16px; background: var(--card); box-shadow: var(--md-e1); }
+/* ==========================================================================
+   SURFACES — cards (tonal tint, soft shadow) & menus/dialogs (level 3)
+   ========================================================================== */
+[data-skin="material"] [data-slot="card"] {
+  border: 0;
+  border-radius: var(--md-shape-lg);
+  background: var(--md-surface-1);
+  box-shadow: var(--md-e-card);
+}
 [data-skin="material"] [data-slot="popover-content"],
 [data-skin="material"] [data-slot="dropdown-menu-content"],
 [data-skin="material"] [data-slot="context-menu-content"],
@@ -103,21 +248,91 @@
 [data-skin="material"] [data-slot="dialog-content"],
 [data-skin="material"] [data-slot="alert-dialog-content"],
 [data-skin="material"] [data-slot="sheet-content"] {
-  border: 0; border-radius: 16px; background: #f3edf7; box-shadow: 0 8px 24px rgba(0,0,0,.22);
+  border: 0;
+  border-radius: var(--md-shape-sm);
+  background: var(--md-surface-2);
+  color: var(--popover-foreground);
+  box-shadow: var(--md-e3);
 }
-[data-skin="material"] [data-slot="tooltip-content"] { border-radius: 6px; background: #322f35; color: #f5eff7; }
+[data-skin="material"] [data-slot="tooltip-content"] {
+  border-radius: calc(var(--md-shape-sm) / 2);
+  background: #322f35;
+  color: #f5eff7;
+}
+
+/* Menu items: state-layer highlight */
 [data-skin="material"] [data-slot="dropdown-menu-item"][data-highlighted],
 [data-skin="material"] [data-slot="context-menu-item"][data-highlighted],
 [data-skin="material"] [data-slot="select-item"][data-highlighted],
-[data-skin="material"] [data-slot="command-item"][data-selected="true"] { border-radius: 8px; background: #e8def8; color: #1d192b; }
-[data-skin="material"] [data-slot="checkbox"] { border: 2px solid #6750a4; border-radius: 4px; }
-[data-skin="material"] [data-slot="checkbox"][data-state="checked"] { background: #6750a4; }
-[data-skin="material"] [data-slot="tabs-list"] { border-radius: 999px; background: #e7e0ec; padding: 4px; gap: 4px; }
-[data-skin="material"] [data-slot="tabs-trigger"] { border-radius: 999px; }
-[data-skin="material"] [data-slot="tabs-trigger"][data-state="active"] { background: #6750a4; color: #fff; }
-[data-skin="material"] [data-slot="badge"] { border-radius: 8px; }
-[data-skin="material"] [data-slot="switch"] { border-radius: 999px; }
-[data-skin="material"] [data-slot="progress"] { border-radius: 999px; background: #e7e0ec; }
-[data-skin="material"] [data-slot="progress-indicator"] { background: #6750a4; }
-[data-skin="material"] [data-slot="slider-range"] { background: #6750a4; }
-[data-skin="material"] [data-slot="slider-thumb"] { background: #6750a4; border: 0; }
+[data-skin="material"] [data-slot="command-item"][data-selected="true"] {
+  border-radius: var(--md-shape-sm);
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+}
+
+/* ==========================================================================
+   SELECTION CONTROLS
+   ========================================================================== */
+[data-skin="material"] [data-slot="checkbox"] {
+  border: 2px solid var(--primary);
+  border-radius: calc(var(--md-shape-sm) / 2);
+}
+[data-skin="material"] [data-slot="checkbox"][data-state="checked"] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+/* Tabs: full-pill segmented track + active container */
+[data-skin="material"] [data-slot="tabs-list"] {
+  border-radius: var(--md-shape-full);
+  background: var(--muted);
+  padding: 4px;
+  gap: 4px;
+}
+[data-skin="material"] [data-slot="tabs-trigger"] {
+  border-radius: var(--md-shape-full);
+  font-weight: 500;
+}
+[data-skin="material"] [data-slot="tabs-trigger"][data-state="active"] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+[data-skin="material"] [data-slot="badge"] { border-radius: var(--md-shape-sm); }
+
+/* Switch: M3 track/handle spec — grey off, primary on, small unchecked thumb */
+[data-skin="material"] [data-slot="switch"] {
+  border-radius: var(--md-shape-full);
+  background: var(--input);
+  border: 2px solid var(--input);
+}
+[data-skin="material"] [data-slot="switch"][data-state="checked"] {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+[data-skin="material"] [data-slot="switch"] [data-slot="switch-thumb"] {
+  background: var(--muted);
+  border-radius: var(--md-shape-full);
+  transform: scale(.66);
+}
+[data-skin="material"] [data-slot="switch"][data-state="checked"] [data-slot="switch-thumb"] {
+  background: var(--primary-foreground);
+  transform: scale(1);
+}
+
+/* Progress & slider */
+[data-skin="material"] [data-slot="progress"] {
+  border-radius: var(--md-shape-full);
+  background: var(--muted);
+}
+[data-skin="material"] [data-slot="progress-indicator"] { background: var(--primary); }
+[data-skin="material"] [data-slot="slider-track"] {
+  border-radius: var(--md-shape-full);
+  background: var(--muted);
+}
+[data-skin="material"] [data-slot="slider-range"] { background: var(--primary); }
+[data-skin="material"] [data-slot="slider-thumb"] {
+  background: var(--primary);
+  border: 0;
+  box-shadow: var(--md-e1);
+}

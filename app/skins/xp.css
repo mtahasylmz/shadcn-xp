@@ -1,7 +1,9 @@
 /* ==========================================================================
    SKIN: Windows XP (Luna)   ·   [data-skin="xp"]
-   Skeuomorphic beveled controls, putty greys, navy title gradient. Derived
-   from bosphorify.com. Pure CSS over stock shadcn (+ the generic shell).
+   Authentic Luna blue title gradients, glossy white-to-putty controls, putty
+   greys and beveled chrome. Pure CSS over stock shadcn (+ the generic shell).
+   Every brand-critical value is tokenized as a tunable knob and consumed
+   through var()/calc() so the editor genuinely retunes the skin.
    ========================================================================== */
 
 :root[data-skin="xp"] {
@@ -10,69 +12,104 @@
   --app-font-mono: "Lucida Console", "DejaVu Sans Mono", "Courier New", monospace;
   --app-font-size: 13px;
 
-  --radius: 0px;
+  /* ---- TUNABLE SHAPE KNOBS (driven by the editor sliders) -------------- */
+  --xp-radius: 3px;            /* Luna control corner radius (buttons/inputs)  */
+  --xp-window-radius: 8px;     /* rounded TOP corners of windows / title bars  */
+  --xp-bevel: 1px;            /* bevel thickness on raised/sunken controls    */
+  --xp-titlebar-gloss: 0.5;   /* strength of the glossy highlight band        */
+  --xp-elevation: 4px;        /* drop-shadow depth under windows / menus      */
+  --xp-titlebar-h: 8%;        /* height of the bright Luna highlight stop      */
 
+  /* ---- Semantic tokens (route brand hex through these) ----------------- */
   --background: #d4d0c8;
-  --foreground: #000000;
+  --foreground: #1a1a1a;
   --card: #ece9d8;
-  --card-foreground: #000000;
+  --card-foreground: #1a1a1a;
   --popover: #ffffff;
-  --popover-foreground: #000000;
-  --primary: #0a246a;
+  --popover-foreground: #1a1a1a;
+  --primary: #0a51c4;            /* Luna blue */
   --primary-foreground: #ffffff;
   --secondary: #ece9d8;
-  --secondary-foreground: #000000;
+  --secondary-foreground: #1a1a1a;
   --muted: #d4d0c8;
-  --muted-foreground: #555555;
-  --accent: #316ac5;
+  --muted-foreground: #4a4a44;
+  --accent: #316ac5;             /* selection / highlight blue */
   --accent-foreground: #ffffff;
-  --destructive: #a40000;
+  --destructive: #b41a13;
   --border: #808080;
   --input: #808080;
-  --ring: #0a246a;
-  --chart-1: #0a246a;
+  --ring: #0a51c4;
+  --chart-1: #0a51c4;
   --chart-2: #3a6ea5;
   --chart-3: #1f8a1f;
   --chart-4: #c08000;
-  --chart-5: #a40000;
+  --chart-5: #b41a13;
   --sidebar: #ece9d8;
-  --sidebar-foreground: #000000;
+  --sidebar-foreground: #1a1a1a;
   --sidebar-accent: #316ac5;
   --sidebar-accent-foreground: #ffffff;
   --sidebar-border: #808080;
+  --radius: var(--xp-radius);
 
-  --xp-face: #ece9d8;
-  --xp-desktop: #d4d0c8;
-  --xp-selection: #316ac5;
+  /* ---- XP surface palette --------------------------------------------- */
+  --xp-face: var(--card);
+  --xp-desktop: var(--background);
+  --xp-selection: var(--accent);
   --xp-hilite: #ffffff;
-  --xp-shadow: #808080;
+  --xp-shadow: var(--border);
   --xp-shadow-deep: #404040;
+  --xp-progress: var(--chart-3);
 
+  /* ---- Authentic Luna blue title gradient (tokenized knob) ------------ */
+  --xp-titlebar-a: #0997ff;
+  --xp-titlebar-b: #0053ee;
+  --xp-titlebar-c: #0855dd;
+  --xp-titlebar: linear-gradient(
+    to bottom,
+    var(--xp-titlebar-a) 0%,
+    var(--xp-titlebar-b) var(--xp-titlebar-h),
+    #0050ee 40%,
+    #0066ff 88%,
+    var(--xp-titlebar-c) 100%
+  );
+  --xp-titlebar-gloss-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, var(--xp-titlebar-gloss)),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.18);
+
+  /* ---- Glossy Luna control face (white-to-putty) ---------------------- */
+  --xp-control-face: linear-gradient(to bottom, #fdfdfd 0%, #f4f2ea 45%, var(--xp-face) 100%);
+  --xp-control-face-hover: linear-gradient(to bottom, #ffffff 0%, #fbf6e3 45%, #f3efd8 100%);
+
+  /* ---- Bevels composed from the --xp-bevel knob ----------------------- */
   --xp-bevel-raised:
-    inset 1px 1px 0 0 var(--xp-hilite),
-    inset -1px -1px 0 0 var(--xp-shadow-deep),
-    inset 2px 2px 0 0 #f7f6f0,
-    inset -2px -2px 0 0 var(--xp-shadow);
+    inset var(--xp-bevel) var(--xp-bevel) 0 0 var(--xp-hilite),
+    inset calc(-1 * var(--xp-bevel)) calc(-1 * var(--xp-bevel)) 0 0 var(--xp-shadow-deep),
+    inset calc(2 * var(--xp-bevel)) calc(2 * var(--xp-bevel)) 0 0 #f7f6f0,
+    inset calc(-2 * var(--xp-bevel)) calc(-2 * var(--xp-bevel)) 0 0 var(--xp-shadow);
   --xp-bevel-sunken:
-    inset 1px 1px 0 0 var(--xp-shadow-deep),
-    inset -1px -1px 0 0 var(--xp-hilite),
-    inset 2px 2px 0 0 var(--xp-shadow),
-    inset -2px -2px 0 0 #f7f6f0;
+    inset var(--xp-bevel) var(--xp-bevel) 0 0 var(--xp-shadow-deep),
+    inset calc(-1 * var(--xp-bevel)) calc(-1 * var(--xp-bevel)) 0 0 var(--xp-hilite),
+    inset calc(2 * var(--xp-bevel)) calc(2 * var(--xp-bevel)) 0 0 var(--xp-shadow),
+    inset calc(-2 * var(--xp-bevel)) calc(-2 * var(--xp-bevel)) 0 0 #f7f6f0;
   --xp-bevel-field:
-    inset 1px 1px 0 0 var(--xp-shadow),
-    inset -1px -1px 0 0 var(--xp-hilite),
-    inset 2px 2px 0 0 var(--xp-shadow-deep),
-    inset -2px -2px 0 0 #f7f6f0;
+    inset var(--xp-bevel) var(--xp-bevel) 0 0 var(--xp-shadow),
+    inset calc(-1 * var(--xp-bevel)) calc(-1 * var(--xp-bevel)) 0 0 var(--xp-hilite),
+    inset calc(2 * var(--xp-bevel)) calc(2 * var(--xp-bevel)) 0 0 var(--xp-shadow-deep),
+    inset calc(-2 * var(--xp-bevel)) calc(-2 * var(--xp-bevel)) 0 0 #f7f6f0;
   --xp-bevel-window:
-    inset 1px 1px 0 0 var(--xp-hilite),
-    inset -1px -1px 0 0 var(--xp-shadow);
+    inset var(--xp-bevel) var(--xp-bevel) 0 0 var(--xp-hilite),
+    inset calc(-1 * var(--xp-bevel)) calc(-1 * var(--xp-bevel)) 0 0 var(--xp-shadow);
+
+  --xp-window-drop: calc(var(--xp-elevation) * 0.75) var(--xp-elevation)
+    calc(var(--xp-elevation) * 2.5) rgba(0, 0, 0, 0.35);
 }
 
 [data-skin="xp"] body {
   background: var(--xp-desktop);
-  font-size: 13px;
+  font-size: var(--app-font-size);
+  color: var(--foreground);
 }
-[data-skin="xp"] ::selection { background: var(--xp-selection); color: #fff; }
+[data-skin="xp"] ::selection { background: var(--xp-selection); color: var(--accent-foreground); }
 
 /* ---- Shell → window chrome --------------------------------------------- */
 [data-skin="xp"] .app {
@@ -82,7 +119,7 @@
 [data-skin="xp"] .app-bar {
   background: var(--xp-face);
   border: 0;
-  border-radius: 0;
+  border-radius: var(--xp-window-radius) var(--xp-window-radius) 0 0;
   box-shadow: var(--xp-bevel-window);
   backdrop-filter: none;
   margin-bottom: 10px;
@@ -92,95 +129,138 @@
 
 [data-skin="xp"] .stage {
   background: var(--xp-face);
-  border: 1px solid #00138c;
-  box-shadow: inset 0 0 0 1px #0a246a, 3px 3px 10px rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--primary);
+  border-radius: var(--xp-window-radius) var(--xp-window-radius) 0 0;
+  box-shadow: inset 0 0 0 1px var(--primary), var(--xp-window-drop);
 }
 [data-skin="xp"] .stage-head {
   display: flex;
-  padding: 3px 4px 3px 7px;
+  align-items: center;
+  padding: 4px 4px 4px 8px;
   color: #fff;
   font-weight: 700;
   font-size: 12px;
-  background: linear-gradient(to right, #0a246a, #3a6ea5);
-  border-bottom: 1px solid #00138c;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.45);
+  background: var(--xp-titlebar);
+  border-radius: calc(var(--xp-window-radius) - 1px) calc(var(--xp-window-radius) - 1px) 0 0;
+  box-shadow: var(--xp-titlebar-gloss-shadow);
 }
+[data-skin="xp"] .stage-head-buttons { display: inline-flex; gap: 2px; }
 [data-skin="xp"] .stage-head-buttons span {
-  width: 17px;
-  height: 15px;
+  width: 21px;
+  height: 19px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
+  font-size: 11px;
+  font-weight: 700;
   line-height: 1;
-  color: #000;
-  background: #d4d0c8;
+  color: #fff;
+  border-radius: var(--xp-radius);
+  /* min/max → blue glass to match the title bar */
+  background: linear-gradient(to bottom, #5a9bf5 0%, #1f64dd 50%, #1a52c8 100%);
   border: 1px solid;
-  border-color: #fff #404040 #404040 #fff;
+  border-color: #a9cdfb #0b3aa0 #0b3aa0 #a9cdfb;
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+}
+/* iconic XP red close button */
+[data-skin="xp"] .stage-head-buttons span:last-child {
+  background: linear-gradient(to bottom, #f4a896 0%, #e8593e 50%, #d8331c 100%);
+  border-color: #f7b3a5 #8c2a1a #8c2a1a #f7b3a5;
+  border-radius: var(--xp-radius);
 }
 [data-skin="xp"] .app-main { padding: 10px; gap: 10px; }
 [data-skin="xp"] .app-nav { top: 84px; }
 [data-skin="xp"] .app-nav-inner {
-  background: #fff;
+  background: var(--popover);
   border: 0;
-  border-radius: 0;
+  border-radius: var(--xp-radius);
   box-shadow: var(--xp-bevel-field);
   padding: 2px;
   gap: 0;
+  overflow: hidden;
 }
 [data-skin="xp"] .app-nav-title {
   color: #fff;
-  background: linear-gradient(to right, #0a246a, #3a6ea5);
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.45);
+  background: var(--xp-titlebar);
+  box-shadow: var(--xp-titlebar-gloss-shadow);
   text-transform: none;
   letter-spacing: 0;
   font-weight: 700;
-  padding: 2px 8px;
+  padding: 3px 8px;
   margin: -2px -2px 2px;
 }
-[data-skin="xp"] .app-nav a { border-radius: 0; font-size: 12px; padding: 3px 8px; }
-[data-skin="xp"] .app-nav a:hover { background: var(--xp-selection); color: #fff; }
+[data-skin="xp"] .app-nav a {
+  border-radius: var(--xp-radius);
+  font-size: 12px;
+  padding: 3px 8px;
+}
+[data-skin="xp"] .app-nav a:hover { background: var(--xp-selection); color: var(--accent-foreground); }
 
 [data-skin="xp"] .gallery { gap: 8px; }
 
+/* Hero → Luna task panel (putty face + blue caption bar) */
 [data-skin="xp"] .hero {
-  background: #000;
+  background: var(--xp-face);
+  color: var(--foreground);
   border: 0;
-  border-radius: 0;
-  box-shadow: var(--xp-bevel-field);
-  padding: 16px;
+  border-radius: var(--xp-window-radius) var(--xp-window-radius) var(--xp-radius) var(--xp-radius);
+  box-shadow: var(--xp-bevel-window), var(--xp-window-drop);
+  padding: 0;
+  overflow: hidden;
 }
-[data-skin="xp"] .hero-kicker { color: #00ff00; font-weight: 700; font-size: 16px; }
-[data-skin="xp"] .hero-title { display: none; }
-[data-skin="xp"] .hero-sub { color: #cccccc; font-family: var(--app-font-mono); font-size: 12.5px; }
+[data-skin="xp"] .hero-kicker {
+  display: block;
+  color: #fff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.45);
+  background: var(--xp-titlebar);
+  box-shadow: var(--xp-titlebar-gloss-shadow);
+  border-radius: calc(var(--xp-window-radius) - 1px) calc(var(--xp-window-radius) - 1px) 0 0;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 4px 10px;
+  margin: 0 0 12px;
+}
+[data-skin="xp"] .hero-title { color: var(--primary); padding: 0 16px; }
+[data-skin="xp"] .hero-sub {
+  color: var(--muted-foreground);
+  font-size: 12.5px;
+  padding: 4px 16px 16px;
+}
 
 /* Specimen → XP task panel with gradient caption */
 [data-skin="xp"] .specimen {
   border: 1px solid var(--xp-shadow);
-  border-radius: 0;
+  border-radius: var(--xp-window-radius) var(--xp-window-radius) var(--xp-radius) var(--xp-radius);
   background: var(--xp-face);
   box-shadow: inset 1px 1px 0 0 #fff;
+  overflow: hidden;
 }
 [data-skin="xp"] .specimen-head {
-  padding: 2px 8px;
+  padding: 3px 8px;
   color: #fff;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.45);
   border-bottom: 0;
-  background: linear-gradient(to right, #0a246a, #3a6ea5);
-  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.22);
+  background: var(--xp-titlebar);
+  border-radius: calc(var(--xp-window-radius) - 1px) calc(var(--xp-window-radius) - 1px) 0 0;
+  box-shadow: var(--xp-titlebar-gloss-shadow);
 }
 [data-skin="xp"] .specimen-title { font-size: 11px; font-weight: 700; }
 [data-skin="xp"] .specimen-tag {
   font-size: 10px;
   font-style: italic;
-  color: #cdd8ec;
+  color: #d3e0f5;
 }
 [data-skin="xp"] .specimen-body { padding: 14px; }
 
 [data-skin="xp"] .app-status {
   border: 0;
-  border-radius: 0;
+  border-radius: 0 0 var(--xp-window-radius) var(--xp-window-radius);
   background: var(--xp-face);
   border-top: 1px solid #fff;
   box-shadow: none;
-  color: #333;
+  color: var(--muted-foreground);
   margin-top: 0;
   padding: 2px 3px;
   gap: 3px;
@@ -192,52 +272,102 @@
 
 /* ---- Controls ----------------------------------------------------------- */
 [data-skin="xp"] .group\/button {
-  border: 0;
-  border-radius: 0;
-  background-color: var(--xp-face);
-  color: #000;
-  box-shadow: var(--xp-bevel-raised);
+  border: 1px solid #003c74;
+  border-radius: var(--xp-radius);
+  background: var(--xp-control-face);
+  color: var(--foreground);
+  box-shadow: inset 0 1px 0 0 #fff, inset 0 -1px 0 0 rgba(0, 0, 0, 0.08);
   transition: none;
 }
-[data-skin="xp"] .group\/button:hover { background-color: #f4f2e9; }
+[data-skin="xp"] .group\/button:hover {
+  background: var(--xp-control-face-hover);
+  border-color: #ff9933;
+}
 [data-skin="xp"] .group\/button:active:not(:disabled),
 [data-skin="xp"] .group\/button[data-state="open"],
 [data-skin="xp"] .group\/button[aria-expanded="true"] {
+  background: linear-gradient(to bottom, var(--xp-face), #f4f2ea);
   box-shadow: var(--xp-bevel-sunken);
 }
 [data-skin="xp"] .group\/button:focus-visible {
   outline: 1px dotted #000;
   outline-offset: -4px;
-  box-shadow: var(--xp-bevel-raised);
+  border-color: #003c74;
 }
-[data-skin="xp"] .group\/button[data-variant="default"] { font-weight: 700; }
-[data-skin="xp"] .group\/button[data-variant="destructive"] { color: var(--destructive); }
+/* DEFAULT → glossy Luna green-ish/blue default with emboss + accent border */
+[data-skin="xp"] .group\/button[data-variant="default"] {
+  font-weight: 700;
+  border-color: #003c74;
+  box-shadow: inset 0 1px 0 0 #fff, inset 0 0 0 1px #fff, inset 0 -1px 0 0 rgba(0, 0, 0, 0.1);
+}
+/* SECONDARY → plain putty face, no extra emphasis */
+[data-skin="xp"] .group\/button[data-variant="secondary"] {
+  background: linear-gradient(to bottom, #f7f5ee, var(--xp-face));
+  border-color: #909088;
+  font-weight: 400;
+}
+/* OUTLINE → flat white field with thin ink border (distinct from secondary) */
+[data-skin="xp"] .group\/button[data-variant="outline"] {
+  background: #fff;
+  border: 1px solid var(--border);
+  box-shadow: none;
+  color: var(--foreground);
+}
+[data-skin="xp"] .group\/button[data-variant="outline"]:hover {
+  background: #f0f6ff;
+  border-color: var(--accent);
+}
+/* DESTRUCTIVE → glossy XP red */
+[data-skin="xp"] .group\/button[data-variant="destructive"] {
+  background: linear-gradient(to bottom, #f4a896 0%, #e8593e 50%, #d8331c 100%);
+  border-color: #f7b3a5 #8c2a1a #8c2a1a #f7b3a5;
+  color: #fff;
+  font-weight: 700;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.4);
+}
+[data-skin="xp"] .group\/button[data-variant="destructive"]:hover {
+  background: linear-gradient(to bottom, #f7b8a8 0%, #ef6b50 50%, #e23d26 100%);
+}
 [data-skin="xp"] .group\/button[data-variant="link"] {
-  background: transparent; box-shadow: none; color: #0000ee; text-decoration: underline;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  color: #0000ee;
+  text-decoration: underline;
 }
-[data-skin="xp"] .group\/button[data-variant="ghost"] { background: transparent; box-shadow: none; }
-[data-skin="xp"] .group\/button[data-variant="ghost"]:hover { background: var(--xp-selection); color: #fff; }
+/* GHOST → borderless, hover paints the XP selection bar */
+[data-skin="xp"] .group\/button[data-variant="ghost"] {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  color: var(--foreground);
+}
+[data-skin="xp"] .group\/button[data-variant="ghost"]:hover {
+  background: var(--xp-selection);
+  color: var(--accent-foreground);
+}
 
 [data-skin="xp"] [data-slot="input"],
 [data-skin="xp"] [data-slot="textarea"],
 [data-skin="xp"] [data-slot="select-trigger"],
 [data-skin="xp"] .skin-select {
   border: 0;
-  border-radius: 0;
-  background-color: #fff;
-  color: #000;
+  border-radius: var(--xp-radius);
+  background-color: var(--popover);
+  color: var(--popover-foreground);
   box-shadow: var(--xp-bevel-field);
 }
 [data-skin="xp"] [data-slot="input"]:focus-visible,
 [data-skin="xp"] [data-slot="textarea"]:focus-visible,
 [data-skin="xp"] [data-slot="select-trigger"]:focus-visible {
-  outline: 1px dotted #0a246a;
+  outline: 1px dotted var(--ring);
   outline-offset: -3px;
 }
 
 [data-skin="xp"] [data-slot="card"] {
   border: 0;
-  border-radius: 0;
+  border-radius: var(--xp-window-radius) var(--xp-window-radius) var(--xp-radius) var(--xp-radius);
   background-color: var(--xp-face);
   box-shadow: var(--xp-bevel-window);
 }
@@ -250,12 +380,13 @@
 [data-skin="xp"] [data-slot="command"],
 [data-skin="xp"] [data-slot="hover-card-content"] {
   border: 1px solid var(--xp-shadow);
-  border-radius: 0;
-  box-shadow: inset 1px 1px 0 0 #fff, 2px 2px 0 0 rgba(0, 0, 0, 0.35);
-  background-color: #fff;
+  border-radius: var(--xp-radius);
+  box-shadow: inset 1px 1px 0 0 #fff,
+    calc(var(--xp-elevation) * 0.5) calc(var(--xp-elevation) * 0.5) 0 0 rgba(0, 0, 0, 0.35);
+  background-color: var(--popover);
 }
 [data-skin="xp"] [data-slot="tooltip-content"] {
-  border-radius: 0;
+  border-radius: var(--xp-radius);
   background-color: #ffffe1;
   color: #000;
   border: 1px solid #000;
@@ -266,36 +397,35 @@
 [data-skin="xp"] [data-slot="context-menu-item"][data-highlighted],
 [data-skin="xp"] [data-slot="select-item"][data-highlighted],
 [data-skin="xp"] [data-slot="command-item"][data-selected="true"] {
-  border-radius: 0;
+  border-radius: var(--xp-radius);
   background-color: var(--xp-selection);
-  color: #fff;
+  color: var(--accent-foreground);
 }
 
 [data-skin="xp"] [data-slot="dialog-content"],
 [data-skin="xp"] [data-slot="alert-dialog-content"],
 [data-skin="xp"] [data-slot="sheet-content"] {
-  border-radius: 0;
+  border-radius: var(--xp-window-radius) var(--xp-window-radius) var(--xp-radius) var(--xp-radius);
   background-color: var(--xp-face);
-  border: 2px solid;
-  border-color: #fff #808080 #808080 #fff;
-  box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--primary);
+  box-shadow: inset 0 0 0 1px #fff, var(--xp-window-drop);
 }
 
 [data-skin="xp"] [data-slot="checkbox"] {
   border: 0;
-  border-radius: 0;
-  background-color: #fff;
+  border-radius: var(--xp-radius);
+  background-color: var(--popover);
   box-shadow: var(--xp-bevel-field);
-  color: #0a246a;
+  color: var(--primary);
 }
 [data-skin="xp"] [data-slot="radio-group-item"] {
   border: 0;
-  background-color: #fff;
+  background-color: var(--popover);
   box-shadow:
     inset 1px 1px 0 0 var(--xp-shadow),
     inset -1px -1px 0 0 #fff,
     0 0 0 1px var(--xp-shadow-deep);
-  color: #0a246a;
+  color: var(--primary);
 }
 
 [data-skin="xp"] [data-slot="tabs-list"] {
@@ -307,8 +437,8 @@
   border-bottom: 1px solid var(--xp-shadow);
 }
 [data-skin="xp"] [data-slot="tabs-trigger"] {
-  border-radius: 0;
-  color: #000;
+  border-radius: var(--xp-radius) var(--xp-radius) 0 0;
+  color: var(--foreground);
   padding: 3px 12px;
   background: linear-gradient(to bottom, #f6f4ec, var(--xp-face));
   border: 1px solid var(--xp-shadow);
@@ -327,16 +457,26 @@
 }
 
 [data-skin="xp"] [data-slot="switch"] { border-radius: 9999px; box-shadow: var(--xp-bevel-field); }
-[data-skin="xp"] [data-slot="badge"] { border-radius: 0; }
+[data-skin="xp"] [data-slot="badge"] { border-radius: var(--xp-radius); }
 
 [data-skin="xp"] [data-slot="progress"] {
-  border-radius: 0; background-color: #fff; box-shadow: var(--xp-bevel-field);
+  border-radius: var(--xp-radius);
+  background-color: var(--popover);
+  box-shadow: var(--xp-bevel-field);
 }
-[data-skin="xp"] [data-slot="progress-indicator"] { border-radius: 0; background-color: #1f8a1f; }
+[data-skin="xp"] [data-slot="progress-indicator"] {
+  border-radius: 0;
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--xp-progress) 70%, #fff), var(--xp-progress));
+}
 
 [data-skin="xp"] [data-slot="slider-track"] {
-  border-radius: 0; box-shadow: var(--xp-bevel-field); background-color: #fff;
+  border-radius: var(--xp-radius);
+  box-shadow: var(--xp-bevel-field);
+  background-color: var(--popover);
 }
 [data-skin="xp"] [data-slot="slider-thumb"] {
-  border-radius: 0; background-color: var(--xp-face); box-shadow: var(--xp-bevel-raised); border: 0;
+  border-radius: var(--xp-radius);
+  background: var(--xp-control-face);
+  box-shadow: var(--xp-bevel-raised);
+  border: 0;
 }

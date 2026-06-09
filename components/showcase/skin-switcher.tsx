@@ -31,7 +31,15 @@ export function SkinSwitcher() {
   const [skin, setSkin] = React.useState<string>("xp")
 
   React.useEffect(() => {
-    setSkin(document.documentElement.dataset.skin || "xp")
+    const sync = () => setSkin(document.documentElement.dataset.skin || "xp")
+    sync()
+    // Keep the dropdown in sync if data-skin changes from anywhere else.
+    const mo = new MutationObserver(sync)
+    mo.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-skin"],
+    })
+    return () => mo.disconnect()
   }, [])
 
   function apply(next: string) {

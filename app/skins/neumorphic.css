@@ -3,6 +3,12 @@
    One monochrome surface; depth comes purely from paired light/dark soft
    shadows. Controls look extruded from (raised) or pressed into (inset) the
    page. Borderless. Pure CSS over stock shadcn.
+
+   CONFIGURABILITY: every depth value is composed from a handful of shape
+   knobs (--neu-distance, --neu-blur, --neu-tint, --neu-fill-lift) via calc()
+   and color-mix(). Brand colour, surfaces, borders and radii are routed
+   through the standard tokens (--primary, --card, --border, --radius …) so
+   the editor genuinely retunes the whole skin from one place.
    ========================================================================== */
 
 :root[data-skin="neumorphic"] {
@@ -13,21 +19,23 @@
 
   --radius: 14px;
 
+  /* One monochrome clay surface. Everything derives from these. */
   --background: #e0e5ec;
-  --foreground: #4b5563;
+  --foreground: #3a424e;          /* darkened for WCAG body text */
   --card: #e0e5ec;
-  --card-foreground: #4b5563;
+  --card-foreground: #3a424e;
   --popover: #e0e5ec;
-  --popover-foreground: #4b5563;
+  --popover-foreground: #3a424e;
   --primary: #6d5dfc;
   --primary-foreground: #ffffff;
   --secondary: #e0e5ec;
-  --secondary-foreground: #4b5563;
+  --secondary-foreground: #3a424e;
   --muted: #e0e5ec;
-  --muted-foreground: #8a97a8;
+  --muted-foreground: #5f6b7d;    /* darkened to pass WCAG on soft grey */
   --accent: #6d5dfc;
   --accent-foreground: #ffffff;
-  --destructive: #e0526b;
+  --destructive: #d23a55;
+  --destructive-foreground: #ffffff;
   --border: #d1d9e6;
   --input: #d1d9e6;
   --ring: #6d5dfc;
@@ -37,125 +45,254 @@
   --chart-4: #5a4bd8;
   --chart-5: #c0b8ff;
   --sidebar: #e0e5ec;
-  --sidebar-foreground: #4b5563;
+  --sidebar-foreground: #3a424e;
   --sidebar-accent: #6d5dfc;
   --sidebar-accent-foreground: #ffffff;
   --sidebar-border: #d1d9e6;
 
-  --neu-dark: #a3b1c6;
-  --neu-light: #ffffff;
+  /* ---- Tunable shape knobs (editor sliders) ---------------------------- */
+  /* How far controls extrude from the surface. */
+  --neu-distance: 6px;
+  /* Softness of the paired shadows. */
+  --neu-blur: 12px;
+  /* Light/shadow contrast of the clay (0 = flat, 1 = crisp). Drives the
+     two highlight/shade tones via color-mix so one knob sets the whole
+     skin's tactility. */
+  --neu-tint: 0.5;
+  /* Extra elevation multiplier for top-level containers vs inline controls. */
+  --neu-elevate: 2;
+  /* Glow of the focus ring + colour bleed of raised coloured fills. */
+  --neu-glow: 4px;
 
-  /* Tunable shape knobs (sliders in the editor) */
-  --neu-distance: 6px;   /* how far controls extrude */
-  --neu-blur: 12px;      /* shadow softness */
+  /* Derived light/shade tones — color-mix lets --neu-tint scale contrast. */
+  --neu-light: color-mix(in srgb, #ffffff calc(var(--neu-tint) * 100% + 30%), var(--background));
+  --neu-dark:  color-mix(in srgb, #9baabf calc(var(--neu-tint) * 100% + 20%), var(--background));
+
+  /* Secondary distance/blur for small inline controls. */
   --neu-d2: calc(var(--neu-distance) * 0.66);
   --neu-b2: calc(var(--neu-blur) * 0.66);
 
-  --neu-raised:
-    var(--neu-distance) var(--neu-distance) var(--neu-blur) var(--neu-dark),
-    calc(var(--neu-distance) * -1) calc(var(--neu-distance) * -1) var(--neu-blur) var(--neu-light);
+  /* Raised: extruded out of the surface. */
   --neu-raised-sm:
     var(--neu-d2) var(--neu-d2) var(--neu-b2) var(--neu-dark),
     calc(var(--neu-d2) * -1) calc(var(--neu-d2) * -1) var(--neu-b2) var(--neu-light);
+  --neu-raised:
+    var(--neu-distance) var(--neu-distance) var(--neu-blur) var(--neu-dark),
+    calc(var(--neu-distance) * -1) calc(var(--neu-distance) * -1) var(--neu-blur) var(--neu-light);
+  /* Large elevation for top-level containers (cards, dialogs, app bar). */
+  --neu-raised-lg:
+    calc(var(--neu-distance) * var(--neu-elevate)) calc(var(--neu-distance) * var(--neu-elevate)) calc(var(--neu-blur) * var(--neu-elevate)) var(--neu-dark),
+    calc(var(--neu-distance) * var(--neu-elevate) * -1) calc(var(--neu-distance) * var(--neu-elevate) * -1) calc(var(--neu-blur) * var(--neu-elevate)) var(--neu-light);
+
+  /* Inset: pressed into the surface. */
   --neu-inset:
     inset var(--neu-d2) var(--neu-d2) var(--neu-b2) var(--neu-dark),
     inset calc(var(--neu-d2) * -1) calc(var(--neu-d2) * -1) var(--neu-b2) var(--neu-light);
   --neu-inset-sm:
     inset calc(var(--neu-distance) * 0.33) calc(var(--neu-distance) * 0.33) calc(var(--neu-blur) * 0.42) var(--neu-dark),
     inset calc(var(--neu-distance) * -0.33) calc(var(--neu-distance) * -0.33) calc(var(--neu-blur) * 0.42) var(--neu-light);
+
+  /* Drop shadow tuned for COLOURED fills — neutral light/dark clay shadows
+     look wrong on purple, so coloured extrusions get a tinted drop + an
+     inner top highlight that reads against the fill itself. */
+  --neu-raised-fill:
+    inset 0 1px 1px color-mix(in srgb, #ffffff 55%, transparent),
+    inset 0 -2px 4px color-mix(in srgb, #000000 18%, transparent),
+    var(--neu-d2) var(--neu-d2) calc(var(--neu-blur) * 0.9) color-mix(in srgb, var(--primary) 35%, transparent);
+
+  /* Focus halo that survives the soft shadows (used on every control). */
+  --neu-focus-ring: 0 0 0 calc(var(--neu-glow) * 0.5) color-mix(in srgb, var(--ring) 45%, transparent);
 }
 
-[data-skin="neumorphic"] body { background: var(--background); }
-[data-skin="neumorphic"] ::selection { background: #c9cfdb; color: #4b5563; }
+[data-skin="neumorphic"] body { background: var(--background); color: var(--foreground); }
+[data-skin="neumorphic"] ::selection {
+  background: color-mix(in srgb, var(--primary) 22%, var(--background));
+  color: var(--foreground);
+}
 
 /* ---- Shell -------------------------------------------------------------- */
 [data-skin="neumorphic"] .app-bar {
   background: var(--background);
   border: 0;
-  border-radius: 18px;
-  box-shadow: var(--neu-raised);
+  border-radius: calc(var(--radius) + 4px);
+  box-shadow: var(--neu-raised-lg);
   backdrop-filter: none;
 }
-[data-skin="neumorphic"] .app-brand { font-weight: 700; color: #4b5563; }
+[data-skin="neumorphic"] .app-brand { font-weight: 700; color: var(--foreground); }
 
 [data-skin="neumorphic"] .app-nav-inner {
   border: 0;
-  border-radius: 18px;
+  border-radius: calc(var(--radius) + 4px);
   background: var(--background);
-  box-shadow: var(--neu-raised);
+  box-shadow: var(--neu-raised-lg);
   padding: 12px;
 }
-[data-skin="neumorphic"] .app-nav a { border-radius: 10px; }
-[data-skin="neumorphic"] .app-nav a:hover { background: var(--background); color: #6d5dfc; box-shadow: var(--neu-inset-sm); }
+[data-skin="neumorphic"] .app-nav a {
+  border-radius: calc(var(--radius) - 4px);
+  color: var(--foreground);
+  transition: box-shadow 140ms ease, color 140ms ease;
+}
+[data-skin="neumorphic"] .app-nav a:hover {
+  background: var(--background);
+  color: var(--primary);
+  box-shadow: var(--neu-inset-sm);
+}
+[data-skin="neumorphic"] .app-nav a[aria-current="page"],
+[data-skin="neumorphic"] .app-nav a[data-active="true"] {
+  color: var(--primary);
+  box-shadow: var(--neu-inset-sm);
+}
 
 [data-skin="neumorphic"] .hero {
   border: 0;
-  border-radius: 22px;
+  border-radius: calc(var(--radius) + 8px);
   background: var(--background);
-  box-shadow: var(--neu-raised);
+  box-shadow: var(--neu-raised-lg);
 }
-[data-skin="neumorphic"] .hero-title { color: #4b5563; }
+[data-skin="neumorphic"] .hero-title { color: var(--foreground); }
+[data-skin="neumorphic"] .hero-sub { color: var(--muted-foreground); }
 
 [data-skin="neumorphic"] .specimen {
   border: 0;
-  border-radius: 22px;
+  border-radius: calc(var(--radius) + 8px);
   background: var(--background);
-  box-shadow: var(--neu-raised);
+  box-shadow: var(--neu-raised-lg);
   overflow: visible;
 }
 [data-skin="neumorphic"] .specimen-head { border-bottom: 0; }
-[data-skin="neumorphic"] .specimen-title { color: #4b5563; font-weight: 700; }
+[data-skin="neumorphic"] .specimen-title { color: var(--foreground); font-weight: 700; }
+[data-skin="neumorphic"] .specimen-tag {
+  color: var(--muted-foreground);
+  font-family: var(--app-font-mono);
+  letter-spacing: 0.04em;
+}
 
 [data-skin="neumorphic"] .app-status {
   border: 0;
-  border-radius: 16px;
+  border-radius: calc(var(--radius) + 2px);
   background: var(--background);
   box-shadow: var(--neu-raised-sm);
+  color: var(--muted-foreground);
 }
 
 /* ---- Controls ----------------------------------------------------------- */
+/* Base = raised soft pill. Variants below break the tie so default / secondary
+   / outline / ghost / destructive each read distinctly. */
 [data-skin="neumorphic"] .group\/button {
   border: 0;
-  border-radius: 12px;
+  border-radius: calc(var(--radius) - 2px);
   background: var(--background);
-  color: #5a6473;
+  color: var(--foreground);
   font-weight: 600;
   box-shadow: var(--neu-raised-sm);
-  transition: box-shadow 120ms ease;
+  transition: box-shadow 140ms ease, color 140ms ease, transform 100ms ease;
 }
-[data-skin="neumorphic"] .group\/button:hover { color: #6d5dfc; }
+[data-skin="neumorphic"] .group\/button:hover { color: var(--primary); }
 [data-skin="neumorphic"] .group\/button:active:not(:disabled),
 [data-skin="neumorphic"] .group\/button[data-state="open"],
 [data-skin="neumorphic"] .group\/button[aria-expanded="true"] {
   box-shadow: var(--neu-inset-sm);
-  color: #6d5dfc;
+  color: var(--primary);
 }
-[data-skin="neumorphic"] .group\/button:focus-visible { outline: 0; box-shadow: var(--neu-inset-sm); }
-[data-skin="neumorphic"] .group\/button[data-variant="default"] { color: #6d5dfc; font-weight: 700; }
-[data-skin="neumorphic"] .group\/button[data-variant="destructive"] { color: #e0526b; }
-[data-skin="neumorphic"] .group\/button[data-variant="link"] { box-shadow: none; color: #6d5dfc; text-decoration: underline; }
-[data-skin="neumorphic"] .group\/button[data-variant="ghost"] { box-shadow: none; }
-[data-skin="neumorphic"] .group\/button[data-variant="ghost"]:hover { box-shadow: var(--neu-raised-sm); }
+/* Perceivable focus halo on top of whatever shadow state is active. */
+[data-skin="neumorphic"] .group\/button:focus-visible {
+  outline: 0;
+  box-shadow: var(--neu-raised-sm), var(--neu-focus-ring);
+}
+
+/* DEFAULT — the one true raised brand control: coloured fill, tinted drop. */
+[data-skin="neumorphic"] .group\/button[data-variant="default"] {
+  background: linear-gradient(145deg,
+    color-mix(in srgb, var(--primary) 88%, #ffffff),
+    var(--primary));
+  color: var(--primary-foreground);
+  font-weight: 700;
+  box-shadow: var(--neu-raised-fill);
+}
+[data-skin="neumorphic"] .group\/button[data-variant="default"]:hover { color: var(--primary-foreground); filter: brightness(1.04); }
+[data-skin="neumorphic"] .group\/button[data-variant="default"]:active:not(:disabled) {
+  box-shadow:
+    inset 0 2px 5px color-mix(in srgb, #000000 28%, transparent),
+    inset 0 1px 1px color-mix(in srgb, #ffffff 30%, transparent);
+  filter: none;
+}
+[data-skin="neumorphic"] .group\/button[data-variant="default"]:focus-visible {
+  box-shadow: var(--neu-raised-fill), var(--neu-focus-ring);
+}
+
+/* SECONDARY — raised neutral clay, muted ink. */
+[data-skin="neumorphic"] .group\/button[data-variant="secondary"] {
+  background: var(--background);
+  color: var(--foreground);
+  box-shadow: var(--neu-raised-sm);
+}
+
+/* OUTLINE — resting "pressed in" carved state to distinguish from raised. */
+[data-skin="neumorphic"] .group\/button[data-variant="outline"] {
+  background: var(--background);
+  color: var(--foreground);
+  box-shadow: var(--neu-inset-sm);
+}
+[data-skin="neumorphic"] .group\/button[data-variant="outline"]:hover { color: var(--primary); }
+
+/* GHOST — perfectly flat until hover, then lifts. */
+[data-skin="neumorphic"] .group\/button[data-variant="ghost"] {
+  background: transparent;
+  box-shadow: none;
+  color: var(--foreground);
+}
+[data-skin="neumorphic"] .group\/button[data-variant="ghost"]:hover {
+  color: var(--primary);
+  box-shadow: var(--neu-raised-sm);
+}
+
+/* DESTRUCTIVE — coloured fill like default but red, white text (AA). */
+[data-skin="neumorphic"] .group\/button[data-variant="destructive"] {
+  background: linear-gradient(145deg,
+    color-mix(in srgb, var(--destructive) 88%, #ffffff),
+    var(--destructive));
+  color: var(--destructive-foreground);
+  font-weight: 700;
+  box-shadow:
+    inset 0 1px 1px color-mix(in srgb, #ffffff 50%, transparent),
+    inset 0 -2px 4px color-mix(in srgb, #000000 18%, transparent),
+    var(--neu-d2) var(--neu-d2) calc(var(--neu-blur) * 0.9) color-mix(in srgb, var(--destructive) 35%, transparent);
+}
+[data-skin="neumorphic"] .group\/button[data-variant="destructive"]:hover { color: var(--destructive-foreground); filter: brightness(1.04); }
+
+/* LINK — flat underlined brand text. */
+[data-skin="neumorphic"] .group\/button[data-variant="link"] {
+  box-shadow: none;
+  background: transparent;
+  color: var(--primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 
 [data-skin="neumorphic"] [data-slot="input"],
 [data-skin="neumorphic"] [data-slot="textarea"],
 [data-skin="neumorphic"] [data-slot="select-trigger"],
 [data-skin="neumorphic"] .skin-select {
   border: 0;
-  border-radius: 12px;
+  border-radius: calc(var(--radius) - 2px);
   background: var(--background);
-  color: #4b5563;
+  color: var(--foreground);
   box-shadow: var(--neu-inset);
 }
+[data-skin="neumorphic"] [data-slot="input"]::placeholder,
+[data-skin="neumorphic"] [data-slot="textarea"]::placeholder { color: var(--muted-foreground); }
 [data-skin="neumorphic"] [data-slot="input"]:focus-visible,
 [data-skin="neumorphic"] [data-slot="textarea"]:focus-visible,
-[data-skin="neumorphic"] [data-slot="select-trigger"]:focus-visible { outline: 0; box-shadow: var(--neu-inset), 0 0 0 2px rgba(109, 93, 252, 0.25); }
+[data-skin="neumorphic"] [data-slot="select-trigger"]:focus-visible {
+  outline: 0;
+  box-shadow: var(--neu-inset), var(--neu-focus-ring);
+}
 
 [data-skin="neumorphic"] [data-slot="card"] {
   border: 0;
-  border-radius: 20px;
+  border-radius: calc(var(--radius) + 6px);
   background: var(--background);
-  box-shadow: var(--neu-raised);
+  box-shadow: var(--neu-raised-lg);
 }
 
 [data-skin="neumorphic"] [data-slot="popover-content"],
@@ -165,14 +302,15 @@
 [data-skin="neumorphic"] [data-slot="command"],
 [data-skin="neumorphic"] [data-slot="hover-card-content"] {
   border: 0;
-  border-radius: 16px;
+  border-radius: calc(var(--radius) + 2px);
   background: var(--background);
-  box-shadow: var(--neu-raised);
+  color: var(--foreground);
+  box-shadow: var(--neu-raised-lg);
 }
 [data-skin="neumorphic"] [data-slot="tooltip-content"] {
-  border-radius: 10px;
+  border-radius: calc(var(--radius) - 4px);
   background: var(--background);
-  color: #4b5563;
+  color: var(--foreground);
   box-shadow: var(--neu-raised-sm);
 }
 [data-skin="neumorphic"] [data-slot="tooltip-content"] svg { fill: var(--background); }
@@ -181,9 +319,9 @@
 [data-skin="neumorphic"] [data-slot="context-menu-item"][data-highlighted],
 [data-skin="neumorphic"] [data-slot="select-item"][data-highlighted],
 [data-skin="neumorphic"] [data-slot="command-item"][data-selected="true"] {
-  border-radius: 8px;
+  border-radius: calc(var(--radius) - 6px);
   background: var(--background);
-  color: #6d5dfc;
+  color: var(--primary);
   box-shadow: var(--neu-inset-sm);
 }
 
@@ -191,29 +329,35 @@
 [data-skin="neumorphic"] [data-slot="alert-dialog-content"],
 [data-skin="neumorphic"] [data-slot="sheet-content"] {
   border: 0;
-  border-radius: 24px;
+  border-radius: calc(var(--radius) + 10px);
   background: var(--background);
-  box-shadow: 10px 10px 30px var(--neu-dark), -10px -10px 30px var(--neu-light);
+  box-shadow: var(--neu-raised-lg);
 }
 
 [data-skin="neumorphic"] [data-slot="checkbox"] {
   border: 0;
-  border-radius: 7px;
+  border-radius: calc(var(--radius) - 7px);
   background: var(--background);
   box-shadow: var(--neu-inset-sm);
-  color: #6d5dfc;
+  color: var(--primary-foreground);
+  transition: box-shadow 140ms ease, background 140ms ease;
 }
-[data-skin="neumorphic"] [data-slot="checkbox"][data-state="checked"] { box-shadow: var(--neu-raised-sm); }
+[data-skin="neumorphic"] [data-slot="checkbox"][data-state="checked"] {
+  background: linear-gradient(145deg,
+    color-mix(in srgb, var(--primary) 88%, #ffffff),
+    var(--primary));
+  box-shadow: var(--neu-raised-fill);
+}
 [data-skin="neumorphic"] [data-slot="radio-group-item"] {
   border: 0;
   border-radius: 9999px;
   background: var(--background);
   box-shadow: var(--neu-inset-sm);
-  color: #6d5dfc;
+  color: var(--primary);
 }
 
 [data-skin="neumorphic"] [data-slot="tabs-list"] {
-  border-radius: 14px;
+  border-radius: var(--radius);
   background: var(--background);
   box-shadow: var(--neu-inset);
   padding: 5px;
@@ -221,41 +365,98 @@
 }
 [data-skin="neumorphic"] [data-slot="tabs-trigger"] {
   border: 0;
-  border-radius: 10px;
+  border-radius: calc(var(--radius) - 4px);
   background: transparent;
-  color: #6b7280;
+  color: var(--muted-foreground);
 }
 [data-skin="neumorphic"] [data-slot="tabs-trigger"][data-state="active"] {
   background: var(--background);
-  color: #6d5dfc;
+  color: var(--primary);
   box-shadow: var(--neu-raised-sm);
   font-weight: 700;
 }
 
-[data-skin="neumorphic"] [data-slot="badge"] { border: 0; border-radius: 9999px; box-shadow: var(--neu-raised-sm); background: var(--background); color: #6d5dfc; }
-[data-skin="neumorphic"] [data-slot="badge"][data-variant="default"] { background: #6d5dfc; color: #fff; box-shadow: var(--neu-raised-sm); }
+[data-skin="neumorphic"] [data-slot="badge"] {
+  border: 0;
+  border-radius: 9999px;
+  box-shadow: var(--neu-raised-sm);
+  background: var(--background);
+  color: var(--primary);
+}
+/* Coloured badge gets the fill-tuned shadow, not the grey clay one. */
+[data-skin="neumorphic"] [data-slot="badge"][data-variant="default"] {
+  background: linear-gradient(145deg,
+    color-mix(in srgb, var(--primary) 88%, #ffffff),
+    var(--primary));
+  color: var(--primary-foreground);
+  box-shadow: var(--neu-raised-fill);
+}
+[data-skin="neumorphic"] [data-slot="badge"][data-variant="destructive"] {
+  background: linear-gradient(145deg,
+    color-mix(in srgb, var(--destructive) 88%, #ffffff),
+    var(--destructive));
+  color: var(--destructive-foreground);
+  box-shadow:
+    inset 0 1px 1px color-mix(in srgb, #ffffff 50%, transparent),
+    var(--neu-d2) var(--neu-d2) calc(var(--neu-blur) * 0.8) color-mix(in srgb, var(--destructive) 35%, transparent);
+}
 
-[data-skin="neumorphic"] [data-slot="switch"] { border: 0; border-radius: 9999px; box-shadow: var(--neu-inset-sm); }
+/* Switch — inset track when off, glowing raised fill + raised thumb when on. */
+[data-skin="neumorphic"] [data-slot="switch"] {
+  border: 0;
+  border-radius: 9999px;
+  background: var(--background);
+  box-shadow: var(--neu-inset-sm);
+  transition: box-shadow 160ms ease, background 160ms ease;
+}
+[data-skin="neumorphic"] [data-slot="switch"][data-state="checked"] {
+  background: linear-gradient(145deg,
+    color-mix(in srgb, var(--primary) 88%, #ffffff),
+    var(--primary));
+  box-shadow:
+    var(--neu-inset-sm),
+    0 0 var(--neu-glow) color-mix(in srgb, var(--primary) 45%, transparent);
+}
+[data-skin="neumorphic"] [data-slot="switch-thumb"] {
+  background: var(--neu-light);
+  box-shadow: var(--neu-raised-sm);
+}
 
 [data-skin="neumorphic"] [data-slot="progress"] {
   border-radius: 9999px;
   background: var(--background);
   box-shadow: var(--neu-inset-sm);
 }
-[data-skin="neumorphic"] [data-slot="progress-indicator"] { border-radius: 9999px; background: linear-gradient(90deg, #6d5dfc, #8b7dff); }
+[data-skin="neumorphic"] [data-slot="progress-indicator"] {
+  border-radius: 9999px;
+  background: linear-gradient(90deg, var(--primary), var(--chart-2));
+}
 
 [data-skin="neumorphic"] [data-slot="slider-track"] {
   border-radius: 9999px;
   background: var(--background);
   box-shadow: var(--neu-inset-sm);
 }
-[data-skin="neumorphic"] [data-slot="slider-range"] { background: #6d5dfc; }
+[data-skin="neumorphic"] [data-slot="slider-range"] {
+  border-radius: 9999px;
+  background: linear-gradient(90deg, var(--primary), var(--chart-2));
+}
 [data-skin="neumorphic"] [data-slot="slider-thumb"] {
   border: 0;
   border-radius: 9999px;
   background: var(--background);
   box-shadow: var(--neu-raised-sm);
 }
+[data-skin="neumorphic"] [data-slot="slider-thumb"]:focus-visible {
+  outline: 0;
+  box-shadow: var(--neu-raised-sm), var(--neu-focus-ring);
+}
 
-[data-skin="neumorphic"] [data-slot="alert"] { border: 0; border-radius: 16px; box-shadow: var(--neu-inset-sm); }
-[data-skin="neumorphic"] [data-slot="table"] { border-radius: 14px; overflow: hidden; }
+[data-skin="neumorphic"] [data-slot="alert"] {
+  border: 0;
+  border-radius: calc(var(--radius) + 2px);
+  background: var(--background);
+  color: var(--foreground);
+  box-shadow: var(--neu-inset-sm);
+}
+[data-skin="neumorphic"] [data-slot="table"] { border-radius: var(--radius); overflow: hidden; }
