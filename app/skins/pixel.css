@@ -50,9 +50,11 @@
      ====================================================================== */
   --px: 4px;                 /* pixel unit — base bevel / frame thickness   */
   --px-step: 2px;            /* extra offset per stacked corner-notch layer */
-  --px-light: #ffffff;       /* top/left bevel highlight (raised edge)      */
-  --px-dark: #94b0c2;        /* bottom/right bevel shadow (recessed edge)   */
-  --px-input-border: #5a6988;/* sunken field bevel color                   */
+  /* Bevel hues derive from the palette tokens so retuning --muted-foreground /
+     --border automatically retunes the bevels (no stranded hex literals). */
+  --px-light: color-mix(in srgb, var(--border) 95%, #fff);            /* top/left bevel highlight (raised edge) */
+  --px-dark: color-mix(in srgb, var(--muted-foreground) 85%, var(--background));  /* bottom/right bevel shadow */
+  --px-input-border: color-mix(in srgb, var(--muted-foreground) 52%, var(--background)); /* sunken field bevel */
   --scanline-opacity: 0.16;  /* CRT scanline strength (0 = off)            */
 
   /* ----------------------------------------------------------------------
@@ -155,14 +157,15 @@
 [data-skin="pixel"] .hero-title { color: var(--ring); line-height: 1.5; }
 [data-skin="pixel"] .hero-sub { color: var(--muted-foreground); line-height: 1.7; }
 
-/* Nav: keep labels on one line, no mid-phrase wrap into ragged rows. */
+/* Nav: smaller pixel type + tighter padding so full labels fit on one line
+   (never clip text mid-word — Press Start 2P runs ~10px per glyph). */
 [data-skin="pixel"] .app-nav a {
   border-radius: var(--radius);
   letter-spacing: 0;
   line-height: 1.5;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: clip;
+  font-size: 8px;
+  padding-inline: calc(var(--px) + var(--px-step));
 }
 [data-skin="pixel"] .app-nav a:hover { background: var(--accent); color: var(--accent-foreground); }
 
@@ -223,6 +226,15 @@
 [data-skin="pixel"] .group\/button[data-variant="link"]:active:not(:disabled) {
   box-shadow: none;
   transform: none;
+}
+
+/* Disabled: drop the raised bevel to a flat frame + muted fill so it no
+   longer reads as pressable. */
+[data-skin="pixel"] .group\/button:disabled {
+  box-shadow: var(--px-frame);
+  background: var(--muted);
+  color: var(--muted-foreground);
+  filter: none;
 }
 
 /* =============================== INPUTS ================================ */
@@ -305,9 +317,19 @@
 [data-skin="pixel"] [data-slot="switch"] {
   border: var(--px) solid var(--border);
   border-radius: var(--radius);
-  background: var(--background);
+  background: var(--muted);
 }
 [data-skin="pixel"] [data-slot="switch"][data-state="checked"] { background: var(--accent); }
+/* Square pixel thumb — the stock rounded thumb is the one curved shape on
+   the page and would break the zero-radius illusion. */
+[data-skin="pixel"] [data-slot="switch-thumb"] {
+  border-radius: var(--radius);
+  background: var(--background);
+  border: var(--px-step) solid var(--border);
+}
+[data-skin="pixel"] [data-slot="switch"][data-state="checked"] [data-slot="switch-thumb"] {
+  background: var(--accent-foreground);
+}
 
 /* ============================ TABS / BARS ============================= */
 
@@ -321,10 +343,29 @@
   background: var(--ring);
   color: var(--background);
 }
+/* Badges: shadow-built frame needs clearance so adjacent badges don't crowd
+   (mirrors the button's margin pattern); colors are set per-variant so every
+   variant stays legible — no blanket primary-foreground ink. */
 [data-skin="pixel"] [data-slot="badge"] {
   border-radius: var(--radius);
   box-shadow: var(--px-frame);
+  margin: calc(var(--px) + var(--px-step));
+}
+[data-skin="pixel"] [data-slot="badge"][data-variant="default"] {
+  background: var(--primary);
   color: var(--primary-foreground);
+}
+[data-skin="pixel"] [data-slot="badge"][data-variant="secondary"] {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+}
+[data-skin="pixel"] [data-slot="badge"][data-variant="outline"] {
+  background: transparent;
+  color: var(--foreground);
+}
+[data-skin="pixel"] [data-slot="badge"][data-variant="destructive"] {
+  background: var(--destructive);
+  color: var(--destructive-foreground);
 }
 
 [data-skin="pixel"] [data-slot="progress"] {

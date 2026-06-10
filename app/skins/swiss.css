@@ -16,6 +16,7 @@
 
   /* Modular scale (1.333 — perfect fourth, a classic Swiss ratio) */
   --sw-scale: 1.333;
+  --sw-step--1: calc(var(--sw-step-0) / var(--sw-scale));  /* microlabels */
   --sw-step-0: var(--app-font-size);
   --sw-step-1: calc(var(--sw-step-0) * var(--sw-scale));
   --sw-step-2: calc(var(--sw-step-1) * var(--sw-scale));
@@ -125,6 +126,7 @@
   border-top: var(--sw-rule-bold) solid var(--foreground);   /* Swiss header rule */
   border-radius: var(--radius);
   box-shadow: none;
+  padding: calc(var(--sw-space) * 3);   /* panel padding on the baseline grid */
 }
 [data-skin="swiss"] .specimen-head {
   border-bottom: var(--sw-rule) solid var(--border);
@@ -143,7 +145,7 @@
   text-transform: uppercase;
   letter-spacing: var(--sw-tracking-label);
   color: var(--muted-foreground);
-  font-size: 11px;
+  font-size: var(--sw-step--1);
 }
 
 /* ---- Hero: oversized flush-left red field ------------------------------ */
@@ -163,7 +165,7 @@
 [data-skin="swiss"] .hero-title {
   color: var(--primary-foreground);
   text-transform: uppercase;
-  font-size: clamp(1.75rem, 4vw, 3rem);
+  font-size: clamp(var(--sw-step-2), 4vw, calc(var(--sw-step-3) * var(--sw-scale)));
   line-height: 1.02;
   letter-spacing: var(--sw-tracking-tight);
   font-weight: 700;
@@ -182,7 +184,7 @@
 }
 [data-skin="swiss"] .group\/button:hover { background: var(--foreground); color: var(--background); }
 [data-skin="swiss"] .group\/button:active:not(:disabled) {
-  background: color-mix(in srgb, var(--foreground) 80%, #fff);
+  background: color-mix(in srgb, var(--foreground) 80%, var(--background));
 }
 [data-skin="swiss"] .group\/button:focus-visible {
   outline: var(--sw-focus-width) solid var(--ring);
@@ -196,8 +198,8 @@
   border-color: var(--primary);
 }
 [data-skin="swiss"] .group\/button[data-variant="default"]:hover {
-  background: color-mix(in srgb, var(--primary) 82%, #000);
-  border-color: color-mix(in srgb, var(--primary) 82%, #000);
+  background: color-mix(in srgb, var(--primary) 82%, var(--foreground));
+  border-color: color-mix(in srgb, var(--primary) 82%, var(--foreground));
 }
 
 /* secondary — filled muted grey, no border (distinct fill) */
@@ -233,14 +235,16 @@
   color: var(--foreground);
 }
 
-/* destructive — solid ink (red is reserved for default/accent) */
+/* destructive — solid ink with a red warning baseline (distinct from outline:hover) */
 [data-skin="swiss"] .group\/button[data-variant="destructive"] {
   background: var(--destructive);
   color: var(--destructive-foreground);
   border-color: var(--destructive);
+  box-shadow: inset 0 calc(-1 * var(--sw-rule-accent)) 0 0 var(--primary);
 }
 [data-skin="swiss"] .group\/button[data-variant="destructive"]:hover {
-  background: color-mix(in srgb, var(--destructive) 78%, #fff);
+  background: color-mix(in srgb, var(--destructive) 72%, var(--primary));
+  border-color: color-mix(in srgb, var(--destructive) 72%, var(--primary));
 }
 
 /* link — red underlined, no chrome */
@@ -251,7 +255,17 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-[data-skin="swiss"] .group\/button[data-variant="link"]:hover { color: color-mix(in srgb, var(--primary) 82%, #000); }
+[data-skin="swiss"] .group\/button[data-variant="link"]:hover { color: color-mix(in srgb, var(--primary) 82%, var(--foreground)); }
+
+/* disabled — drops out of the accent channel entirely, reads non-interactive */
+[data-skin="swiss"] .group\/button:disabled,
+[data-skin="swiss"] .group\/button:disabled:hover {
+  background: var(--muted);
+  color: var(--muted-foreground);
+  border-color: transparent;
+  box-shadow: none;
+  opacity: 1;
+}
 
 /* ---- Fields: underline-only, on-grid ----------------------------------- */
 [data-skin="swiss"] [data-slot="input"],
@@ -270,7 +284,9 @@
 [data-skin="swiss"] [data-slot="textarea"]:focus-visible,
 [data-skin="swiss"] [data-slot="select-trigger"]:focus-visible {
   outline: 0;
-  border-bottom: var(--sw-rule-bold) solid var(--ring);
+  border-bottom-color: var(--ring);
+  /* thicken the underline without changing border width — no reflow */
+  box-shadow: 0 calc(var(--sw-rule-bold) - var(--sw-rule)) 0 0 var(--ring);
 }
 
 /* ---- Cards & overlays -------------------------------------------------- */
@@ -303,7 +319,8 @@
   font-family: var(--app-font-mono);
   text-transform: uppercase;
   letter-spacing: var(--sw-tracking-label);
-  font-size: 11px;
+  font-size: var(--sw-step--1);
+  padding: calc(var(--sw-space) / 2) var(--sw-space);
 }
 [data-skin="swiss"] [data-slot="dropdown-menu-item"][data-highlighted],
 [data-skin="swiss"] [data-slot="context-menu-item"][data-highlighted],
@@ -342,9 +359,13 @@
   letter-spacing: var(--sw-tracking-label);
   font-weight: 600;
   color: var(--muted-foreground);
+  /* reserve the accent underline so activation never shifts layout,
+     and overlap the list's ink rule so the red sits on it */
+  border-bottom: var(--sw-rule-accent) solid transparent;
+  margin-bottom: calc(-1 * var(--sw-rule-bold));
 }
 [data-skin="swiss"] [data-slot="tabs-trigger"][data-state="active"] {
-  border-bottom: var(--sw-rule-accent) solid var(--accent);
+  border-bottom-color: var(--accent);
   color: var(--foreground);
 }
 
@@ -356,8 +377,13 @@
   color: var(--foreground);
   text-transform: uppercase;
   font-family: var(--app-font-mono);
-  font-size: 10px;
+  font-size: var(--sw-step--1);
   letter-spacing: var(--sw-tracking-label);
+}
+[data-skin="swiss"] [data-slot="badge"][data-variant="outline"] {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--foreground);
 }
 [data-skin="swiss"] [data-slot="badge"][data-variant="default"] {
   background: var(--primary);

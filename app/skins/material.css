@@ -12,7 +12,7 @@
 
   /* ---- Tunable shape knobs (consumed throughout) ---- */
   --md-shape-sm: 8px;     /* inputs, menus, badges */
-  --md-shape: 20px;       /* standard control corner (filled button) */
+  --md-shape: 20px;       /* medium component corner (segmented tabs track) */
   --md-shape-lg: 28px;    /* cards, app-bar, dialogs */
   --md-shape-full: 999px; /* pills: tabs, switch, FAB, progress */
   --md-elevation: 6;      /* master elevation scalar -> drives all shadows */
@@ -106,9 +106,9 @@
   border-radius: var(--md-shape-lg);
   box-shadow: var(--md-e2);
 }
-[data-skin="material"] .hero-kicker { color: #d0bcff; letter-spacing: .06em; text-transform: uppercase; }
+[data-skin="material"] .hero-kicker { color: color-mix(in srgb, #fff 70%, var(--primary)); letter-spacing: .06em; text-transform: uppercase; }
 [data-skin="material"] .hero-title { color: #fff; font-weight: 500; }
-[data-skin="material"] .hero-sub { color: #e7deff; }
+[data-skin="material"] .hero-sub { color: color-mix(in srgb, #fff 86%, var(--primary)); }
 
 [data-skin="material"] .specimen-title,
 [data-skin="material"] .stage-title { font-weight: 500; letter-spacing: 0; }
@@ -196,6 +196,18 @@
   color: var(--destructive-foreground);
 }
 
+/* Disabled: M3 spec — 12% on-surface container, 38% on-surface label, flat */
+[data-skin="material"] .group\/button:disabled {
+  background: color-mix(in srgb, var(--foreground) 12%, transparent);
+  color: color-mix(in srgb, var(--foreground) 38%, transparent);
+  box-shadow: none;
+  opacity: 1;
+}
+[data-skin="material"] .group\/button:disabled::after { content: none; }
+[data-skin="material"] .group\/button[data-variant="outline"]:disabled {
+  border-color: color-mix(in srgb, var(--foreground) 12%, transparent);
+}
+
 /* Link */
 [data-skin="material"] .group\/button[data-variant="link"] {
   background: none;
@@ -209,14 +221,14 @@
 [data-skin="material"] .group\/button[data-variant="link"]::after { content: none; }
 
 /* ==========================================================================
-   INPUTS — M3 outlined fields (4px top radius signature)
+   INPUTS — M3 outlined fields (uniform extra-small 4px corners)
    ========================================================================== */
 [data-skin="material"] [data-slot="input"],
 [data-skin="material"] [data-slot="textarea"],
 [data-skin="material"] [data-slot="select-trigger"],
 [data-skin="material"] .skin-select {
   border: 1px solid var(--input);
-  border-radius: var(--md-shape-sm) var(--md-shape-sm) calc(var(--md-shape-sm) / 2) calc(var(--md-shape-sm) / 2);
+  border-radius: calc(var(--md-shape-sm) / 2);
   background: var(--card);
   color: var(--foreground);
 }
@@ -254,10 +266,11 @@
   color: var(--popover-foreground);
   box-shadow: var(--md-e3);
 }
+/* Tooltip: M3 inverse-surface roles, derived from the surface tokens */
 [data-skin="material"] [data-slot="tooltip-content"] {
   border-radius: calc(var(--md-shape-sm) / 2);
-  background: #322f35;
-  color: #f5eff7;
+  background: color-mix(in srgb, var(--foreground) 90%, var(--background));
+  color: color-mix(in srgb, var(--background) 95%, var(--foreground));
 }
 
 /* Menu items: state-layer highlight */
@@ -282,9 +295,9 @@
   color: var(--primary-foreground);
 }
 
-/* Tabs: full-pill segmented track + active container */
+/* Tabs: segmented track (medium shape) + secondary-container active segment */
 [data-skin="material"] [data-slot="tabs-list"] {
-  border-radius: var(--md-shape-full);
+  border-radius: var(--md-shape);
   background: var(--muted);
   padding: 4px;
   gap: 4px;
@@ -294,16 +307,40 @@
   font-weight: 500;
 }
 [data-skin="material"] [data-slot="tabs-trigger"][data-state="active"] {
-  background: var(--primary);
-  color: var(--primary-foreground);
+  background: var(--secondary);
+  color: var(--secondary-foreground);
 }
 
-[data-skin="material"] [data-slot="badge"] { border-radius: var(--md-shape-sm); }
+/* Badges: M3 container/on-container pairs per variant */
+[data-skin="material"] [data-slot="badge"] {
+  border-radius: var(--md-shape-sm);
+  font-weight: 500;
+}
+[data-skin="material"] [data-slot="badge"][data-variant="default"] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border: 0;
+}
+[data-skin="material"] [data-slot="badge"][data-variant="secondary"] {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  border: 0;
+}
+[data-skin="material"] [data-slot="badge"][data-variant="outline"] {
+  background: transparent;
+  color: var(--foreground);
+  border: 1px solid var(--input);
+}
+[data-skin="material"] [data-slot="badge"][data-variant="destructive"] {
+  background: var(--destructive);
+  color: var(--destructive-foreground);
+  border: 0;
+}
 
-/* Switch: M3 track/handle spec — grey off, primary on, small unchecked thumb */
+/* Switch: M3 track/handle spec — light track + dark small thumb off, primary on */
 [data-skin="material"] [data-slot="switch"] {
   border-radius: var(--md-shape-full);
-  background: var(--input);
+  background: var(--muted);
   border: 2px solid var(--input);
 }
 [data-skin="material"] [data-slot="switch"][data-state="checked"] {
@@ -311,7 +348,7 @@
   border-color: var(--primary);
 }
 [data-skin="material"] [data-slot="switch"] [data-slot="switch-thumb"] {
-  background: var(--muted);
+  background: var(--input);
   border-radius: var(--md-shape-full);
   transform: scale(.66);
 }

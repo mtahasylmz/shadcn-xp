@@ -59,6 +59,7 @@
   --xp-shadow: var(--border);
   --xp-shadow-deep: #404040;
   --xp-progress: var(--chart-3);
+  --xp-hover-glow: #ffc73c;      /* Luna hover orange (border + inner glow)  */
 
   /* ---- Authentic Luna blue title gradient (tokenized knob) ------------ */
   --xp-titlebar-a: #0997ff;
@@ -68,8 +69,8 @@
     to bottom,
     var(--xp-titlebar-a) 0%,
     var(--xp-titlebar-b) var(--xp-titlebar-h),
-    #0050ee 40%,
-    #0066ff 88%,
+    color-mix(in srgb, var(--xp-titlebar-b) 85%, var(--xp-titlebar-c)) 40%,
+    color-mix(in srgb, var(--xp-titlebar-b) 72%, var(--xp-titlebar-a)) 88%,
     var(--xp-titlebar-c) 100%
   );
   --xp-titlebar-gloss-shadow:
@@ -157,16 +158,32 @@
   line-height: 1;
   color: #fff;
   border-radius: var(--xp-radius);
-  /* min/max → blue glass to match the title bar */
-  background: linear-gradient(to bottom, #5a9bf5 0%, #1f64dd 50%, #1a52c8 100%);
+  /* min/max → blue glass derived from the titlebar tokens */
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--xp-titlebar-a) 65%, #fff) 0%,
+    color-mix(in srgb, var(--xp-titlebar-b) 80%, var(--xp-titlebar-a)) 50%,
+    color-mix(in srgb, var(--xp-titlebar-c) 88%, #000) 100%
+  );
   border: 1px solid;
-  border-color: #a9cdfb #0b3aa0 #0b3aa0 #a9cdfb;
+  border-color: color-mix(in srgb, var(--xp-titlebar-a) 40%, #fff)
+    color-mix(in srgb, var(--xp-titlebar-c) 62%, #000)
+    color-mix(in srgb, var(--xp-titlebar-c) 62%, #000)
+    color-mix(in srgb, var(--xp-titlebar-a) 40%, #fff);
   box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
 }
 /* iconic XP red close button */
 [data-skin="xp"] .stage-head-buttons span:last-child {
-  background: linear-gradient(to bottom, #f4a896 0%, #e8593e 50%, #d8331c 100%);
-  border-color: #f7b3a5 #8c2a1a #8c2a1a #f7b3a5;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--destructive) 35%, #fff) 0%,
+    color-mix(in srgb, var(--destructive) 80%, #ff6a4a) 50%,
+    var(--destructive) 100%
+  );
+  border-color: color-mix(in srgb, var(--destructive) 32%, #fff)
+    color-mix(in srgb, var(--destructive) 72%, #000)
+    color-mix(in srgb, var(--destructive) 72%, #000)
+    color-mix(in srgb, var(--destructive) 32%, #fff);
   border-radius: var(--xp-radius);
 }
 [data-skin="xp"] .app-main { padding: 10px; gap: 10px; }
@@ -272,7 +289,7 @@
 
 /* ---- Controls ----------------------------------------------------------- */
 [data-skin="xp"] .group\/button {
-  border: 1px solid #003c74;
+  border: 1px solid color-mix(in srgb, var(--primary) 50%, #00264a);
   border-radius: var(--xp-radius);
   background: var(--xp-control-face);
   color: var(--foreground);
@@ -281,7 +298,9 @@
 }
 [data-skin="xp"] .group\/button:hover {
   background: var(--xp-control-face-hover);
-  border-color: #ff9933;
+  border-color: color-mix(in srgb, var(--xp-hover-glow) 60%, #ff5519);
+  box-shadow: inset 0 0 0 1px var(--xp-hover-glow),
+    inset 0 -2px 0 0 color-mix(in srgb, var(--xp-hover-glow) 78%, #a36a00);
 }
 [data-skin="xp"] .group\/button:active:not(:disabled),
 [data-skin="xp"] .group\/button[data-state="open"],
@@ -290,15 +309,21 @@
   box-shadow: var(--xp-bevel-sunken);
 }
 [data-skin="xp"] .group\/button:focus-visible {
-  outline: 1px dotted #000;
+  outline: 1px dotted color-mix(in srgb, var(--ring) 75%, #000);
   outline-offset: -4px;
-  border-color: #003c74;
+  border-color: color-mix(in srgb, var(--ring) 50%, #00264a);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ring) 45%, transparent);
 }
-/* DEFAULT → glossy Luna green-ish/blue default with emboss + accent border */
+/* DEFAULT → primary affordance: Luna blue inner glow ring + dark navy border */
 [data-skin="xp"] .group\/button[data-variant="default"] {
   font-weight: 700;
-  border-color: #003c74;
-  box-shadow: inset 0 1px 0 0 #fff, inset 0 0 0 1px #fff, inset 0 -1px 0 0 rgba(0, 0, 0, 0.1);
+  border-color: color-mix(in srgb, var(--primary) 50%, #00264a);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--primary) 55%, #fff),
+    inset 0 -2px 0 0 color-mix(in srgb, var(--primary) 35%, transparent);
+}
+[data-skin="xp"] .group\/button[data-variant="default"]:hover {
+  box-shadow: inset 0 0 0 1px var(--xp-hover-glow),
+    inset 0 -2px 0 0 color-mix(in srgb, var(--xp-hover-glow) 78%, #a36a00);
 }
 /* SECONDARY → plain putty face, no extra emphasis */
 [data-skin="xp"] .group\/button[data-variant="secondary"] {
@@ -317,17 +342,30 @@
   background: #f0f6ff;
   border-color: var(--accent);
 }
-/* DESTRUCTIVE → glossy XP red */
+/* DESTRUCTIVE → glossy XP red, derived from --destructive */
 [data-skin="xp"] .group\/button[data-variant="destructive"] {
-  background: linear-gradient(to bottom, #f4a896 0%, #e8593e 50%, #d8331c 100%);
-  border-color: #f7b3a5 #8c2a1a #8c2a1a #f7b3a5;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--destructive) 35%, #fff) 0%,
+    color-mix(in srgb, var(--destructive) 80%, #ff6a4a) 50%,
+    var(--destructive) 100%
+  );
+  border-color: color-mix(in srgb, var(--destructive) 32%, #fff)
+    color-mix(in srgb, var(--destructive) 72%, #000)
+    color-mix(in srgb, var(--destructive) 72%, #000)
+    color-mix(in srgb, var(--destructive) 32%, #fff);
   color: #fff;
   font-weight: 700;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);
   box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.4);
 }
 [data-skin="xp"] .group\/button[data-variant="destructive"]:hover {
-  background: linear-gradient(to bottom, #f7b8a8 0%, #ef6b50 50%, #e23d26 100%);
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--destructive) 28%, #fff) 0%,
+    color-mix(in srgb, var(--destructive) 70%, #ff8a6a) 50%,
+    color-mix(in srgb, var(--destructive) 88%, #ff6a4a) 100%
+  );
 }
 [data-skin="xp"] .group\/button[data-variant="link"] {
   background: transparent;
@@ -346,6 +384,16 @@
 [data-skin="xp"] .group\/button[data-variant="ghost"]:hover {
   background: var(--xp-selection);
   color: var(--accent-foreground);
+}
+/* DISABLED → flat putty, embossed grey label, no bevel/gloss (any variant) */
+[data-skin="xp"] .group\/button:disabled,
+[data-skin="xp"] .group\/button[disabled],
+[data-skin="xp"] .group\/button[aria-disabled="true"] {
+  background: var(--xp-face);
+  border-color: color-mix(in srgb, var(--border) 55%, var(--xp-face));
+  color: var(--muted-foreground);
+  text-shadow: 0 1px 0 #fff;
+  box-shadow: none;
 }
 
 [data-skin="xp"] [data-slot="input"],
@@ -456,8 +504,52 @@
   font-weight: 700;
 }
 
-[data-skin="xp"] [data-slot="switch"] { border-radius: 9999px; box-shadow: var(--xp-bevel-field); }
+/* Switch → sunken putty track off, glossy Luna blue track on, raised thumb */
+[data-skin="xp"] [data-slot="switch"] {
+  border: 0;
+  border-radius: 9999px;
+  background: var(--muted);
+  box-shadow: var(--xp-bevel-field);
+}
+[data-skin="xp"] [data-slot="switch"][data-state="checked"] {
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--primary) 60%, #fff),
+    var(--primary)
+  );
+}
+[data-skin="xp"] [data-slot="switch"]:focus-visible {
+  outline: 1px dotted color-mix(in srgb, var(--ring) 75%, #000);
+  outline-offset: 2px;
+}
+[data-skin="xp"] [data-slot="switch-thumb"] {
+  border: 0;
+  border-radius: 9999px;
+  background: var(--xp-control-face);
+  box-shadow: var(--xp-bevel-raised);
+}
+
+/* Badges → each variant reads as a distinct Luna pill */
 [data-skin="xp"] [data-slot="badge"] { border-radius: var(--xp-radius); }
+[data-skin="xp"] [data-slot="badge"][data-variant="secondary"] {
+  background: var(--xp-control-face);
+  border: 1px solid var(--border);
+  color: var(--secondary-foreground);
+}
+[data-skin="xp"] [data-slot="badge"][data-variant="outline"] {
+  background: var(--popover);
+  border: 1px solid var(--border);
+  color: var(--foreground);
+}
+[data-skin="xp"] [data-slot="badge"][data-variant="destructive"] {
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--destructive) 70%, #ff8a6a),
+    var(--destructive)
+  );
+  border: 1px solid color-mix(in srgb, var(--destructive) 72%, #000);
+  color: #fff;
+}
 
 [data-skin="xp"] [data-slot="progress"] {
   border-radius: var(--xp-radius);

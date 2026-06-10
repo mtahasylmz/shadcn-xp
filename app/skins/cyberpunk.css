@@ -49,12 +49,14 @@
   --cy-glow: 9px;          /* neon glow radius */
   --cy-border-width: 1px;  /* universal hairline weight */
   --cy-scanline: 0.05;     /* scanline overlay opacity (0 = off) */
+  --cy-scanline-size: 3px; /* scanline pitch (line repeats every N px) */
   --cy-text-glow: 10px;    /* heading / label neon blur */
 
   /* Derived surfaces routed through tokens */
   --cy-bg: var(--background);
   --cy-panel: var(--card);
   --cy-edge: var(--primary);
+  --cy-well: color-mix(in srgb, var(--background) 60%, #000); /* recessed input/track well */
 
   /* Panel chamfer (large notch) */
   --cy-clip: polygon(
@@ -74,8 +76,9 @@
   /* Reusable scanline texture (gated by --cy-scanline) */
   --cy-scanlines: repeating-linear-gradient(
     0deg,
-    transparent 0 2px,
-    color-mix(in srgb, var(--primary) calc(var(--cy-scanline) * 100%), transparent) 2px 3px
+    transparent 0 calc(var(--cy-scanline-size) - 1px),
+    color-mix(in srgb, var(--primary) calc(var(--cy-scanline) * 100%), transparent)
+      calc(var(--cy-scanline-size) - 1px) var(--cy-scanline-size)
   );
 }
 
@@ -83,7 +86,7 @@
   background: var(--cy-bg);
   color: var(--foreground);
 }
-[data-skin="cyberpunk"] ::selection { background: var(--accent); color: #fff; }
+[data-skin="cyberpunk"] ::selection { background: var(--accent); color: var(--accent-foreground); }
 
 /* Glow is scoped to headings, titles and neon labels only — not every node */
 [data-skin="cyberpunk"] .hero-kicker,
@@ -158,9 +161,14 @@
 [data-skin="cyberpunk"] .app-nav a::before { content: "> "; color: var(--border); }
 [data-skin="cyberpunk"] .app-nav a:hover { background: var(--accent); color: var(--cy-bg); }
 
-/* ----- Buttons (notch now driven by --cy-notch-sm) ----- */
+/* ----- Buttons (notch now driven by --cy-notch-sm) -----
+   The real border is transparent: clip-path crops it and leaves a diagonal
+   stub at the notch. The edge is drawn instead by a masked ::after (same
+   technique as the panels) clipped to --cy-clip-sm, so the chamfer line is
+   continuous. currentColor keeps each variant's edge in its own neon. */
 [data-skin="cyberpunk"] .group\/button {
-  border: var(--cy-border-width) solid var(--primary);
+  position: relative;
+  border: var(--cy-border-width) solid transparent;
   border-radius: var(--radius);
   clip-path: var(--cy-clip-sm);
   background: color-mix(in srgb, var(--primary) 8%, transparent);
@@ -173,6 +181,20 @@
     0 0 var(--cy-glow) color-mix(in srgb, var(--primary) 50%, transparent),
     inset 0 0 calc(var(--cy-glow) * 1.3) color-mix(in srgb, var(--primary) 12%, transparent);
 }
+[data-skin="cyberpunk"] .group\/button::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  clip-path: var(--cy-clip-sm);
+  padding: var(--cy-border-width);
+  background: currentColor;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+}
 [data-skin="cyberpunk"] .group\/button:hover {
   background: var(--primary);
   color: var(--primary-foreground);
@@ -180,19 +202,23 @@
   transform: skewX(-2deg);
 }
 [data-skin="cyberpunk"] .group\/button:active:not(:disabled) {
-  background: color-mix(in srgb, var(--primary) 80%, #000);
+  background: color-mix(in srgb, var(--primary) 80%, var(--background));
   transform: translateY(1px);
 }
-[data-skin="cyberpunk"] .group\/button:focus-visible { outline: var(--cy-border-width) dashed var(--accent); outline-offset: 2px; }
+[data-skin="cyberpunk"] .group\/button:focus-visible {
+  /* negative offset keeps the ring inside the chamfer clip (a positive
+     offset would be cropped away by clip-path) */
+  outline: var(--cy-border-width) dashed var(--ring);
+  outline-offset: -3px;
+}
 
 /* Default = solid neon fill */
 [data-skin="cyberpunk"] .group\/button[data-variant="default"] {
   background: var(--primary);
   color: var(--primary-foreground);
 }
-/* Secondary = magenta accent, distinct from cyan family */
+/* Secondary = magenta accent, distinct from cyan family (edge via ::after currentColor) */
 [data-skin="cyberpunk"] .group\/button[data-variant="secondary"] {
-  border-color: var(--accent);
   color: var(--accent);
   background: color-mix(in srgb, var(--accent) 10%, transparent);
   box-shadow:
@@ -204,20 +230,20 @@
   color: var(--accent-foreground);
   box-shadow: 0 0 calc(var(--cy-glow) * 2) var(--accent);
 }
-/* Outline = transparent, hairline cyan frame only */
+/* Outline = transparent, hairline cyan frame only (single ::after edge —
+   the old inset 0 0 0 ring doubled the chamfered border, so it is replaced
+   with a soft inset glow like the other variants) */
 [data-skin="cyberpunk"] .group\/button[data-variant="outline"] {
   background: transparent;
-  border-color: var(--primary);
   color: var(--primary);
-  box-shadow: inset 0 0 0 var(--cy-border-width) color-mix(in srgb, var(--primary) 40%, transparent);
+  box-shadow: inset 0 0 calc(var(--cy-glow) * 1.3) color-mix(in srgb, var(--primary) 12%, transparent);
 }
 [data-skin="cyberpunk"] .group\/button[data-variant="outline"]:hover {
   background: color-mix(in srgb, var(--primary) 14%, transparent);
   color: var(--primary);
 }
-/* Destructive = neon red */
+/* Destructive = neon red (edge via ::after currentColor) */
 [data-skin="cyberpunk"] .group\/button[data-variant="destructive"] {
-  border-color: var(--destructive);
   color: var(--destructive);
   background: color-mix(in srgb, var(--destructive) 10%, transparent);
   box-shadow: 0 0 var(--cy-glow) color-mix(in srgb, var(--destructive) 50%, transparent);
@@ -242,6 +268,24 @@
   border: 0; box-shadow: none; clip-path: none; background: none;
   text-transform: none; color: var(--accent); text-decoration: underline;
 }
+/* Bare variants carry no chamfer frame */
+[data-skin="cyberpunk"] .group\/button[data-variant="ghost"]::after,
+[data-skin="cyberpunk"] .group\/button[data-variant="link"]::after {
+  content: none;
+}
+/* Disabled = powered down: muted fill, no glow, no neon edge */
+[data-skin="cyberpunk"] .group\/button:disabled,
+[data-skin="cyberpunk"] .group\/button[aria-disabled="true"] {
+  background: var(--muted);
+  color: var(--muted-foreground);
+  box-shadow: none;
+  text-shadow: none;
+  transform: none;
+}
+[data-skin="cyberpunk"] .group\/button:disabled::after,
+[data-skin="cyberpunk"] .group\/button[aria-disabled="true"]::after {
+  background: color-mix(in srgb, var(--muted-foreground) 45%, transparent);
+}
 
 /* ----- Inputs ----- */
 [data-skin="cyberpunk"] [data-slot="input"],
@@ -250,7 +294,7 @@
 [data-skin="cyberpunk"] .skin-select {
   border: var(--cy-border-width) solid var(--input);
   border-radius: var(--radius);
-  background: color-mix(in srgb, var(--background) 60%, #000);
+  background: var(--cy-well);
   color: var(--foreground);
   box-shadow: inset 0 0 calc(var(--cy-glow) * 1.1) color-mix(in srgb, var(--primary) 8%, transparent);
 }
@@ -308,7 +352,7 @@
 [data-skin="cyberpunk"] [data-slot="checkbox"] {
   border: var(--cy-border-width) solid var(--primary);
   border-radius: var(--radius);
-  background: color-mix(in srgb, var(--background) 60%, #000);
+  background: var(--cy-well);
   color: var(--primary-foreground);
 }
 [data-skin="cyberpunk"] [data-slot="checkbox"][data-state="checked"] {
@@ -317,8 +361,19 @@
 }
 [data-skin="cyberpunk"] [data-slot="radio-group-item"] {
   border: var(--cy-border-width) solid var(--primary);
-  background: color-mix(in srgb, var(--background) 60%, #000);
+  background: var(--cy-well);
   color: var(--primary);
+}
+/* Checked radio lights up: neon halo + solid primary indicator dot */
+[data-skin="cyberpunk"] [data-slot="radio-group-item"][data-state="checked"] {
+  box-shadow: 0 0 var(--cy-glow) color-mix(in srgb, var(--primary) 60%, transparent);
+}
+[data-skin="cyberpunk"] [data-slot="radio-group-indicator"] {
+  color: var(--primary);
+}
+[data-skin="cyberpunk"] [data-slot="radio-group-indicator"] svg {
+  fill: var(--primary);
+  stroke: var(--primary);
 }
 
 /* ----- Tabs ----- */
@@ -349,19 +404,57 @@
 [data-skin="cyberpunk"] [data-slot="badge"][data-variant="default"] {
   background: var(--accent);
   border-color: var(--accent);
-  color: var(--cy-bg);
+  color: var(--accent-foreground);
+}
+/* Secondary = magenta accent tint, distinct from the cyan outline pill */
+[data-skin="cyberpunk"] [data-slot="badge"][data-variant="secondary"] {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+/* Destructive = neon red warning */
+[data-skin="cyberpunk"] [data-slot="badge"][data-variant="destructive"] {
+  border-color: var(--destructive);
+  color: var(--destructive);
+  background: color-mix(in srgb, var(--destructive) 12%, transparent);
+}
+/* Outline keeps the bare cyan hairline but on the well surface for contrast */
+[data-skin="cyberpunk"] [data-slot="badge"][data-variant="outline"] {
+  border-color: color-mix(in srgb, var(--primary) 70%, transparent);
+  color: var(--foreground);
+  background: transparent;
 }
 
 /* ----- Switch / Progress / Slider ----- */
 [data-skin="cyberpunk"] [data-slot="switch"] {
   border: var(--cy-border-width) solid var(--primary);
   border-radius: var(--radius);
-  background: color-mix(in srgb, var(--background) 60%, #000);
+  background: var(--cy-well);
+}
+/* Checked = lit neon track; unchecked stays a dark well */
+[data-skin="cyberpunk"] [data-slot="switch"][data-state="checked"] {
+  background: var(--primary);
+  box-shadow: 0 0 var(--cy-glow) color-mix(in srgb, var(--primary) 60%, transparent);
+}
+/* Square HUD thumb, visible in both states */
+[data-skin="cyberpunk"] [data-slot="switch-thumb"] {
+  background: var(--foreground);
+  border-radius: 0;
+  box-shadow: 0 0 calc(var(--cy-glow) * 0.6) color-mix(in srgb, var(--primary) 40%, transparent);
+}
+[data-skin="cyberpunk"] [data-slot="switch"][data-state="checked"] [data-slot="switch-thumb"] {
+  background: var(--primary-foreground);
+}
+[data-skin="cyberpunk"] [data-slot="switch"]:focus-visible,
+[data-skin="cyberpunk"] [data-slot="checkbox"]:focus-visible,
+[data-skin="cyberpunk"] [data-slot="radio-group-item"]:focus-visible {
+  outline: var(--cy-border-width) dashed var(--ring);
+  outline-offset: 2px;
 }
 [data-skin="cyberpunk"] [data-slot="progress"] {
   border: var(--cy-border-width) solid var(--cy-edge);
   border-radius: var(--radius);
-  background: color-mix(in srgb, var(--background) 60%, #000);
+  background: var(--cy-well);
 }
 [data-skin="cyberpunk"] [data-slot="progress-indicator"] {
   background: var(--primary);
@@ -370,7 +463,7 @@
 [data-skin="cyberpunk"] [data-slot="slider-track"] {
   border: var(--cy-border-width) solid var(--cy-edge);
   border-radius: var(--radius);
-  background: color-mix(in srgb, var(--background) 60%, #000);
+  background: var(--cy-well);
 }
 [data-skin="cyberpunk"] [data-slot="slider-range"] {
   background: var(--primary);

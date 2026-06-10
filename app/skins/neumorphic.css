@@ -5,7 +5,7 @@
    page. Borderless. Pure CSS over stock shadcn.
 
    CONFIGURABILITY: every depth value is composed from a handful of shape
-   knobs (--neu-distance, --neu-blur, --neu-tint, --neu-fill-lift) via calc()
+   knobs (--neu-distance, --neu-blur, --neu-tint, --neu-elevate, --neu-glow) via calc()
    and color-mix(). Brand colour, surfaces, borders and radii are routed
    through the standard tokens (--primary, --card, --border, --radius …) so
    the editor genuinely retunes the whole skin from one place.
@@ -66,7 +66,7 @@
 
   /* Derived light/shade tones — color-mix lets --neu-tint scale contrast. */
   --neu-light: color-mix(in srgb, #ffffff calc(var(--neu-tint) * 100% + 30%), var(--background));
-  --neu-dark:  color-mix(in srgb, #9baabf calc(var(--neu-tint) * 100% + 20%), var(--background));
+  --neu-dark:  color-mix(in srgb, color-mix(in srgb, var(--border) 62%, #56627a) calc(var(--neu-tint) * 100% + 20%), var(--background));
 
   /* Secondary distance/blur for small inline controls. */
   --neu-d2: calc(var(--neu-distance) * 0.66);
@@ -94,11 +94,14 @@
 
   /* Drop shadow tuned for COLOURED fills — neutral light/dark clay shadows
      look wrong on purple, so coloured extrusions get a tinted drop + an
-     inner top highlight that reads against the fill itself. */
+     inner top highlight that reads against the fill itself. The recipe is
+     written once against --neu-fill-color; variants (destructive, etc.)
+     retarget it by overriding that property locally. */
+  --neu-fill-color: var(--primary);
   --neu-raised-fill:
     inset 0 1px 1px color-mix(in srgb, #ffffff 55%, transparent),
     inset 0 -2px 4px color-mix(in srgb, #000000 18%, transparent),
-    var(--neu-d2) var(--neu-d2) calc(var(--neu-blur) * 0.9) color-mix(in srgb, var(--primary) 35%, transparent);
+    var(--neu-d2) var(--neu-d2) calc(var(--neu-blur) * 0.9) color-mix(in srgb, var(--neu-fill-color) 35%, transparent);
 
   /* Focus halo that survives the soft shadows (used on every control). */
   --neu-focus-ring: 0 0 0 calc(var(--neu-glow) * 0.5) color-mix(in srgb, var(--ring) 45%, transparent);
@@ -246,17 +249,16 @@
   box-shadow: var(--neu-raised-sm);
 }
 
-/* DESTRUCTIVE — coloured fill like default but red, white text (AA). */
+/* DESTRUCTIVE — coloured fill like default but red, white text (AA).
+   Same --neu-raised-fill recipe, retargeted via --neu-fill-color. */
 [data-skin="neumorphic"] .group\/button[data-variant="destructive"] {
+  --neu-fill-color: var(--destructive);
   background: linear-gradient(145deg,
     color-mix(in srgb, var(--destructive) 88%, #ffffff),
     var(--destructive));
   color: var(--destructive-foreground);
   font-weight: 700;
-  box-shadow:
-    inset 0 1px 1px color-mix(in srgb, #ffffff 50%, transparent),
-    inset 0 -2px 4px color-mix(in srgb, #000000 18%, transparent),
-    var(--neu-d2) var(--neu-d2) calc(var(--neu-blur) * 0.9) color-mix(in srgb, var(--destructive) 35%, transparent);
+  box-shadow: var(--neu-raised-fill);
 }
 [data-skin="neumorphic"] .group\/button[data-variant="destructive"]:hover { color: var(--destructive-foreground); filter: brightness(1.04); }
 
@@ -267,6 +269,34 @@
   color: var(--primary);
   text-decoration: underline;
   text-underline-offset: 3px;
+}
+
+/* Variant-aware focus: append the halo to each variant's RESTING shadow so
+   focusing an inset (outline) or flat (ghost/link) button never pops it to
+   raised. Placed after the variant rules so they win the cascade. */
+[data-skin="neumorphic"] .group\/button[data-variant="secondary"]:focus-visible {
+  box-shadow: var(--neu-raised-sm), var(--neu-focus-ring);
+}
+[data-skin="neumorphic"] .group\/button[data-variant="outline"]:focus-visible {
+  box-shadow: var(--neu-inset-sm), var(--neu-focus-ring);
+}
+[data-skin="neumorphic"] .group\/button[data-variant="ghost"]:focus-visible,
+[data-skin="neumorphic"] .group\/button[data-variant="link"]:focus-visible {
+  box-shadow: var(--neu-focus-ring);
+}
+[data-skin="neumorphic"] .group\/button[data-variant="destructive"]:focus-visible {
+  box-shadow: var(--neu-raised-fill), var(--neu-focus-ring);
+}
+
+/* DISABLED — flat, muted, visibly non-interactive across every variant:
+   no bevel, no glow, no coloured fill. */
+[data-skin="neumorphic"] .group\/button:disabled,
+[data-skin="neumorphic"] .group\/button[data-variant]:disabled {
+  background: var(--background);
+  box-shadow: none;
+  color: var(--muted-foreground);
+  filter: none;
+  transform: none;
 }
 
 [data-skin="neumorphic"] [data-slot="input"],
@@ -287,12 +317,24 @@
   outline: 0;
   box-shadow: var(--neu-inset), var(--neu-focus-ring);
 }
+/* Disabled fields go shallow + muted so they stop reading as editable wells. */
+[data-skin="neumorphic"] [data-slot="input"]:disabled,
+[data-skin="neumorphic"] [data-slot="textarea"]:disabled,
+[data-skin="neumorphic"] [data-slot="select-trigger"]:disabled {
+  box-shadow: var(--neu-inset-sm);
+  color: var(--muted-foreground);
+}
 
 [data-skin="neumorphic"] [data-slot="card"] {
   border: 0;
   border-radius: calc(var(--radius) + 6px);
   background: var(--background);
   box-shadow: var(--neu-raised-lg);
+}
+/* Cards nested inside an already-elevated specimen step down one level so
+   child surfaces don't repeat their parent's elevation. */
+[data-skin="neumorphic"] .specimen [data-slot="card"] {
+  box-shadow: var(--neu-raised);
 }
 
 [data-skin="neumorphic"] [data-slot="popover-content"],
@@ -391,14 +433,21 @@
   color: var(--primary-foreground);
   box-shadow: var(--neu-raised-fill);
 }
+/* Secondary: raised clay with muted ink; outline: carved-in pill. Together
+   with default (purple fill) and destructive (red fill) all four read apart. */
+[data-skin="neumorphic"] [data-slot="badge"][data-variant="secondary"] {
+  color: var(--muted-foreground);
+}
+[data-skin="neumorphic"] [data-slot="badge"][data-variant="outline"] {
+  box-shadow: var(--neu-inset-sm);
+}
 [data-skin="neumorphic"] [data-slot="badge"][data-variant="destructive"] {
+  --neu-fill-color: var(--destructive);
   background: linear-gradient(145deg,
     color-mix(in srgb, var(--destructive) 88%, #ffffff),
     var(--destructive));
   color: var(--destructive-foreground);
-  box-shadow:
-    inset 0 1px 1px color-mix(in srgb, #ffffff 50%, transparent),
-    var(--neu-d2) var(--neu-d2) calc(var(--neu-blur) * 0.8) color-mix(in srgb, var(--destructive) 35%, transparent);
+  box-shadow: var(--neu-raised-fill);
 }
 
 /* Switch — inset track when off, glowing raised fill + raised thumb when on. */
@@ -420,6 +469,27 @@
 [data-skin="neumorphic"] [data-slot="switch-thumb"] {
   background: var(--neu-light);
   box-shadow: var(--neu-raised-sm);
+}
+/* On the coloured ON track the thumb goes solid white with a crisp drop so
+   checked reads unmistakably different from the grey OFF state. */
+[data-skin="neumorphic"] [data-slot="switch"][data-state="checked"] [data-slot="switch-thumb"] {
+  background: var(--primary-foreground);
+  box-shadow: 0 1px 3px color-mix(in srgb, #000000 30%, transparent);
+}
+[data-skin="neumorphic"] [data-slot="switch"]:focus-visible,
+[data-skin="neumorphic"] [data-slot="checkbox"]:focus-visible,
+[data-skin="neumorphic"] [data-slot="radio-group-item"]:focus-visible {
+  outline: 0;
+  box-shadow: var(--neu-inset-sm), var(--neu-focus-ring);
+}
+[data-skin="neumorphic"] [data-slot="checkbox"][data-state="checked"]:focus-visible {
+  box-shadow: var(--neu-raised-fill), var(--neu-focus-ring);
+}
+[data-skin="neumorphic"] [data-slot="switch"][data-state="checked"]:focus-visible {
+  box-shadow:
+    var(--neu-inset-sm),
+    0 0 var(--neu-glow) color-mix(in srgb, var(--primary) 45%, transparent),
+    var(--neu-focus-ring);
 }
 
 [data-skin="neumorphic"] [data-slot="progress"] {

@@ -185,26 +185,26 @@
 }
 [data-skin="glass"] .group\/button:focus-visible {
   outline: 0;
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.45);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 65%, transparent);
 }
 
 /* DEFAULT — bright bevelled glass lozenge with an outer glow halo.
    Distinctly more luminous than the flat default badge. */
 [data-skin="glass"] .group\/button[data-variant="default"] {
-  background: linear-gradient(180deg, #ffffff 0%, rgba(255, 255, 255, 0.85) 100%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--primary) 50%, #fff) 0%, color-mix(in srgb, var(--primary) 92%, transparent) 100%);
   color: var(--primary-foreground);
-  border-color: rgba(255, 255, 255, 0.7);
+  border-color: color-mix(in srgb, var(--primary) 76%, transparent);
   box-shadow:
     0 6px 18px rgba(0, 0, 0, 0.25),
-    0 0 24px rgba(255, 255, 255, 0.25),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+    0 0 24px color-mix(in srgb, var(--primary) 27%, transparent),
+    inset 0 1px 0 0 color-mix(in srgb, var(--primary) 98%, transparent);
 }
 [data-skin="glass"] .group\/button[data-variant="default"]:hover {
-  background: #ffffff;
+  background: color-mix(in srgb, var(--primary) 40%, #fff);
   box-shadow:
     0 8px 22px rgba(0, 0, 0, 0.28),
-    0 0 30px rgba(255, 255, 255, 0.35),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.9);
+    0 0 30px color-mix(in srgb, var(--primary) 38%, transparent),
+    inset 0 1px 0 0 color-mix(in srgb, var(--primary) 98%, transparent);
 }
 
 /* SECONDARY — translucent frosted fill, no glow */
@@ -231,15 +231,15 @@
 
 /* DESTRUCTIVE — tinted rose glass with matching glow */
 [data-skin="glass"] .group\/button[data-variant="destructive"] {
-  background: linear-gradient(180deg, rgba(255, 107, 129, 0.95) 0%, rgba(255, 107, 129, 0.78) 100%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--destructive) 95%, transparent) 0%, color-mix(in srgb, var(--destructive) 78%, transparent) 100%);
   color: #2a0a12;
-  border-color: rgba(255, 170, 185, 0.65);
+  border-color: color-mix(in srgb, var(--destructive) 50%, #fff);
   box-shadow:
-    0 6px 18px rgba(120, 10, 30, 0.4),
+    0 6px 18px color-mix(in srgb, color-mix(in srgb, var(--destructive) 45%, #000) 40%, transparent),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.45);
 }
 [data-skin="glass"] .group\/button[data-variant="destructive"]:hover {
-  background: linear-gradient(180deg, #ff7d90 0%, rgba(255, 107, 129, 0.85) 100%);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--destructive) 92%, #fff) 0%, color-mix(in srgb, var(--destructive) 85%, transparent) 100%);
 }
 
 /* GHOST — no fill, no edge until hovered */
@@ -265,6 +265,17 @@
   text-decoration: underline;
 }
 
+/* DISABLED — flat muted pane: no bevel, no glow, no lift */
+[data-skin="glass"] .group\/button:disabled,
+[data-skin="glass"] .group\/button[data-disabled] {
+  background: var(--muted);
+  color: color-mix(in srgb, var(--foreground) 45%, transparent);
+  border-color: var(--glass-hairline);
+  box-shadow: none;
+  text-shadow: none;
+  cursor: not-allowed;
+}
+
 [data-skin="glass"] [data-slot="input"],
 [data-skin="glass"] [data-slot="textarea"],
 [data-skin="glass"] [data-slot="select-trigger"],
@@ -284,8 +295,8 @@
 [data-skin="glass"] [data-slot="textarea"]:focus-visible,
 [data-skin="glass"] [data-slot="select-trigger"]:focus-visible {
   outline: 0;
-  border-color: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
+  border-color: color-mix(in srgb, var(--ring) 86%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 30%, transparent);
 }
 
 [data-skin="glass"] [data-slot="card"] {
@@ -311,8 +322,8 @@
 [data-skin="glass"] [data-slot="hover-card-content"] {
   border: var(--glass-border);
   border-radius: calc(var(--radius) - 2px);
-  background: rgba(30, 27, 75, 0.6);
-  color: var(--foreground);
+  background: var(--popover);
+  color: var(--popover-foreground);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
   box-shadow:
@@ -322,12 +333,12 @@
 [data-skin="glass"] [data-slot="tooltip-content"] {
   border: var(--glass-border);
   border-radius: calc(var(--radius) * 0.625);
-  background: rgba(20, 16, 50, 0.8);
-  color: var(--foreground);
+  background: color-mix(in srgb, var(--popover) 60%, rgb(10 8 30 / 0.95));
+  color: var(--popover-foreground);
   -webkit-backdrop-filter: var(--glass-blur-soft);
   backdrop-filter: var(--glass-blur-soft);
 }
-[data-skin="glass"] [data-slot="tooltip-content"] svg { fill: rgba(20, 16, 50, 0.8); }
+[data-skin="glass"] [data-slot="tooltip-content"] svg { fill: color-mix(in srgb, var(--popover) 60%, rgb(10 8 30 / 0.95)); }
 
 [data-skin="glass"] [data-slot="dropdown-menu-item"][data-highlighted],
 [data-skin="glass"] [data-slot="context-menu-item"][data-highlighted],
@@ -343,8 +354,9 @@
 [data-skin="glass"] [data-slot="sheet-content"] {
   border: var(--glass-border);
   border-radius: calc(var(--radius) + 6px);
-  background: rgba(30, 27, 75, 0.62);
-  color: var(--foreground);
+  /* dialogs: same token, nudged denser/darker so modals sit above popovers */
+  background: color-mix(in srgb, var(--popover) 92%, #1e1b4b);
+  color: var(--popover-foreground);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
   box-shadow:
@@ -358,12 +370,23 @@
   background: var(--glass-bg);
   color: var(--primary-foreground);
 }
-[data-skin="glass"] [data-slot="checkbox"][data-state="checked"] { background: #ffffff; }
+[data-skin="glass"] [data-slot="checkbox"][data-state="checked"] {
+  background: color-mix(in srgb, var(--primary) 50%, #fff);
+  border-color: color-mix(in srgb, var(--primary) 76%, transparent);
+}
 [data-skin="glass"] [data-slot="radio-group-item"] {
   border: 1px solid var(--glass-border-color);
   border-radius: 9999px;
   background: var(--glass-bg);
   color: #ffffff;
+}
+[data-skin="glass"] [data-slot="radio-group-item"][data-state="checked"] {
+  border-color: color-mix(in srgb, var(--ring) 86%, transparent);
+}
+/* the stock fill-primary indicator resolves dark — force the dot white */
+[data-skin="glass"] [data-slot="radio-group-item"] svg {
+  fill: #fff;
+  color: #fff;
 }
 
 [data-skin="glass"] [data-slot="tabs-list"] {
@@ -393,14 +416,48 @@
 }
 /* Flat label fill — deliberately less luminous than the default button. */
 [data-skin="glass"] [data-slot="badge"][data-variant="default"] {
-  background: rgba(255, 255, 255, 0.9);
+  background: color-mix(in srgb, var(--primary) 97%, transparent);
   color: var(--primary-foreground);
+  border-color: color-mix(in srgb, var(--primary) 76%, transparent);
   box-shadow: none;
+}
+/* SECONDARY — frosted chip, light text */
+[data-skin="glass"] [data-slot="badge"][data-variant="secondary"] {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  border-color: var(--glass-border-color);
+}
+/* OUTLINE — clear pane: hairline frame only */
+[data-skin="glass"] [data-slot="badge"][data-variant="outline"] {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--foreground);
+  border-color: var(--glass-border-color);
+}
+/* DESTRUCTIVE — rose glass chip, dark legible text */
+[data-skin="glass"] [data-slot="badge"][data-variant="destructive"] {
+  background: color-mix(in srgb, var(--destructive) 88%, transparent);
+  color: #2a0a12;
+  border-color: color-mix(in srgb, var(--destructive) 50%, #fff);
 }
 
 [data-skin="glass"] [data-slot="switch"] {
   border: 1px solid var(--glass-border-color);
   background: var(--glass-bg);
+  transition: background 140ms ease;
+}
+/* checked track reads as bright white glass, clearly apart from the frosted off state */
+[data-skin="glass"] [data-slot="switch"][data-state="checked"] {
+  background: color-mix(in srgb, var(--primary) 92%, transparent);
+  border-color: color-mix(in srgb, var(--primary) 76%, transparent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--primary) 30%, transparent);
+}
+[data-skin="glass"] [data-slot="switch-thumb"] {
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+}
+[data-skin="glass"] [data-slot="switch"][data-state="checked"] [data-slot="switch-thumb"] {
+  /* white-on-white: keep the thumb a shaded glass bead so it still separates */
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.45), inset 0 -1px 0 rgba(0, 0, 0, 0.18);
 }
 
 [data-skin="glass"] [data-slot="progress"] {

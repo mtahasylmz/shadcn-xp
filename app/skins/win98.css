@@ -6,7 +6,7 @@
    ========================================================================== */
 
 :root[data-skin="win98"] {
-  --app-font-sans: "Tahoma", "MS Sans Serif", "Pixelated MS Sans Serif", Geneva, sans-serif;
+  --app-font-sans: "MS Sans Serif", "Pixelated MS Sans Serif", "Tahoma", Geneva, sans-serif;
   --app-font-heading: var(--app-font-sans);
   --app-font-mono: "Fixedsys", "Courier New", monospace;
   --app-font-size: 13px;
@@ -56,6 +56,11 @@
   --w98-title-b: #1084d0;             /* active title end  (azure) */
   /* Drop-shadow distance behind floating windows (dialogs/menus).          */
   --w98-window-drop: 2px;
+  /* Info-tooltip yellow, hyperlink blue, and titlebar tag tint — the last
+     stray chrome literals, routed here so the whole palette retunes.        */
+  --w98-info-bg: #ffffe1;
+  --w98-link: #0000ee;
+  --w98-tag: color-mix(in srgb, var(--primary-foreground) 80%, var(--primary));
 
   /* Raised bevel: highlight on top/left, shade+black on bottom/right.
      Inner soft layers use --bevel; outer crisp layers stay 1px for the
@@ -143,7 +148,7 @@
   box-shadow: var(--w98-raised);
 }
 [data-skin="win98"] .specimen-title { font-weight: 700; color: var(--primary-foreground); }
-[data-skin="win98"] .specimen-tag { color: #c8c8e0; }
+[data-skin="win98"] .specimen-tag { color: var(--w98-tag); }
 [data-skin="win98"] .app-nav a { border-radius: var(--radius); }
 [data-skin="win98"] .app-nav a:hover { background: var(--accent); color: var(--accent-foreground); }
 
@@ -171,16 +176,23 @@
 [data-skin="win98"] .group\/button:focus-visible { outline: 1px dotted var(--foreground); outline-offset: -4px; }
 
 /* Variant differentiation — all four read distinctly within the grey system. */
-[data-skin="win98"] .group\/button[data-variant="default"] { font-weight: 700; }
+/* Default = the canonical Win98 "default push button": extra 1px black ring. */
+[data-skin="win98"] .group\/button[data-variant="default"] {
+  font-weight: 700;
+  background: var(--w98-shadow-face);
+  color: var(--foreground);
+  box-shadow: var(--w98-frame), var(--w98-raised);
+}
 [data-skin="win98"] .group\/button[data-variant="secondary"] {
   background: var(--w98-shadow-face);
   color: var(--foreground);
   font-weight: 400;
 }
+/* Outline = flat control with a plain 1px border (no default-button ring).  */
 [data-skin="win98"] .group\/button[data-variant="outline"] {
   background: var(--w98-shadow-face);
   color: var(--foreground);
-  box-shadow: var(--w98-frame), var(--w98-raised);
+  box-shadow: inset 0 0 0 1px var(--border);
 }
 [data-skin="win98"] .group\/button[data-variant="ghost"] {
   background: transparent;
@@ -192,14 +204,25 @@
   box-shadow: var(--w98-raised);
 }
 [data-skin="win98"] .group\/button[data-variant="destructive"] {
-  color: var(--destructive);
+  background: var(--destructive);
+  color: var(--primary-foreground);
+  box-shadow: var(--w98-raised);
   font-weight: 700;
 }
 [data-skin="win98"] .group\/button[data-variant="link"] {
   background: none;
   box-shadow: none;
-  color: #0000ee;
+  color: var(--w98-link);
   text-decoration: underline;
+}
+/* Disabled: flat muted face + engraved grey label — clearly non-pressable.  */
+[data-skin="win98"] .group\/button:disabled {
+  background: var(--w98-shadow-face);
+  color: var(--w98-shadow-mid);
+  text-shadow: 1px 1px 0 var(--w98-shadow-light);
+  box-shadow: inset 0 0 0 1px var(--w98-shadow-mid);
+  font-weight: 400;
+  opacity: 1;
 }
 
 [data-skin="win98"] [data-slot="input"],
@@ -211,6 +234,16 @@
   background: var(--input);
   color: var(--foreground);
   box-shadow: var(--w98-field);
+}
+/* Field focus: keep the sunken bevel, add a ring derived from --ring.       */
+[data-skin="win98"] [data-slot="input"]:focus-visible,
+[data-skin="win98"] [data-slot="textarea"]:focus-visible,
+[data-skin="win98"] [data-slot="select-trigger"]:focus-visible,
+[data-skin="win98"] .skin-select:focus-visible {
+  outline: none;
+  box-shadow:
+    var(--w98-field),
+    0 0 0 2px color-mix(in srgb, var(--ring) 40%, transparent);
 }
 [data-skin="win98"] [data-slot="card"] {
   border: 0;
@@ -233,11 +266,11 @@
 }
 [data-skin="win98"] [data-slot="tooltip-content"] {
   border-radius: var(--radius);
-  background: #ffffe1;
+  background: var(--w98-info-bg);
   color: var(--foreground);
   border: 1px solid var(--w98-shadow-dark);
 }
-[data-skin="win98"] [data-slot="tooltip-content"] svg { fill: #ffffe1; }
+[data-skin="win98"] [data-slot="tooltip-content"] svg { fill: var(--w98-info-bg); }
 [data-skin="win98"] [data-slot="dropdown-menu-item"][data-highlighted],
 [data-skin="win98"] [data-slot="context-menu-item"][data-highlighted],
 [data-skin="win98"] [data-slot="select-item"][data-highlighted],
@@ -247,7 +280,8 @@
   color: var(--accent-foreground);
 }
 
-/* Dialogs: window frame, raised face, and a hard offset drop shadow.       */
+/* Dialogs: window frame, raised face, and a hard SOLID offset drop shadow
+   (Win98 had no soft alpha shadows — the drop is a flat black offset).      */
 [data-skin="win98"] [data-slot="dialog-content"],
 [data-skin="win98"] [data-slot="alert-dialog-content"],
 [data-skin="win98"] [data-slot="sheet-content"] {
@@ -256,7 +290,7 @@
   box-shadow:
     var(--w98-frame),
     var(--w98-raised),
-    var(--w98-window-drop) var(--w98-window-drop) 0 0 rgba(0, 0, 0, .4);
+    var(--w98-window-drop) var(--w98-window-drop) 0 0 var(--w98-shadow-dark);
   border: 0;
 }
 
@@ -313,9 +347,36 @@
   box-shadow: var(--w98-raised);
   border: 0;
 }
+/* Badge variants: each pair pulled from tokens so all four read distinctly. */
+[data-skin="win98"] [data-slot="badge"][data-variant="secondary"] {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+}
+[data-skin="win98"] [data-slot="badge"][data-variant="outline"] {
+  background: var(--background);
+  color: var(--foreground);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+[data-skin="win98"] [data-slot="badge"][data-variant="destructive"] {
+  background: var(--destructive);
+  color: var(--primary-foreground);
+}
+/* Switch: sunken white channel; checked track flips to selection navy.      */
 [data-skin="win98"] [data-slot="switch"] {
   border-radius: var(--radius);
+  background: var(--input);
   box-shadow: var(--w98-field);
+  border: 0;
+}
+[data-skin="win98"] [data-slot="switch"][data-state="checked"] {
+  background: var(--primary);
+}
+/* Thumb: square raised grey button with the 1px black frame isolating it
+   from the track — without it the bevel melts into the white channel.       */
+[data-skin="win98"] [data-slot="switch-thumb"] {
+  border-radius: var(--radius);
+  background: var(--w98-shadow-face);
+  box-shadow: var(--w98-frame), var(--w98-raised);
 }
 [data-skin="win98"] [data-slot="progress"] {
   border-radius: var(--radius);

@@ -52,6 +52,9 @@
   --aqua-shadow-strength: 0.22;   /* master drop-shadow alpha multiplier     */
   --aqua-focus-spread: 4px;       /* blue focus halo spread radius           */
 
+  /* Focus halo color — derived from the ring token (one source of truth) */
+  --aqua-focus-ring: color-mix(in srgb, var(--ring) 60%, transparent);
+
   /* Iconic Aqua pinstripe (fine 1px-pitch variant) */
   --aqua-pinstripe:
     repeating-linear-gradient(0deg,
@@ -69,13 +72,17 @@
 [data-skin="aqua"] body {
   background:
     repeating-linear-gradient(0deg, rgba(255,255,255,.35) 0 3px, rgba(255,255,255,0) 3px 4px),
-    linear-gradient(#d7e0ee, #c2cfe2);
+    linear-gradient(
+      color-mix(in srgb, var(--background) 92%, #fff),
+      color-mix(in srgb, var(--background) 94%, var(--aqua-gel-lo)));
 }
 [data-skin="aqua"] ::selection { background: var(--accent); color: #06224f; }
 
 /* ---- Shell -------------------------------------------------------------- */
 [data-skin="aqua"] .app-bar {
-  background: linear-gradient(#fbfdff, #dfe6f1);
+  background: linear-gradient(
+    color-mix(in srgb, var(--card) 97%, var(--accent)),
+    color-mix(in srgb, var(--muted) 85%, var(--border)));
   border: 1px solid var(--border);
   border-radius: var(--aqua-radius-surface);
   box-shadow: var(--aqua-top-sheen), var(--aqua-drop);
@@ -125,7 +132,16 @@
   font-weight: 600;
   transition: box-shadow .12s ease, filter .12s ease;
 }
-[data-skin="aqua"] .group\/button:hover { filter: brightness(1.05); }
+[data-skin="aqua"] .group\/button:hover:not(:disabled) { filter: brightness(1.05); }
+/* DISABLED — flat matte, no gel, reads non-interactive */
+[data-skin="aqua"] .group\/button:disabled {
+  background: var(--muted);
+  color: var(--muted-foreground);
+  border-color: var(--border);
+  box-shadow: none;
+  text-shadow: none;
+  filter: none;
+}
 [data-skin="aqua"] .group\/button:active:not(:disabled) {
   box-shadow: inset 0 2px 5px rgba(0,0,0,.22), var(--aqua-top-sheen);
 }
@@ -133,7 +149,7 @@
   outline: 0;
   box-shadow:
     var(--aqua-top-sheen),
-    0 0 0 var(--aqua-focus-spread) rgba(46,111,242,.6);
+    0 0 0 var(--aqua-focus-spread) var(--aqua-focus-ring);
 }
 
 /* DEFAULT — the signature candy-blue gel with hard mid-line reflection */
@@ -160,7 +176,11 @@
   color: var(--secondary-foreground);
   background:
     linear-gradient(rgba(255,255,255,var(--aqua-gloss)), rgba(255,255,255,0) 49%),
-    linear-gradient(#eef2f8 0, #e2e8f1 49%, #d2dae6 50%, #c4cdda 100%);
+    linear-gradient(
+      color-mix(in srgb, var(--secondary) 95%, var(--border)) 0,
+      color-mix(in srgb, var(--secondary) 80%, var(--border)) 49%,
+      color-mix(in srgb, var(--secondary) 60%, var(--border)) 50%,
+      color-mix(in srgb, var(--secondary) 45%, var(--border)) 100%);
 }
 
 /* OUTLINE — thin ink ring on translucent white, no gel fill */
@@ -173,11 +193,15 @@
 
 /* DESTRUCTIVE — red gel lozenge, matching mid-line split + emboss */
 [data-skin="aqua"] .group\/button[data-variant="destructive"] {
-  border-color: #8c2018;
+  border-color: color-mix(in srgb, var(--destructive) 65%, #000);
   color: var(--primary-foreground);
   background:
     linear-gradient(rgba(255,255,255,calc(var(--aqua-gloss) + 0.1)), rgba(255,255,255,0) 49%),
-    linear-gradient(#ff9a8f 0, #ee5848 49%, #c52b22 50%, var(--destructive) 100%);
+    linear-gradient(
+      color-mix(in srgb, var(--destructive) 42%, #fff) 0,
+      color-mix(in srgb, var(--destructive) 82%, #fff) 49%,
+      color-mix(in srgb, var(--destructive) 94%, #000) 50%,
+      var(--destructive) 100%);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.6),
     inset 0 -6px 8px rgba(255,170,160,.45),
@@ -214,7 +238,7 @@
   border-color: var(--ring);
   box-shadow:
     inset 0 1px 3px rgba(20,40,80,.18),
-    0 0 0 var(--aqua-focus-spread) rgba(46,111,242,.6);
+    0 0 0 var(--aqua-focus-spread) var(--aqua-focus-ring);
 }
 
 /* ---- Surfaces ----------------------------------------------------------- */
@@ -270,7 +294,7 @@
 [data-skin="aqua"] [data-slot="checkbox"] {
   border: 1px solid var(--border);
   border-radius: 5px;
-  background: linear-gradient(#fff,#e3e9f2);
+  background: linear-gradient(var(--card), color-mix(in srgb, var(--muted) 88%, var(--border)));
   box-shadow: inset 0 1px 2px rgba(20,40,80,.2);
   color: var(--aqua-gel-lo);
 }
@@ -284,11 +308,11 @@
 }
 [data-skin="aqua"] [data-slot="checkbox"]:focus-visible,
 [data-skin="aqua"] [data-slot="radio-group-item"]:focus-visible {
-  outline: 0; box-shadow: 0 0 0 var(--aqua-focus-spread) rgba(46,111,242,.6);
+  outline: 0; box-shadow: 0 0 0 var(--aqua-focus-spread) var(--aqua-focus-ring);
 }
 [data-skin="aqua"] [data-slot="radio-group-item"] {
   border: 1px solid var(--border);
-  background: linear-gradient(#fff,#e3e9f2);
+  background: linear-gradient(var(--card), color-mix(in srgb, var(--muted) 88%, var(--border)));
   box-shadow: inset 0 1px 2px rgba(20,40,80,.2);
   color: var(--aqua-gel-lo);
 }
@@ -300,10 +324,41 @@
   box-shadow: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -3px 5px rgba(120,180,255,.5);
 }
 
+/* ---- Switch — gel track + glass-pearl thumb ------------------------------ */
+[data-skin="aqua"] [data-slot="switch"] {
+  border: 1px solid var(--border);
+  border-radius: var(--aqua-radius-control);
+  background: linear-gradient(var(--card), color-mix(in srgb, var(--muted) 88%, var(--border)));
+  box-shadow: inset 0 1px 2px rgba(20,40,80,.2);
+  transition: background .15s ease, border-color .15s ease;
+}
+[data-skin="aqua"] [data-slot="switch"][data-state="checked"] {
+  border-color: color-mix(in srgb, var(--aqua-gel-lo) 70%, #000 30%);
+  background:
+    linear-gradient(rgba(255,255,255,.55), rgba(255,255,255,0) 50%),
+    linear-gradient(var(--aqua-gel-hi) 0, var(--primary) 49%, var(--aqua-gel-lo) 50%, var(--aqua-gel-lo) 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -3px 5px rgba(120,180,255,.5);
+}
+[data-skin="aqua"] [data-slot="switch-thumb"] {
+  border: 1px solid var(--border);
+  background: radial-gradient(circle at 50% 30%, #fff, #d7deea);
+  box-shadow:
+    var(--aqua-top-sheen),
+    0 1px 2px rgba(20,40,80, calc(var(--aqua-shadow-strength) + 0.18));
+}
+[data-skin="aqua"] [data-slot="switch"]:focus-visible {
+  outline: 0;
+  box-shadow:
+    inset 0 1px 2px rgba(20,40,80,.2),
+    0 0 0 var(--aqua-focus-spread) var(--aqua-focus-ring);
+}
+
 /* ---- Tabs / badge / progress / slider ----------------------------------- */
 [data-skin="aqua"] [data-slot="tabs-list"] {
   border-radius: var(--aqua-radius-control);
-  background: linear-gradient(#eef2f8,#dde4ef);
+  background: linear-gradient(
+    color-mix(in srgb, var(--secondary) 95%, var(--border)),
+    color-mix(in srgb, var(--secondary) 70%, var(--border)));
   padding: 4px; gap: 3px; border: 1px solid var(--border);
   box-shadow: inset 0 1px 2px rgba(20,40,80,.18);
 }
@@ -311,7 +366,7 @@
 [data-skin="aqua"] [data-slot="tabs-trigger"][data-state="active"] {
   background:
     linear-gradient(rgba(255,255,255,var(--aqua-gloss)), rgba(255,255,255,0) 49%),
-    linear-gradient(#fff,#dde6f3);
+    linear-gradient(var(--card), color-mix(in srgb, var(--muted) 82%, var(--border)));
   box-shadow: var(--aqua-top-sheen), 0 1px 2px rgba(20,40,80,.25);
   font-weight: 600;
   text-shadow: 0 1px 0 rgba(255,255,255,.6);
@@ -320,7 +375,7 @@
 [data-skin="aqua"] [data-slot="badge"] {
   border-radius: var(--aqua-radius-control);
   border: 1px solid var(--border);
-  background: linear-gradient(#fff,#e3e9f2);
+  background: linear-gradient(var(--card), color-mix(in srgb, var(--muted) 88%, var(--border)));
 }
 [data-skin="aqua"] [data-slot="badge"][data-variant="default"] {
   color: var(--primary-foreground);
@@ -330,10 +385,40 @@
     linear-gradient(var(--aqua-gel-hi) 0, var(--primary) 49%, var(--aqua-gel-lo) 50%, var(--aqua-gel-lo) 100%);
   text-shadow: 0 -1px 0 rgba(0,0,0,.22);
 }
+[data-skin="aqua"] [data-slot="badge"][data-variant="secondary"] {
+  color: var(--secondary-foreground);
+  border-color: var(--border);
+  background:
+    linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,0) 50%),
+    linear-gradient(
+      color-mix(in srgb, var(--secondary) 95%, var(--border)) 0,
+      color-mix(in srgb, var(--secondary) 80%, var(--border)) 49%,
+      color-mix(in srgb, var(--secondary) 60%, var(--border)) 50%,
+      color-mix(in srgb, var(--secondary) 45%, var(--border)) 100%);
+  text-shadow: 0 1px 0 rgba(255,255,255,.6);
+}
+[data-skin="aqua"] [data-slot="badge"][data-variant="outline"] {
+  color: var(--foreground);
+  border-color: var(--border);
+  background: rgba(255,255,255,.55);
+  text-shadow: 0 1px 0 rgba(255,255,255,.6);
+}
+[data-skin="aqua"] [data-slot="badge"][data-variant="destructive"] {
+  color: var(--primary-foreground);
+  border-color: color-mix(in srgb, var(--destructive) 65%, #000);
+  background:
+    linear-gradient(rgba(255,255,255,.4), rgba(255,255,255,0) 50%),
+    linear-gradient(
+      color-mix(in srgb, var(--destructive) 42%, #fff) 0,
+      color-mix(in srgb, var(--destructive) 82%, #fff) 49%,
+      color-mix(in srgb, var(--destructive) 94%, #000) 50%,
+      var(--destructive) 100%);
+  text-shadow: 0 -1px 0 rgba(0,0,0,.22);
+}
 
 [data-skin="aqua"] [data-slot="progress"] {
   border-radius: var(--aqua-radius-control);
-  background: linear-gradient(#dfe6f1,#fff);
+  background: linear-gradient(color-mix(in srgb, var(--muted) 85%, var(--border)), var(--card));
   box-shadow: inset 0 1px 2px rgba(20,40,80,.25);
 }
 [data-skin="aqua"] [data-slot="progress-indicator"] {
@@ -345,7 +430,7 @@
 
 [data-skin="aqua"] [data-slot="slider-track"] {
   border-radius: var(--aqua-radius-control);
-  background: linear-gradient(#dfe6f1,#fff);
+  background: linear-gradient(color-mix(in srgb, var(--muted) 85%, var(--border)), var(--card));
   box-shadow: inset 0 1px 2px rgba(20,40,80,.25);
 }
 [data-skin="aqua"] [data-slot="slider-range"] {
@@ -361,4 +446,29 @@
   box-shadow:
     var(--aqua-top-sheen),
     0 1px 2px rgba(20,40,80, calc(var(--aqua-shadow-strength) + 0.18));
+}
+
+/* ---- Scrollbar — gel pill thumb on a pinstripe gutter -------------------- */
+[data-skin="aqua"] ::-webkit-scrollbar {
+  width: 15px;
+  height: 15px;
+}
+[data-skin="aqua"] ::-webkit-scrollbar-track {
+  background: var(--aqua-pinstripe), var(--card);
+  border: 1px solid var(--border);
+}
+[data-skin="aqua"] ::-webkit-scrollbar-thumb {
+  border-radius: var(--aqua-radius-control);
+  border: 2px solid transparent;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,var(--aqua-gloss)), rgba(255,255,255,0) 49%) padding-box,
+    linear-gradient(90deg, var(--aqua-gel-hi), var(--aqua-gel-lo)) padding-box;
+}
+[data-skin="aqua"] ::-webkit-scrollbar-thumb:horizontal {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,var(--aqua-gloss)), rgba(255,255,255,0) 49%) padding-box,
+    linear-gradient(180deg, var(--aqua-gel-hi), var(--aqua-gel-lo)) padding-box;
+}
+[data-skin="aqua"] ::-webkit-scrollbar-corner {
+  background: var(--card);
 }

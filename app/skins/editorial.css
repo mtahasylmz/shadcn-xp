@@ -49,7 +49,7 @@
   /* ---- Tunable shape knobs (range-slider friendly) ---------------------- */
   --ed-rule: 1px;                 /* hairline rule weight                     */
   --ed-rule-heavy: 2px;           /* masthead / section-head / tabs rule      */
-  --ed-radius: 2px;               /* corner softness (kept tight for print)   */
+  --ed-radius: var(--radius);     /* corner softness (kept tight for print)   */
   --ed-shadow-offset: 4px;        /* letterpress drop offset                  */
   --ed-press-depth: 0.10;         /* letterpress shadow opacity (0..1)        */
   --ed-tracking: 0.08em;          /* small-caps / label letterspacing         */
@@ -78,6 +78,7 @@
 [data-skin="editorial"] body {
   background:
     radial-gradient(120% 80% at 50% -10%, color-mix(in srgb, var(--card) 55%, transparent), transparent 60%),
+    var(--ed-grain),
     var(--background);
 }
 [data-skin="editorial"] ::selection { background: var(--foreground); color: var(--background); }
@@ -121,7 +122,7 @@
 [data-skin="editorial"] .specimen-title {
   font-family: var(--app-font-heading);
   font-weight: 800;
-  font-size: 18px;
+  font-size: calc(var(--app-font-size) * 1.2);
   letter-spacing: -.01em;
 }
 [data-skin="editorial"] .specimen-tag {
@@ -149,7 +150,7 @@
   box-shadow: var(--ed-shadow-pop);
 }
 [data-skin="editorial"] .hero-kicker {
-  color: color-mix(in srgb, var(--accent) 50%, #d9c9a8);
+  color: color-mix(in srgb, var(--accent) 45%, var(--secondary));
   font-style: italic;
   font-family: var(--app-font-mono);
   letter-spacing: var(--ed-tracking);
@@ -195,8 +196,19 @@
   box-shadow: inset 0 var(--ed-rule-heavy) 0 0 var(--ed-press);
 }
 [data-skin="editorial"] .group\/button:focus-visible {
-  outline: var(--ed-rule) solid var(--accent);
+  outline: var(--ed-rule-heavy) solid color-mix(in srgb, var(--ring) 70%, transparent);
   outline-offset: 2px;
+}
+
+/* disabled — flat unprinted gray, no lift, clearly non-interactive */
+[data-skin="editorial"] .group\/button:disabled,
+[data-skin="editorial"] .group\/button[data-variant]:disabled {
+  background: var(--muted);
+  color: var(--muted-foreground);
+  border-color: var(--border);
+  box-shadow: none;
+  opacity: 1;
+  cursor: not-allowed;
 }
 
 /* default — solid ink, letterpress lift */
@@ -278,12 +290,13 @@
   border-radius: 0;
   background: transparent;
 }
+[data-skin="editorial"] [data-slot="textarea"] { resize: vertical; }
 [data-skin="editorial"] [data-slot="input"]:focus-visible,
 [data-skin="editorial"] [data-slot="textarea"]:focus-visible,
 [data-skin="editorial"] [data-slot="select-trigger"]:focus-visible {
   outline: 0;
-  border-bottom-color: var(--accent);
-  box-shadow: 0 var(--ed-rule) 0 0 var(--accent);
+  border-bottom-color: var(--ring);
+  box-shadow: 0 var(--ed-rule) 0 0 color-mix(in srgb, var(--ring) 80%, transparent);
 }
 
 /* ==========================================================================
@@ -340,6 +353,34 @@
   background: var(--foreground);
   border-color: var(--foreground);
 }
+[data-skin="editorial"] [data-slot="checkbox"]:focus-visible,
+[data-skin="editorial"] [data-slot="switch"]:focus-visible {
+  outline: var(--ed-rule-heavy) solid color-mix(in srgb, var(--ring) 70%, transparent);
+  outline-offset: 2px;
+}
+
+/* Switch — unchecked: open ruled track on muted ground; checked: solid ink. */
+[data-skin="editorial"] [data-slot="switch"] {
+  border: var(--ed-rule) solid var(--foreground);
+  border-radius: var(--ed-radius);
+  background: var(--muted);
+  box-shadow: inset 0 var(--ed-rule) 0 0 var(--ed-press-soft);
+}
+[data-skin="editorial"] [data-slot="switch"][data-state="checked"] {
+  background: var(--foreground);
+  border-color: var(--foreground);
+  box-shadow: none;
+}
+[data-skin="editorial"] [data-slot="switch-thumb"] {
+  border: var(--ed-rule) solid var(--foreground);
+  border-radius: calc(var(--ed-radius) / 2);
+  background: var(--card);
+  box-shadow: var(--ed-shadow);
+}
+[data-skin="editorial"] [data-slot="switch"][data-state="checked"] [data-slot="switch-thumb"] {
+  border-color: var(--card);
+  background: var(--card);
+}
 
 [data-skin="editorial"] [data-slot="tabs-list"] {
   border-radius: 0;
@@ -366,12 +407,22 @@
   color: var(--foreground);
   text-transform: uppercase;
   font-family: var(--app-font-mono);
-  font-size: 10px;
+  font-size: calc(var(--app-font-size) * 0.67);
   letter-spacing: var(--ed-tracking);
 }
 [data-skin="editorial"] [data-slot="badge"][data-variant="default"] {
   background: var(--foreground);
   color: var(--card);
+}
+[data-skin="editorial"] [data-slot="badge"][data-variant="secondary"] {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+  border-color: var(--border);
+}
+[data-skin="editorial"] [data-slot="badge"][data-variant="outline"] {
+  background: transparent;
+  color: var(--foreground);
+  border-color: var(--foreground);
 }
 [data-skin="editorial"] [data-slot="badge"][data-variant="destructive"] {
   background: var(--destructive);
@@ -389,9 +440,9 @@
     repeating-linear-gradient(
       45deg,
       var(--foreground) 0,
-      var(--foreground) 6px,
-      color-mix(in srgb, var(--foreground) 82%, var(--accent)) 6px,
-      color-mix(in srgb, var(--foreground) 82%, var(--accent)) 12px
+      var(--foreground) calc(var(--ed-rule-heavy) * 3),
+      color-mix(in srgb, var(--foreground) 82%, var(--accent)) calc(var(--ed-rule-heavy) * 3),
+      color-mix(in srgb, var(--foreground) 82%, var(--accent)) calc(var(--ed-rule-heavy) * 6)
     );
 }
 
