@@ -72,7 +72,12 @@
       transparent 1px 3px
     ),
     linear-gradient(180deg, rgba(10, 4, 24, .15), var(--background) 62%),
-    linear-gradient(180deg, #3a1170 0%, #7a1f7a 34%, #ff6ec7 49%, #ff9a8b 50%, var(--background) 52%);
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--primary) 35%, var(--background)) 0%,
+      color-mix(in srgb, var(--primary) 60%, var(--background)) 34%,
+      color-mix(in srgb, var(--primary) 75%, white) 49%,
+      color-mix(in srgb, var(--chart-5) 70%, white) 50%,
+      var(--background) 52%);
   background-attachment: fixed;
   position: relative;
 }
@@ -161,7 +166,7 @@
 /* Chrome headline — classic Outrun gradient fill + magenta neon halo. */
 [data-skin="synthwave"] .hero-title {
   font-family: var(--app-font-heading);
-  background: linear-gradient(180deg, #ffffff 0%, var(--accent) 45%, var(--primary) 100%);
+  background: linear-gradient(180deg, var(--foreground) 0%, var(--accent) 45%, var(--primary) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -169,7 +174,7 @@
   text-shadow: 0 0 calc(var(--sw-glow) * 1.6) color-mix(in srgb, var(--primary) 70%, transparent);
   letter-spacing: .04em;
 }
-[data-skin="synthwave"] .hero-sub { color: color-mix(in srgb, var(--border) 25%, white); }
+[data-skin="synthwave"] .hero-sub { color: color-mix(in srgb, var(--border) 25%, var(--foreground)); }
 
 [data-skin="synthwave"] .app-nav a { border-radius: var(--sw-radius); }
 [data-skin="synthwave"] .app-nav a:hover {
@@ -218,6 +223,11 @@
   box-shadow: none;
   text-shadow: none;
   filter: none;
+}
+/* Disabled link stays a text link — no gray muted box. */
+[data-skin="synthwave"] .group\/button[data-variant="link"]:disabled {
+  background: none;
+  border-color: transparent;
 }
 
 /* default — solid magenta fill, dark ink label */

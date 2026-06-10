@@ -73,12 +73,40 @@
     0 100%, 0 var(--cy-notch-sm)
   );
 
-  /* Reusable scanline texture (gated by --cy-scanline) */
+  /* Reusable scanline texture (gated by --cy-scanline).
+     max() guards against a zero-length color stop when
+     --cy-scanline-size <= 1px. */
   --cy-scanlines: repeating-linear-gradient(
     0deg,
-    transparent 0 calc(var(--cy-scanline-size) - 1px),
+    transparent 0 calc(max(var(--cy-scanline-size), 2px) - 1px),
     color-mix(in srgb, var(--primary) calc(var(--cy-scanline) * 100%), transparent)
-      calc(var(--cy-scanline-size) - 1px) var(--cy-scanline-size)
+      calc(max(var(--cy-scanline-size), 2px) - 1px) max(var(--cy-scanline-size), 2px)
+  );
+}
+
+/* Knob-scope fix: the composed vars above resolve their inner var()s at
+   :root, so a subtree override of --cy-notch / --cy-notch-sm / --cy-scanline
+   / --cy-scanline-size would silently do nothing. Re-declaring them on every
+   element makes each node recompute from its own inherited knob values, so
+   knob overrides cascade as documented. */
+[data-skin="cyberpunk"] * {
+  --cy-clip: polygon(
+    var(--cy-notch) 0, 100% 0,
+    100% calc(100% - var(--cy-notch)),
+    calc(100% - var(--cy-notch)) 100%,
+    0 100%, 0 var(--cy-notch)
+  );
+  --cy-clip-sm: polygon(
+    var(--cy-notch-sm) 0, 100% 0,
+    100% calc(100% - var(--cy-notch-sm)),
+    calc(100% - var(--cy-notch-sm)) 100%,
+    0 100%, 0 var(--cy-notch-sm)
+  );
+  --cy-scanlines: repeating-linear-gradient(
+    0deg,
+    transparent 0 calc(max(var(--cy-scanline-size), 2px) - 1px),
+    color-mix(in srgb, var(--primary) calc(var(--cy-scanline) * 100%), transparent)
+      calc(max(var(--cy-scanline-size), 2px) - 1px) max(var(--cy-scanline-size), 2px)
   );
 }
 
@@ -156,6 +184,20 @@
 [data-skin="cyberpunk"] .hero-kicker { color: var(--primary); }
 [data-skin="cyberpunk"] .hero-title { color: var(--accent); }
 [data-skin="cyberpunk"] .hero-sub { color: color-mix(in srgb, var(--primary) 60%, var(--foreground)); }
+
+/* Showcase chrome toggles ('Show code' / 'Show the delta' / 'Customize'):
+   stock rounded gray pills break the zero-radius neon language, so bring
+   them on-concept as hairline cyan HUD buttons. */
+[data-skin="cyberpunk"] .code-toggle,
+[data-skin="cyberpunk"] .app-bar button:not(.group\/button),
+[data-skin="cyberpunk"] .specimen-head button:not(.group\/button) {
+  border-radius: var(--radius);
+  border: var(--cy-border-width) solid var(--primary);
+  background: transparent;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
 
 [data-skin="cyberpunk"] .app-nav a { border-radius: var(--radius); }
 [data-skin="cyberpunk"] .app-nav a::before { content: "> "; color: var(--border); }
@@ -298,6 +340,9 @@
   color: var(--foreground);
   box-shadow: inset 0 0 calc(var(--cy-glow) * 1.1) color-mix(in srgb, var(--primary) 8%, transparent);
 }
+/* Hide the native light-gray resize grip, which reads as an artifact
+   in the dark well */
+[data-skin="cyberpunk"] [data-slot="textarea"] { resize: none; }
 [data-skin="cyberpunk"] [data-slot="input"]:focus-visible,
 [data-skin="cyberpunk"] [data-slot="textarea"]:focus-visible,
 [data-skin="cyberpunk"] [data-slot="select-trigger"]:focus-visible {

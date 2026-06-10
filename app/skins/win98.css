@@ -147,6 +147,14 @@
   background: var(--w98-shadow-face);
   box-shadow: var(--w98-raised);
 }
+/* Shell code/delta toggles → small raised Win98 buttons on the gradient.   */
+[data-skin="win98"] .code-toggle {
+  border-radius: 0;
+  border: 0;
+  background: var(--w98-shadow-face);
+  color: var(--foreground);
+  box-shadow: var(--w98-raised);
+}
 [data-skin="win98"] .specimen-title { font-weight: 700; color: var(--primary-foreground); }
 [data-skin="win98"] .specimen-tag { color: var(--w98-tag); }
 [data-skin="win98"] .app-nav a { border-radius: var(--radius); }
@@ -215,12 +223,12 @@
   color: var(--w98-link);
   text-decoration: underline;
 }
-/* Disabled: flat muted face + engraved grey label — clearly non-pressable.  */
+/* Disabled: period-correct — keeps the raised bevel, engraved grey label.   */
 [data-skin="win98"] .group\/button:disabled {
   background: var(--w98-shadow-face);
   color: var(--w98-shadow-mid);
   text-shadow: 1px 1px 0 var(--w98-shadow-light);
-  box-shadow: inset 0 0 0 1px var(--w98-shadow-mid);
+  box-shadow: var(--w98-raised);
   font-weight: 400;
   opacity: 1;
 }
@@ -244,6 +252,48 @@
   box-shadow:
     var(--w98-field),
     0 0 0 2px color-mix(in srgb, var(--ring) 40%, transparent);
+}
+/* Select trigger: paint a raised grey Win98 combo-arrow button zone on the
+   right edge with layered 1px light/mid/dark gradient edges over the face.  */
+[data-skin="win98"] [data-slot="select-trigger"] {
+  padding-right: 24px;
+  background-color: var(--input);
+  background-image:
+    linear-gradient(var(--w98-shadow-dark), var(--w98-shadow-dark)),
+    linear-gradient(var(--w98-shadow-dark), var(--w98-shadow-dark)),
+    linear-gradient(var(--w98-shadow-light), var(--w98-shadow-light)),
+    linear-gradient(var(--w98-shadow-light), var(--w98-shadow-light)),
+    linear-gradient(var(--w98-shadow-mid), var(--w98-shadow-mid)),
+    linear-gradient(var(--w98-shadow-mid), var(--w98-shadow-mid)),
+    linear-gradient(var(--w98-shadow-face), var(--w98-shadow-face));
+  background-position:
+    right 2px bottom 2px,           /* dark bottom edge  */
+    right 2px top 2px,              /* dark right edge   */
+    right 2px top 2px,              /* light top edge    */
+    right 17px top 2px,             /* light left edge   */
+    right 3px bottom 3px,           /* mid inner bottom  */
+    right 3px top 3px,              /* mid inner right   */
+    right 2px top 2px;              /* grey button face  */
+  background-size:
+    16px 1px,
+    1px calc(100% - 4px),
+    16px 1px,
+    1px calc(100% - 4px),
+    14px 1px,
+    1px calc(100% - 6px),
+    16px calc(100% - 4px);
+  background-repeat: no-repeat;
+}
+[data-skin="win98"] [data-slot="select-trigger"] svg {
+  color: var(--foreground);
+  opacity: 1;
+}
+/* Disabled fields: silver face like period Win98, not a base-theme fade.    */
+[data-skin="win98"] [data-slot="input"]:disabled,
+[data-skin="win98"] [data-slot="textarea"]:disabled {
+  background: var(--w98-shadow-face);
+  color: var(--w98-shadow-mid);
+  opacity: 1;
 }
 [data-skin="win98"] [data-slot="card"] {
   border: 0;
@@ -302,12 +352,17 @@
   box-shadow: var(--w98-field);
   color: var(--foreground);
 }
-/* Radio: stays CIRCULAR with a field-style sunken bevel + black dot.       */
+/* Radio: stays CIRCULAR with its own ring-style sunken bevel + black dot.
+   Spread-based rings wrap the curve — --w98-field's offset 2px dark layer
+   would paint a harsh black crescent at top-left on a circle.              */
 [data-skin="win98"] [data-slot="radio-group-item"] {
   border: 0;
   border-radius: 999px;
   background: var(--input);
-  box-shadow: var(--w98-field);
+  box-shadow:
+    inset 1px 1px 0 1px var(--w98-shadow-mid),
+    inset -1px -1px 0 1px var(--w98-shadow-light),
+    0 0 0 1px transparent;
   color: var(--foreground);
 }
 

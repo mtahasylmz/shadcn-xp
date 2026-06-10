@@ -140,6 +140,15 @@
   letter-spacing: var(--sw-tracking-tight);
   color: var(--foreground);
 }
+[data-skin="swiss"] .code-toggle {
+  border-radius: var(--radius);
+  border: var(--sw-rule) solid var(--border);
+  color: var(--foreground);
+  opacity: 1;
+  font-family: var(--app-font-mono);
+  text-transform: uppercase;
+  letter-spacing: var(--sw-tracking-label);
+}
 [data-skin="swiss"] .specimen-tag {
   font-family: var(--app-font-mono);
   text-transform: uppercase;
@@ -267,6 +276,14 @@
   opacity: 1;
 }
 
+/* chromeless variants stay chromeless when disabled — no grey slab */
+[data-skin="swiss"] .group\/button[data-variant="link"]:disabled,
+[data-skin="swiss"] .group\/button[data-variant="ghost"]:disabled {
+  background: transparent;
+  color: var(--muted-foreground);
+  text-decoration-color: var(--muted-foreground);
+}
+
 /* ---- Fields: underline-only, on-grid ----------------------------------- */
 [data-skin="swiss"] [data-slot="input"],
 [data-skin="swiss"] [data-slot="textarea"],
@@ -311,6 +328,12 @@
   background: var(--popover);
   color: var(--popover-foreground);
   box-shadow: none;
+}
+/* dialogs carry the same bold top ink rule as cards/specimens —
+   layer hierarchy stays legible on white-over-white */
+[data-skin="swiss"] [data-slot="dialog-content"],
+[data-skin="swiss"] [data-slot="alert-dialog-content"] {
+  border-top: var(--sw-rule-bold) solid var(--foreground);
 }
 [data-skin="swiss"] [data-slot="tooltip-content"] {
   border-radius: var(--radius);

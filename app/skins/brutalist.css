@@ -213,8 +213,8 @@
 }
 [data-skin="brutalist"] .group\/button:focus-visible {
   outline: var(--bru-border) solid var(--ring);
-  outline-offset: 2px;
-  box-shadow: var(--shadow), 0 0 0 4px color-mix(in srgb, var(--ring) 25%, transparent);
+  outline-offset: calc(var(--bru-offset) / 2);
+  box-shadow: var(--shadow), 0 0 0 calc(var(--bru-offset)) color-mix(in srgb, var(--ring) 25%, transparent);
 }
 
 /* Disabled = not pressable: the offset shadow IS the affordance, so kill it. */
@@ -381,11 +381,11 @@
 [data-skin="brutalist"] [data-slot="radio-group-item"]:focus-visible,
 [data-skin="brutalist"] [data-slot="switch"]:focus-visible {
   outline: var(--bru-border) solid var(--ring);
-  outline-offset: 2px;
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--ring) 25%, transparent);
+  outline-offset: calc(var(--bru-offset) / 2);
+  box-shadow: 0 0 0 calc(var(--bru-offset)) color-mix(in srgb, var(--ring) 25%, transparent);
 }
 
-[data-skin="brutalist"] [data-slot="tabs-list"] { border-radius: var(--radius); background: transparent; gap: 4px; }
+[data-skin="brutalist"] [data-slot="tabs-list"] { border-radius: var(--radius); background: transparent; gap: calc(var(--bru-offset)); }
 [data-skin="brutalist"] [data-slot="tabs-trigger"] {
   border: var(--bru-border) solid var(--border);
   border-radius: var(--radius);
@@ -407,20 +407,25 @@
   text-transform: uppercase;
   transform: rotate(calc(-1 * var(--bru-tilt)));
 }
-[data-skin="brutalist"] [data-slot="badge"]:nth-of-type(even) {
+[data-skin="brutalist"] [data-slot="badge"]:nth-child(even of [data-slot="badge"]) {
   transform: rotate(var(--bru-tilt));
 }
 /* Variant stickers — each pair pulled straight from the token table.
-   default stays primary (ink/white); the rest get explicit token pairs. */
-[data-skin="brutalist"] [data-slot="badge"][class*="secondary"] {
+   Doubled [data-slot] beats stock utility specificity (same trick as the
+   checkbox state rule): default paints primary, the rest override it. */
+[data-skin="brutalist"] [data-slot="badge"][data-slot="badge"] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+[data-skin="brutalist"] [data-slot="badge"][data-slot="badge"][class*="secondary"] {
   background: var(--secondary);
   color: var(--secondary-foreground);
 }
-[data-skin="brutalist"] [data-slot="badge"][class*="outline"] {
+[data-skin="brutalist"] [data-slot="badge"][data-slot="badge"][class*="outline"] {
   background: transparent;
   color: var(--foreground);
 }
-[data-skin="brutalist"] [data-slot="badge"][class*="destructive"] {
+[data-skin="brutalist"] [data-slot="badge"][data-slot="badge"][class*="destructive"] {
   background: var(--destructive);
   color: var(--destructive-foreground);
 }
@@ -437,7 +442,7 @@
 [data-skin="brutalist"] [data-slot="switch-thumb"] {
   border-radius: var(--radius);
   background: var(--foreground);
-  border: 1px solid var(--border);
+  border: max(1px, calc(var(--bru-border) / 2)) solid var(--border);
 }
 [data-skin="brutalist"] [data-slot="switch"][data-state="checked"] [data-slot="switch-thumb"] {
   background: var(--primary);

@@ -71,6 +71,8 @@
     var(--glass-edge);
   /* text legibility lift on bright frosted surfaces */
   --glass-text-shadow: 0 1px 2px rgba(13, 6, 40, 0.4);
+  /* link-variant text color (ice-blue, AA on the gradient) */
+  --glass-link: #d7e3ff;
 }
 
 [data-skin="glass"] body {
@@ -113,7 +115,7 @@
   backdrop-filter: saturate(var(--glass-saturate)) blur(calc(var(--glass-blur-px) + 6px));
   box-shadow:
     0 calc(var(--glass-elevation) * 0.25) var(--glass-elevation) rgba(13, 6, 40, 0.45),
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.5),
+    inset 0 1px 0 0 rgba(255, 255, 255, calc(var(--glass-sheen) * 1.4)),
     inset 0 -1px 0 0 rgba(0, 0, 0, 0.15);
 }
 [data-skin="glass"] .app-nav-title { color: var(--muted-foreground); }
@@ -180,8 +182,14 @@
   background: rgba(255, 255, 255, calc(var(--glass-border-alpha) * 0.93));
 }
 [data-skin="glass"] .group\/button:active:not(:disabled) {
-  background: var(--secondary);
   transform: translateY(1px);
+}
+/* per-variant pressed fills — the generic rule must not reset variant backgrounds */
+[data-skin="glass"] .group\/button[data-variant="default"]:active:not(:disabled) {
+  background: color-mix(in srgb, var(--primary) 80%, #fff);
+}
+[data-skin="glass"] .group\/button[data-variant="destructive"]:active:not(:disabled) {
+  background: color-mix(in srgb, var(--destructive) 85%, transparent);
 }
 [data-skin="glass"] .group\/button:focus-visible {
   outline: 0;
@@ -207,9 +215,9 @@
     inset 0 1px 0 0 color-mix(in srgb, var(--primary) 98%, transparent);
 }
 
-/* SECONDARY — translucent frosted fill, no glow */
+/* SECONDARY — translucent frosted fill, no glow; lifted above outline's clear pane */
 [data-skin="glass"] .group\/button[data-variant="secondary"] {
-  background: var(--secondary);
+  background: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.08));
   color: var(--secondary-foreground);
   border-color: var(--glass-border-color);
   box-shadow: var(--glass-edge);
@@ -261,7 +269,7 @@
   box-shadow: none;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
-  color: #d7e3ff;
+  color: var(--glass-link);
   text-decoration: underline;
 }
 
@@ -291,6 +299,9 @@
 }
 [data-skin="glass"] [data-slot="input"]::placeholder,
 [data-skin="glass"] [data-slot="textarea"]::placeholder { color: rgba(244, 246, 255, 0.6); }
+/* disabled fields stack component opacity on top — lift the placeholder to compensate */
+[data-skin="glass"] [data-slot="input"]:disabled::placeholder,
+[data-skin="glass"] [data-slot="textarea"]:disabled::placeholder { color: rgba(244, 246, 255, 0.8); }
 [data-skin="glass"] [data-slot="input"]:focus-visible,
 [data-skin="glass"] [data-slot="textarea"]:focus-visible,
 [data-skin="glass"] [data-slot="select-trigger"]:focus-visible {
@@ -421,9 +432,9 @@
   border-color: color-mix(in srgb, var(--primary) 76%, transparent);
   box-shadow: none;
 }
-/* SECONDARY — frosted chip, light text */
+/* SECONDARY — frosted chip, light text; lifted above outline's clear pane */
 [data-skin="glass"] [data-slot="badge"][data-variant="secondary"] {
-  background: var(--secondary);
+  background: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.08));
   color: var(--secondary-foreground);
   border-color: var(--glass-border-color);
 }

@@ -56,6 +56,8 @@
   --xp-desktop: var(--background);
   --xp-selection: var(--accent);
   --xp-hilite: #ffffff;
+  --xp-hilite-soft: color-mix(in srgb, var(--xp-hilite) 75%, var(--xp-face));
+  --xp-link: #0000ee;            /* classic hyperlink blue (link variant)    */
   --xp-shadow: var(--border);
   --xp-shadow-deep: #404040;
   --xp-progress: var(--chart-3);
@@ -85,18 +87,18 @@
   --xp-bevel-raised:
     inset var(--xp-bevel) var(--xp-bevel) 0 0 var(--xp-hilite),
     inset calc(-1 * var(--xp-bevel)) calc(-1 * var(--xp-bevel)) 0 0 var(--xp-shadow-deep),
-    inset calc(2 * var(--xp-bevel)) calc(2 * var(--xp-bevel)) 0 0 #f7f6f0,
+    inset calc(2 * var(--xp-bevel)) calc(2 * var(--xp-bevel)) 0 0 var(--xp-hilite-soft),
     inset calc(-2 * var(--xp-bevel)) calc(-2 * var(--xp-bevel)) 0 0 var(--xp-shadow);
   --xp-bevel-sunken:
     inset var(--xp-bevel) var(--xp-bevel) 0 0 var(--xp-shadow-deep),
     inset calc(-1 * var(--xp-bevel)) calc(-1 * var(--xp-bevel)) 0 0 var(--xp-hilite),
     inset calc(2 * var(--xp-bevel)) calc(2 * var(--xp-bevel)) 0 0 var(--xp-shadow),
-    inset calc(-2 * var(--xp-bevel)) calc(-2 * var(--xp-bevel)) 0 0 #f7f6f0;
+    inset calc(-2 * var(--xp-bevel)) calc(-2 * var(--xp-bevel)) 0 0 var(--xp-hilite-soft);
   --xp-bevel-field:
     inset var(--xp-bevel) var(--xp-bevel) 0 0 var(--xp-shadow),
     inset calc(-1 * var(--xp-bevel)) calc(-1 * var(--xp-bevel)) 0 0 var(--xp-hilite),
     inset calc(2 * var(--xp-bevel)) calc(2 * var(--xp-bevel)) 0 0 var(--xp-shadow-deep),
-    inset calc(-2 * var(--xp-bevel)) calc(-2 * var(--xp-bevel)) 0 0 #f7f6f0;
+    inset calc(-2 * var(--xp-bevel)) calc(-2 * var(--xp-bevel)) 0 0 var(--xp-hilite-soft);
   --xp-bevel-window:
     inset var(--xp-bevel) var(--xp-bevel) 0 0 var(--xp-hilite),
     inset calc(-1 * var(--xp-bevel)) calc(-1 * var(--xp-bevel)) 0 0 var(--xp-shadow);
@@ -267,7 +269,7 @@
 [data-skin="xp"] .specimen-tag {
   font-size: 10px;
   font-style: italic;
-  color: #d3e0f5;
+  color: color-mix(in srgb, var(--xp-titlebar-a) 25%, #fff);
 }
 [data-skin="xp"] .specimen-body { padding: 14px; }
 
@@ -305,7 +307,7 @@
 [data-skin="xp"] .group\/button:active:not(:disabled),
 [data-skin="xp"] .group\/button[data-state="open"],
 [data-skin="xp"] .group\/button[aria-expanded="true"] {
-  background: linear-gradient(to bottom, var(--xp-face), #f4f2ea);
+  background: linear-gradient(to bottom, var(--xp-face), color-mix(in srgb, var(--xp-face) 85%, #fff));
   box-shadow: var(--xp-bevel-sunken);
 }
 [data-skin="xp"] .group\/button:focus-visible {
@@ -327,8 +329,8 @@
 }
 /* SECONDARY → plain putty face, no extra emphasis */
 [data-skin="xp"] .group\/button[data-variant="secondary"] {
-  background: linear-gradient(to bottom, #f7f5ee, var(--xp-face));
-  border-color: #909088;
+  background: linear-gradient(to bottom, color-mix(in srgb, var(--xp-face) 80%, #fff), var(--xp-face));
+  border-color: color-mix(in srgb, var(--border) 80%, var(--xp-face));
   font-weight: 400;
 }
 /* OUTLINE → flat white field with thin ink border (distinct from secondary) */
@@ -339,7 +341,7 @@
   color: var(--foreground);
 }
 [data-skin="xp"] .group\/button[data-variant="outline"]:hover {
-  background: #f0f6ff;
+  background: color-mix(in srgb, var(--accent) 8%, #fff);
   border-color: var(--accent);
 }
 /* DESTRUCTIVE → glossy XP red, derived from --destructive */
@@ -371,7 +373,7 @@
   background: transparent;
   border: 0;
   box-shadow: none;
-  color: #0000ee;
+  color: var(--xp-link);
   text-decoration: underline;
 }
 /* GHOST → borderless, hover paints the XP selection bar */

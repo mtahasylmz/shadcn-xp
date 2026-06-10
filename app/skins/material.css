@@ -97,6 +97,12 @@
   box-shadow: var(--md-e-card);
 }
 [data-skin="material"] .specimen-head { border-bottom: 1px solid var(--muted); }
+/* Showcase chrome toggles ("Show code" / "Show the delta" / "Customize"): full-pill, on-language */
+[data-skin="material"] .specimen-head button,
+[data-skin="material"] .code-toggle {
+  border-radius: var(--md-shape-full);
+  border-color: var(--input);
+}
 
 [data-skin="material"] .hero {
   background:
@@ -219,6 +225,10 @@
   text-underline-offset: 3px;
 }
 [data-skin="material"] .group\/button[data-variant="link"]::after { content: none; }
+[data-skin="material"] .group\/button[data-variant="link"]:disabled {
+  color: color-mix(in srgb, var(--foreground) 38%, transparent);
+  text-decoration: none;
+}
 
 /* ==========================================================================
    INPUTS — M3 outlined fields (uniform extra-small 4px corners)
@@ -234,6 +244,13 @@
 }
 [data-skin="material"] [data-slot="input"]::placeholder,
 [data-skin="material"] [data-slot="textarea"]::placeholder { color: var(--muted-foreground); }
+/* Disabled fields: M3 spec — 12% on-surface outline, 38% on-surface label, no fill change */
+[data-skin="material"] [data-slot="input"]:disabled,
+[data-skin="material"] [data-slot="textarea"]:disabled {
+  border-color: color-mix(in srgb, var(--foreground) 12%, transparent);
+  color: color-mix(in srgb, var(--foreground) 38%, transparent);
+  opacity: 1;
+}
 [data-skin="material"] [data-slot="input"]:focus-visible,
 [data-skin="material"] [data-slot="textarea"]:focus-visible,
 [data-skin="material"] [data-slot="select-trigger"]:focus-visible {
@@ -287,12 +304,20 @@
    SELECTION CONTROLS
    ========================================================================== */
 [data-skin="material"] [data-slot="checkbox"] {
-  border: 2px solid var(--primary);
+  border: 2px solid var(--muted-foreground);
   border-radius: calc(var(--md-shape-sm) / 2);
 }
 [data-skin="material"] [data-slot="checkbox"][data-state="checked"] {
   background: var(--primary);
+  border-color: var(--primary);
   color: var(--primary-foreground);
+}
+[data-skin="material"] [data-slot="radio-group-item"] {
+  border: 2px solid var(--muted-foreground);
+}
+[data-skin="material"] [data-slot="radio-group-item"][data-state="checked"] {
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 /* Tabs: segmented track (medium shape) + secondary-container active segment */

@@ -133,15 +133,6 @@
   transition: box-shadow .12s ease, filter .12s ease;
 }
 [data-skin="aqua"] .group\/button:hover:not(:disabled) { filter: brightness(1.05); }
-/* DISABLED — flat matte, no gel, reads non-interactive */
-[data-skin="aqua"] .group\/button:disabled {
-  background: var(--muted);
-  color: var(--muted-foreground);
-  border-color: var(--border);
-  box-shadow: none;
-  text-shadow: none;
-  filter: none;
-}
 [data-skin="aqua"] .group\/button:active:not(:disabled) {
   box-shadow: inset 0 2px 5px rgba(0,0,0,.22), var(--aqua-top-sheen);
 }
@@ -161,11 +152,11 @@
     linear-gradient(
       var(--aqua-gel-hi) 0,
       var(--primary) 49%,
-      color-mix(in srgb, var(--aqua-gel-lo) 80%, #0a3aa0 20%) 50%,
+      color-mix(in srgb, var(--aqua-gel-lo) 75%, #000) 50%,
       var(--aqua-gel-lo) 100%);
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,.75),
-    inset 0 -6px 8px rgba(120,180,255,.5),       /* bottom inner glow */
+    inset 0 -6px 8px color-mix(in srgb, var(--aqua-gel-hi) 55%, transparent),       /* bottom inner glow */
     0 1px 3px rgba(20,60,160, calc(var(--aqua-shadow-strength) + 0.28));
   text-shadow: 0 -1px 0 rgba(0,0,0,.28);          /* dark emboss on light text */
 }
@@ -214,11 +205,39 @@
 [data-skin="aqua"] .group\/button[data-variant="link"] {
   background: none; border-color: transparent; box-shadow: none; text-shadow: none;
 }
-[data-skin="aqua"] .group\/button[data-variant="ghost"]:hover {
+[data-skin="aqua"] .group\/button[data-variant="ghost"]:hover:not(:disabled) {
   background: color-mix(in srgb, var(--accent) 18%, transparent);
 }
 [data-skin="aqua"] .group\/button[data-variant="link"] {
   color: var(--primary); text-decoration: underline;
+}
+
+/* FOCUS (variant-aware) — keep each gel's inset glows under the blue halo */
+[data-skin="aqua"] .group\/button[data-variant="default"]:focus-visible {
+  outline: 0;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.75),
+    inset 0 -6px 8px color-mix(in srgb, var(--aqua-gel-hi) 55%, transparent),
+    0 0 0 var(--aqua-focus-spread) var(--aqua-focus-ring);
+}
+[data-skin="aqua"] .group\/button[data-variant="destructive"]:focus-visible {
+  outline: 0;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.6),
+    inset 0 -6px 8px rgba(255,170,160,.45),
+    0 0 0 var(--aqua-focus-spread) var(--aqua-focus-ring);
+}
+
+/* DISABLED — flat matte, no gel, reads non-interactive.
+   Placed after (and doubled with [data-variant]) so it beats every variant rule. */
+[data-skin="aqua"] .group\/button:disabled,
+[data-skin="aqua"] .group\/button[data-variant]:disabled {
+  background: var(--muted);
+  color: var(--muted-foreground);
+  border-color: var(--border);
+  box-shadow: none;
+  text-shadow: none;
+  filter: none;
 }
 
 /* ---- Inputs ------------------------------------------------------------- */
@@ -304,7 +323,7 @@
   background:
     linear-gradient(rgba(255,255,255,.55), rgba(255,255,255,0) 50%),
     linear-gradient(var(--aqua-gel-hi) 0, var(--primary) 49%, var(--aqua-gel-lo) 50%, var(--aqua-gel-lo) 100%);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -3px 5px rgba(120,180,255,.5);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -3px 5px color-mix(in srgb, var(--aqua-gel-hi) 55%, transparent);
 }
 [data-skin="aqua"] [data-slot="checkbox"]:focus-visible,
 [data-skin="aqua"] [data-slot="radio-group-item"]:focus-visible {
@@ -321,7 +340,7 @@
   background:
     radial-gradient(circle at 50% 32%, rgba(255,255,255,.7), rgba(255,255,255,0) 55%),
     linear-gradient(var(--aqua-gel-hi), var(--aqua-gel-lo));
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -3px 5px rgba(120,180,255,.5);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -3px 5px color-mix(in srgb, var(--aqua-gel-hi) 55%, transparent);
 }
 
 /* ---- Switch — gel track + glass-pearl thumb ------------------------------ */
@@ -337,11 +356,11 @@
   background:
     linear-gradient(rgba(255,255,255,.55), rgba(255,255,255,0) 50%),
     linear-gradient(var(--aqua-gel-hi) 0, var(--primary) 49%, var(--aqua-gel-lo) 50%, var(--aqua-gel-lo) 100%);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -3px 5px rgba(120,180,255,.5);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.6), inset 0 -3px 5px color-mix(in srgb, var(--aqua-gel-hi) 55%, transparent);
 }
 [data-skin="aqua"] [data-slot="switch-thumb"] {
   border: 1px solid var(--border);
-  background: radial-gradient(circle at 50% 30%, #fff, #d7deea);
+  background: radial-gradient(circle at 50% 30%, #fff, color-mix(in srgb, var(--card) 80%, var(--border)));
   box-shadow:
     var(--aqua-top-sheen),
     0 1px 2px rgba(20,40,80, calc(var(--aqua-shadow-strength) + 0.18));
@@ -442,7 +461,7 @@
 [data-skin="aqua"] [data-slot="slider-thumb"] {
   border: 1px solid var(--border);
   background:
-    radial-gradient(circle at 50% 30%, #fff, #d7deea);
+    radial-gradient(circle at 50% 30%, #fff, color-mix(in srgb, var(--card) 80%, var(--border)));
   box-shadow:
     var(--aqua-top-sheen),
     0 1px 2px rgba(20,40,80, calc(var(--aqua-shadow-strength) + 0.18));

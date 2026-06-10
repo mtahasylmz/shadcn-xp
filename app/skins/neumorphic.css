@@ -31,7 +31,7 @@
   --secondary: #e0e5ec;
   --secondary-foreground: #3a424e;
   --muted: #e0e5ec;
-  --muted-foreground: #5f6b7d;    /* darkened to pass WCAG on soft grey */
+  --muted-foreground: #566375;    /* darkened to clear WCAG AA 4.5:1 on #e0e5ec */
   --accent: #6d5dfc;
   --accent-foreground: #ffffff;
   --destructive: #d23a55;
@@ -50,6 +50,11 @@
   --sidebar-accent-foreground: #ffffff;
   --sidebar-border: #d1d9e6;
 
+  /* Ink-grade primary for TEXT on the clay surface — #6d5dfc on #e0e5ec is
+     only 3.59:1, so text usages darken toward ink to clear WCAG AA (4.5:1).
+     Fills keep var(--primary), where white-on-primary passes at 4.54:1. */
+  --neu-primary-ink: color-mix(in srgb, var(--primary) 75%, #1f2430);
+
   /* ---- Tunable shape knobs (editor sliders) ---------------------------- */
   /* How far controls extrude from the surface. */
   --neu-distance: 6px;
@@ -66,7 +71,7 @@
 
   /* Derived light/shade tones — color-mix lets --neu-tint scale contrast. */
   --neu-light: color-mix(in srgb, #ffffff calc(var(--neu-tint) * 100% + 30%), var(--background));
-  --neu-dark:  color-mix(in srgb, color-mix(in srgb, var(--border) 62%, #56627a) calc(var(--neu-tint) * 100% + 20%), var(--background));
+  --neu-dark:  color-mix(in srgb, color-mix(in srgb, var(--border) 62%, var(--muted-foreground)) calc(var(--neu-tint) * 100% + 20%), var(--background));
 
   /* Secondary distance/blur for small inline controls. */
   --neu-d2: calc(var(--neu-distance) * 0.66);
@@ -137,12 +142,12 @@
 }
 [data-skin="neumorphic"] .app-nav a:hover {
   background: var(--background);
-  color: var(--primary);
+  color: var(--neu-primary-ink);
   box-shadow: var(--neu-inset-sm);
 }
 [data-skin="neumorphic"] .app-nav a[aria-current="page"],
 [data-skin="neumorphic"] .app-nav a[data-active="true"] {
-  color: var(--primary);
+  color: var(--neu-primary-ink);
   box-shadow: var(--neu-inset-sm);
 }
 
@@ -190,12 +195,12 @@
   box-shadow: var(--neu-raised-sm);
   transition: box-shadow 140ms ease, color 140ms ease, transform 100ms ease;
 }
-[data-skin="neumorphic"] .group\/button:hover { color: var(--primary); }
+[data-skin="neumorphic"] .group\/button:hover { color: var(--neu-primary-ink); }
 [data-skin="neumorphic"] .group\/button:active:not(:disabled),
 [data-skin="neumorphic"] .group\/button[data-state="open"],
 [data-skin="neumorphic"] .group\/button[aria-expanded="true"] {
   box-shadow: var(--neu-inset-sm);
-  color: var(--primary);
+  color: var(--neu-primary-ink);
 }
 /* Perceivable focus halo on top of whatever shadow state is active. */
 [data-skin="neumorphic"] .group\/button:focus-visible {
@@ -236,7 +241,7 @@
   color: var(--foreground);
   box-shadow: var(--neu-inset-sm);
 }
-[data-skin="neumorphic"] .group\/button[data-variant="outline"]:hover { color: var(--primary); }
+[data-skin="neumorphic"] .group\/button[data-variant="outline"]:hover { color: var(--neu-primary-ink); }
 
 /* GHOST — perfectly flat until hover, then lifts. */
 [data-skin="neumorphic"] .group\/button[data-variant="ghost"] {
@@ -245,7 +250,7 @@
   color: var(--foreground);
 }
 [data-skin="neumorphic"] .group\/button[data-variant="ghost"]:hover {
-  color: var(--primary);
+  color: var(--neu-primary-ink);
   box-shadow: var(--neu-raised-sm);
 }
 
@@ -266,7 +271,7 @@
 [data-skin="neumorphic"] .group\/button[data-variant="link"] {
   box-shadow: none;
   background: transparent;
-  color: var(--primary);
+  color: var(--neu-primary-ink);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -363,7 +368,7 @@
 [data-skin="neumorphic"] [data-slot="command-item"][data-selected="true"] {
   border-radius: calc(var(--radius) - 6px);
   background: var(--background);
-  color: var(--primary);
+  color: var(--neu-primary-ink);
   box-shadow: var(--neu-inset-sm);
 }
 
@@ -395,7 +400,7 @@
   border-radius: 9999px;
   background: var(--background);
   box-shadow: var(--neu-inset-sm);
-  color: var(--primary);
+  color: var(--neu-primary-ink);
 }
 
 [data-skin="neumorphic"] [data-slot="tabs-list"] {
@@ -413,9 +418,18 @@
 }
 [data-skin="neumorphic"] [data-slot="tabs-trigger"][data-state="active"] {
   background: var(--background);
-  color: var(--primary);
+  color: var(--neu-primary-ink);
   box-shadow: var(--neu-raised-sm);
   font-weight: 700;
+}
+/* Variant-aware focus halo for tabs (mirrors the button pattern) so focus
+   never falls back to the stock shadcn ring. */
+[data-skin="neumorphic"] [data-slot="tabs-trigger"]:focus-visible {
+  outline: 0;
+  box-shadow: var(--neu-focus-ring);
+}
+[data-skin="neumorphic"] [data-slot="tabs-trigger"][data-state="active"]:focus-visible {
+  box-shadow: var(--neu-raised-sm), var(--neu-focus-ring);
 }
 
 [data-skin="neumorphic"] [data-slot="badge"] {
@@ -423,7 +437,7 @@
   border-radius: 9999px;
   box-shadow: var(--neu-raised-sm);
   background: var(--background);
-  color: var(--primary);
+  color: var(--neu-primary-ink);
 }
 /* Coloured badge gets the fill-tuned shadow, not the grey clay one. */
 [data-skin="neumorphic"] [data-slot="badge"][data-variant="default"] {
