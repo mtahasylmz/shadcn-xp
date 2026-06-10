@@ -70,8 +70,8 @@
   --neu-glow: 4px;
 
   /* Derived light/shade tones — color-mix lets --neu-tint scale contrast. */
-  --neu-light: color-mix(in srgb, #ffffff calc(var(--neu-tint) * 100% + 30%), var(--background));
-  --neu-dark:  color-mix(in srgb, color-mix(in srgb, var(--border) 62%, var(--muted-foreground)) calc(var(--neu-tint) * 100% + 20%), var(--background));
+  --neu-light: color-mix(in srgb, #ffffff calc(var(--neu-tint) * 70% + 30%), var(--background));
+  --neu-dark:  color-mix(in srgb, color-mix(in srgb, var(--border) 62%, var(--muted-foreground)) calc(var(--neu-tint) * 80% + 20%), var(--background));
 
   /* Secondary distance/blur for small inline controls. */
   --neu-d2: calc(var(--neu-distance) * 0.66);
@@ -103,6 +103,9 @@
      written once against --neu-fill-color; variants (destructive, etc.)
      retarget it by overriding that property locally. */
   --neu-fill-color: var(--primary);
+  /* Coloured-fill gradient written once against --neu-fill-color; variants
+     retarget it the same way they retarget --neu-raised-fill. */
+  --neu-fill-gradient: linear-gradient(145deg, color-mix(in srgb, var(--neu-fill-color) 88%, #ffffff), var(--neu-fill-color));
   --neu-raised-fill:
     inset 0 1px 1px color-mix(in srgb, #ffffff 55%, transparent),
     inset 0 -2px 4px color-mix(in srgb, #000000 18%, transparent),
@@ -210,18 +213,19 @@
 
 /* DEFAULT — the one true raised brand control: coloured fill, tinted drop. */
 [data-skin="neumorphic"] .group\/button[data-variant="default"] {
-  background: linear-gradient(145deg,
-    color-mix(in srgb, var(--primary) 88%, #ffffff),
-    var(--primary));
+  background: var(--neu-fill-gradient);
   color: var(--primary-foreground);
   font-weight: 700;
   box-shadow: var(--neu-raised-fill);
 }
 [data-skin="neumorphic"] .group\/button[data-variant="default"]:hover { color: var(--primary-foreground); filter: brightness(1.04); }
-[data-skin="neumorphic"] .group\/button[data-variant="default"]:active:not(:disabled) {
+[data-skin="neumorphic"] .group\/button[data-variant="default"]:active:not(:disabled),
+[data-skin="neumorphic"] .group\/button[data-variant="default"][data-state="open"],
+[data-skin="neumorphic"] .group\/button[data-variant="default"][aria-expanded="true"] {
   box-shadow:
     inset 0 2px 5px color-mix(in srgb, #000000 28%, transparent),
     inset 0 1px 1px color-mix(in srgb, #ffffff 30%, transparent);
+  color: var(--primary-foreground);
   filter: none;
 }
 [data-skin="neumorphic"] .group\/button[data-variant="default"]:focus-visible {
@@ -258,14 +262,23 @@
    Same --neu-raised-fill recipe, retargeted via --neu-fill-color. */
 [data-skin="neumorphic"] .group\/button[data-variant="destructive"] {
   --neu-fill-color: var(--destructive);
-  background: linear-gradient(145deg,
-    color-mix(in srgb, var(--destructive) 88%, #ffffff),
-    var(--destructive));
+  background: var(--neu-fill-gradient);
   color: var(--destructive-foreground);
   font-weight: 700;
   box-shadow: var(--neu-raised-fill);
 }
 [data-skin="neumorphic"] .group\/button[data-variant="destructive"]:hover { color: var(--destructive-foreground); filter: brightness(1.04); }
+/* Pressed / held-open destructive keeps white text + pressed-fill insets
+   instead of the generic grey clay inset + ink-on-fill combination. */
+[data-skin="neumorphic"] .group\/button[data-variant="destructive"]:active:not(:disabled),
+[data-skin="neumorphic"] .group\/button[data-variant="destructive"][data-state="open"],
+[data-skin="neumorphic"] .group\/button[data-variant="destructive"][aria-expanded="true"] {
+  color: var(--destructive-foreground);
+  box-shadow:
+    inset 0 2px 5px color-mix(in srgb, #000000 28%, transparent),
+    inset 0 1px 1px color-mix(in srgb, #ffffff 30%, transparent);
+  filter: none;
+}
 
 /* LINK — flat underlined brand text. */
 [data-skin="neumorphic"] .group\/button[data-variant="link"] {
@@ -390,9 +403,7 @@
   transition: box-shadow 140ms ease, background 140ms ease;
 }
 [data-skin="neumorphic"] [data-slot="checkbox"][data-state="checked"] {
-  background: linear-gradient(145deg,
-    color-mix(in srgb, var(--primary) 88%, #ffffff),
-    var(--primary));
+  background: var(--neu-fill-gradient);
   box-shadow: var(--neu-raised-fill);
 }
 [data-skin="neumorphic"] [data-slot="radio-group-item"] {
@@ -441,9 +452,7 @@
 }
 /* Coloured badge gets the fill-tuned shadow, not the grey clay one. */
 [data-skin="neumorphic"] [data-slot="badge"][data-variant="default"] {
-  background: linear-gradient(145deg,
-    color-mix(in srgb, var(--primary) 88%, #ffffff),
-    var(--primary));
+  background: var(--neu-fill-gradient);
   color: var(--primary-foreground);
   box-shadow: var(--neu-raised-fill);
 }
@@ -457,9 +466,7 @@
 }
 [data-skin="neumorphic"] [data-slot="badge"][data-variant="destructive"] {
   --neu-fill-color: var(--destructive);
-  background: linear-gradient(145deg,
-    color-mix(in srgb, var(--destructive) 88%, #ffffff),
-    var(--destructive));
+  background: var(--neu-fill-gradient);
   color: var(--destructive-foreground);
   box-shadow: var(--neu-raised-fill);
 }
@@ -473,9 +480,7 @@
   transition: box-shadow 160ms ease, background 160ms ease;
 }
 [data-skin="neumorphic"] [data-slot="switch"][data-state="checked"] {
-  background: linear-gradient(145deg,
-    color-mix(in srgb, var(--primary) 88%, #ffffff),
-    var(--primary));
+  background: var(--neu-fill-gradient);
   box-shadow:
     var(--neu-inset-sm),
     0 0 var(--neu-glow) color-mix(in srgb, var(--primary) 45%, transparent);
@@ -544,3 +549,10 @@
   box-shadow: var(--neu-inset-sm);
 }
 [data-skin="neumorphic"] [data-slot="table"] { border-radius: var(--radius); overflow: hidden; }
+
+/* Accordion — kill the stock shadcn border-b hairline (borderless language)
+   and replace it with a soft paired light/dark divider carved into the clay. */
+[data-skin="neumorphic"] [data-slot="accordion-item"] {
+  border-bottom: 0;
+  box-shadow: 0 1px 0 var(--neu-light), 0 -1px 0 var(--neu-dark);
+}

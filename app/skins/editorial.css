@@ -92,8 +92,8 @@
   border: 0;
   border-bottom: var(--ed-rule-heavy) solid var(--foreground);
   box-shadow:
-    0 calc(var(--ed-rule-heavy) + 2px) 0 calc(-1 * var(--ed-rule-heavy)) var(--card),
-    0 calc(var(--ed-rule-heavy) + 2px + var(--ed-rule)) 0 calc(-1 * var(--ed-rule-heavy)) var(--foreground);
+    0 calc(var(--ed-rule-heavy) + var(--ed-rule) * 2) 0 calc(-1 * var(--ed-rule-heavy)) var(--card),
+    0 calc(var(--ed-rule-heavy) + var(--ed-rule) * 2 + var(--ed-rule)) 0 calc(-1 * var(--ed-rule-heavy)) var(--foreground);
   border-radius: 0;
   backdrop-filter: none;
 }
@@ -193,11 +193,13 @@
 [data-skin="editorial"] .group\/button:hover { background: var(--foreground); color: var(--card); }
 [data-skin="editorial"] .group\/button:active:not(:disabled) {
   background: color-mix(in srgb, var(--foreground) 80%, var(--card));
+  color: var(--card);
+  border-color: var(--foreground);
   box-shadow: inset 0 var(--ed-rule-heavy) 0 0 var(--ed-press);
 }
 [data-skin="editorial"] .group\/button:focus-visible {
   outline: var(--ed-rule-heavy) solid color-mix(in srgb, var(--ring) 70%, transparent);
-  outline-offset: 2px;
+  outline-offset: calc(var(--ed-rule) * 2);
 }
 
 /* disabled — flat unprinted gray, no lift, clearly non-interactive */
@@ -270,7 +272,7 @@
   border: 0;
   color: var(--accent);
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-underline-offset: calc(var(--ed-rule) * 3);
   text-decoration-thickness: var(--ed-rule);
 }
 [data-skin="editorial"] .group\/button[data-variant="link"]:hover {
@@ -364,7 +366,7 @@
 [data-skin="editorial"] [data-slot="checkbox"]:focus-visible,
 [data-skin="editorial"] [data-slot="switch"]:focus-visible {
   outline: var(--ed-rule-heavy) solid color-mix(in srgb, var(--ring) 70%, transparent);
-  outline-offset: 2px;
+  outline-offset: calc(var(--ed-rule) * 2);
 }
 
 /* Switch — unchecked: open ruled track on muted ground; checked: solid ink. */
@@ -402,7 +404,7 @@
   color: var(--muted-foreground);
 }
 [data-skin="editorial"] [data-slot="tabs-trigger"][data-state="active"] {
-  border-bottom: var(--ed-tab-underline) solid var(--accent);
+  box-shadow: inset 0 calc(-1 * var(--ed-tab-underline)) 0 0 var(--accent);
   font-weight: 700;
   font-style: normal;
   color: var(--foreground);

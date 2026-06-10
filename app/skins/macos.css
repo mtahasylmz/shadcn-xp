@@ -28,7 +28,7 @@
   --mac-border: rgba(0,0,0,var(--mac-hairline));
   --mac-sheen: rgba(255,255,255,var(--mac-gloss));
   --mac-sheen-strong: rgba(255,255,255, calc(var(--mac-gloss) * 2.7));
-  --mac-accent-fill: linear-gradient(color-mix(in srgb, var(--primary) 80%, #fff), var(--primary));
+  --mac-accent-fill: linear-gradient(color-mix(in srgb, var(--primary) 90%, #fff), var(--primary));
   --mac-vibrancy-tint: color-mix(in srgb, var(--popover) 82%, transparent);
 
   /* --- Tokens (route brand/literal values; the editor retunes everything) --- */
@@ -38,7 +38,7 @@
   --card-foreground: #1d1d1f;
   --popover: #f6f6f8;
   --popover-foreground: #1d1d1f;
-  --primary: #007aff;            /* Sonoma system blue (less saturated than #0a84ff) */
+  --primary: #0071e3;            /* apple.com blue — 4.7:1 with white (AA) */
   --primary-foreground: #ffffff;
   --secondary: #ffffff;
   --secondary-foreground: #1d1d1f;
@@ -46,7 +46,8 @@
   --muted-foreground: #6e6e76;
   --accent: #007aff;
   --accent-foreground: #ffffff;
-  --destructive: #ff3b30;
+  --destructive: #d70015;       /* Apple increased-contrast systemRed — 5.4:1 with white */
+  --destructive-foreground: #ffffff;
   --border: #d6d6db;
   --input: #c9c9cf;
   --ring: #007aff;
@@ -79,7 +80,7 @@
 /* --- App bar: unified macOS toolbar + traffic-light window chrome ------- */
 [data-skin="macos"] .app-bar {
   position: relative;
-  background: rgba(255,255,255,.72);
+  background: color-mix(in srgb, var(--card) 72%, transparent);
   border: 1px solid var(--mac-border);
   border-top-color: rgba(255,255,255,.7);
   border-radius: var(--mac-radius-surface);
@@ -154,15 +155,15 @@
   box-shadow: inset 0 1px 2px rgba(0,0,0,.12);
 }
 [data-skin="macos"] .group\/button:focus-visible {
-  outline: 0;
-  box-shadow: 0 0 0 3.5px color-mix(in srgb, var(--ring) 40%, transparent);
+  outline: 3px solid color-mix(in srgb, var(--ring) 45%, transparent);
+  outline-offset: 1px;
 }
 
 /* default — glossy Big Sur "pushed plastic" blue */
 [data-skin="macos"] .group\/button[data-variant="default"] {
   border-color: transparent;
   background: linear-gradient(
-    color-mix(in srgb, var(--primary) 78%, #ffffff),
+    color-mix(in srgb, var(--primary) 90%, #fff),
     var(--primary)
   );
   color: var(--primary-foreground);
@@ -204,10 +205,10 @@
 [data-skin="macos"] .group\/button[data-variant="destructive"] {
   border-color: transparent;
   background: linear-gradient(
-    color-mix(in srgb, var(--destructive) 78%, #ffffff),
+    color-mix(in srgb, var(--destructive) 90%, #fff),
     var(--destructive)
   );
-  color: #fff;
+  color: var(--destructive-foreground);
   box-shadow:
     inset 0 1px 0 var(--mac-sheen),
     0 1px 2px color-mix(in srgb, var(--destructive) 50%, transparent);
@@ -266,16 +267,18 @@
   box-shadow: none;
 }
 
-/* NSPopUpButton: right-aligned accent capsule behind the chevron */
+/* NSPopUpButton: rounded accent capsule on the chevron element itself */
 [data-skin="macos"] [data-slot="select-trigger"] {
-  background:
-    var(--mac-accent-fill) right 4px center / 18px calc(100% - 8px) no-repeat,
-    var(--card);
+  background: var(--card);
   padding-right: 28px;
 }
 [data-skin="macos"] [data-slot="select-trigger"] svg {
   color: var(--primary-foreground);
   opacity: 1;
+  background: var(--mac-accent-fill);
+  border-radius: calc(var(--mac-radius) - 2px);
+  padding: 2px;
+  box-shadow: inset 0 1px 0 var(--mac-sheen);
 }
 
 /* --- Cards: hairline + inner top highlight ---------------------------- */
@@ -343,7 +346,7 @@
 /* --- Segmented control: recessed track -------------------------------- */
 [data-skin="macos"] [data-slot="tabs-list"] {
   border-radius: calc(var(--mac-radius) + 2px);
-  background: rgba(120,120,128,.16);
+  background: color-mix(in srgb, var(--muted-foreground) 16%, transparent);
   box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
   padding: 3px;
   gap: 3px;
@@ -374,8 +377,8 @@
   border: 1px solid var(--input);
 }
 [data-skin="macos"] [data-slot="badge"][data-variant="destructive"] {
-  background: linear-gradient(color-mix(in srgb, var(--destructive) 80%, #fff), var(--destructive));
-  color: #fff;
+  background: linear-gradient(color-mix(in srgb, var(--destructive) 90%, #fff), var(--destructive));
+  color: var(--destructive-foreground);
   border-color: transparent;
   box-shadow: inset 0 1px 0 var(--mac-sheen);
 }

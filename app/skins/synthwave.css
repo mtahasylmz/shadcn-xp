@@ -71,7 +71,7 @@
       rgba(0, 0, 0, var(--sw-scan)) 0 1px,
       transparent 1px 3px
     ),
-    linear-gradient(180deg, rgba(10, 4, 24, .15), var(--background) 62%),
+    linear-gradient(180deg, color-mix(in srgb, color-mix(in srgb, var(--background) 60%, black) 15%, transparent), var(--background) 62%),
     linear-gradient(180deg,
       color-mix(in srgb, var(--primary) 35%, var(--background)) 0%,
       color-mix(in srgb, var(--primary) 60%, var(--background)) 34%,
@@ -328,7 +328,8 @@
 }
 [data-skin="synthwave"] [data-slot="input"]:focus-visible,
 [data-skin="synthwave"] [data-slot="textarea"]:focus-visible,
-[data-skin="synthwave"] [data-slot="select-trigger"]:focus-visible {
+[data-skin="synthwave"] [data-slot="select-trigger"]:focus-visible,
+[data-skin="synthwave"] .skin-select:focus-visible {
   outline: 0;
   border-color: var(--ring);
   box-shadow: 0 0 calc(var(--sw-glow) * 2) color-mix(in srgb, var(--ring) 55%, transparent);

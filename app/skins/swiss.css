@@ -64,6 +64,8 @@
   --sw-focus-width: 2px;   /* focus ring thickness */
   --sw-focus-offset: 2px;  /* focus ring offset */
   --sw-space: 8px;         /* baseline grid unit for vertical rhythm */
+  --sw-underline-offset: 3px; /* link-variant underline offset */
+  --sw-motion: .12s;       /* interaction transition duration */
 }
 
 /* ---- Shell -------------------------------------------------------------- */
@@ -189,12 +191,9 @@
   color: var(--foreground);
   font-weight: 600;
   box-shadow: none;
-  transition: background .12s linear, color .12s linear;
+  transition: background var(--sw-motion) linear, color var(--sw-motion) linear;
 }
 [data-skin="swiss"] .group\/button:hover { background: var(--foreground); color: var(--background); }
-[data-skin="swiss"] .group\/button:active:not(:disabled) {
-  background: color-mix(in srgb, var(--foreground) 80%, var(--background));
-}
 [data-skin="swiss"] .group\/button:focus-visible {
   outline: var(--sw-focus-width) solid var(--ring);
   outline-offset: var(--sw-focus-offset);
@@ -262,9 +261,26 @@
   background: transparent;
   color: var(--primary);
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-underline-offset: var(--sw-underline-offset);
 }
 [data-skin="swiss"] .group\/button[data-variant="link"]:hover { color: color-mix(in srgb, var(--primary) 82%, var(--foreground)); }
+
+/* pressed — placed after every variant :hover rule and raised to 0,5,0 so the
+   press state always beats the equal-specificity hover rules in the cascade */
+[data-skin="swiss"] .group\/button[data-variant]:active:not(:disabled) {
+  background: color-mix(in srgb, var(--foreground) 80%, var(--background));
+  border-color: color-mix(in srgb, var(--foreground) 80%, var(--background));
+  color: var(--background);
+}
+/* chromeless variants keep a transparent-background press */
+[data-skin="swiss"] .group\/button[data-variant="ghost"]:active:not(:disabled) {
+  background: color-mix(in srgb, var(--muted) 80%, var(--foreground));
+}
+[data-skin="swiss"] .group\/button[data-variant="link"]:active:not(:disabled) {
+  background: transparent;
+  border-color: transparent;
+  color: color-mix(in srgb, var(--primary) 82%, var(--foreground));
+}
 
 /* disabled — drops out of the accent channel entirely, reads non-interactive */
 [data-skin="swiss"] .group\/button:disabled,

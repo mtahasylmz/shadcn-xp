@@ -218,6 +218,13 @@
 [data-skin="pixel"] .group\/button[data-variant="ghost"]:hover {
   background: var(--muted);
 }
+/* Ghost press: stay chromeless — the blanket :active --px-pressed would flash
+   a full white frame + bevel on the frameless variant. Keep the drop-in shift. */
+[data-skin="pixel"] .group\/button[data-variant="ghost"]:active:not(:disabled) {
+  box-shadow: none;
+  background: var(--muted);
+  transform: translate(var(--px-step), var(--px-step));
+}
 [data-skin="pixel"] .group\/button[data-variant="destructive"] {
   background: var(--destructive);
   color: var(--destructive-foreground);
@@ -226,7 +233,8 @@
   box-shadow: none;
   background: none;
   margin: 0;
-  color: var(--secondary);
+  /* 80% mix toward white lifts contrast on the --card surface to AA for 10px text. */
+  color: color-mix(in srgb, var(--secondary) 80%, #fff);
   text-decoration: underline;
   text-underline-offset: var(--px-step);
 }
@@ -262,7 +270,9 @@
 [data-skin="pixel"] [data-slot="textarea"]:focus-visible,
 [data-skin="pixel"] [data-slot="select-trigger"]:focus-visible {
   outline: var(--px) dotted var(--ring);
-  outline-offset: var(--px-step);
+  /* Clear the 4px --px-sunken outer frame shadows so the dotted ring sits
+     outside the field chrome (matches the button focus offset). */
+  outline-offset: calc(var(--px) + var(--px-step));
 }
 
 /* ========================= SURFACES / OVERLAYS ========================= */

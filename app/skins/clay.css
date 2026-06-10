@@ -222,6 +222,19 @@
 [data-skin="clay"] .group\/button[data-variant="link"]:hover:not(:disabled) {
   transform: none;
 }
+/* Link press: no squish — the generic :active rule outranks the variant base */
+[data-skin="clay"] .group\/button[data-variant="link"]:active:not(:disabled) {
+  box-shadow: none;
+  transform: none;
+}
+/* Focus rings re-asserted AFTER variant blocks so source order can't clobber them */
+[data-skin="clay"] .group\/button[data-variant="outline"]:focus-visible {
+  box-shadow: var(--clay-inset), var(--clay-ring);
+}
+[data-skin="clay"] .group\/button[data-variant="ghost"]:focus-visible,
+[data-skin="clay"] .group\/button[data-variant="link"]:focus-visible {
+  box-shadow: var(--clay-ring);
+}
 
 /* =========================================================================
    INPUTS & FIELDS — sunken clay dishes

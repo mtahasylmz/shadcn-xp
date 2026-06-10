@@ -25,8 +25,8 @@
   --secondary: rgba(255, 255, 255, 0.14);
   --secondary-foreground: #f4f6ff;
   --muted: rgba(255, 255, 255, 0.08);
-  /* Lifted from 0.74 -> 0.88 so kicker/sub/tags clear the WCAG floor on frost */
-  --muted-foreground: rgba(244, 246, 255, 0.88);
+  /* Lifted from 0.74 -> 0.95 so kicker/sub/tags clear the WCAG floor on frost */
+  --muted-foreground: rgba(244, 246, 255, 0.95);
   --accent: rgba(255, 255, 255, 0.2);
   --accent-foreground: #ffffff;
   --destructive: #ff6b81;
@@ -71,13 +71,19 @@
     var(--glass-edge);
   /* text legibility lift on bright frosted surfaces */
   --glass-text-shadow: 0 1px 2px rgba(13, 6, 40, 0.4);
-  /* link-variant text color (ice-blue, AA on the gradient) */
-  --glass-link: #d7e3ff;
+  /* link-variant text color (white + shadow, AA on the gradient) */
+  --glass-link: #ffffff;
+  /* solid white fill shared by progress indicator + slider range */
+  --glass-fill-solid: rgba(255, 255, 255, 0.9);
+  /* brand backdrop: gradient wash + the two refraction blobs */
+  --glass-gradient: linear-gradient(135deg, #5b21b6 0%, #2563eb 45%, #06b6d4 100%);
+  --glass-blob-1: rgba(236, 72, 153, 0.32);
+  --glass-blob-2: rgba(16, 185, 129, 0.3);
 }
 
 [data-skin="glass"] body {
   color: var(--foreground);
-  background: linear-gradient(135deg, #5b21b6 0%, #2563eb 45%, #06b6d4 100%) fixed;
+  background: var(--glass-gradient) fixed;
 }
 /* floating color blobs for the frost to refract */
 [data-skin="glass"] body::before {
@@ -87,8 +93,8 @@
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(40rem 40rem at 12% 18%, rgba(236, 72, 153, 0.5), transparent 60%),
-    radial-gradient(38rem 38rem at 88% 82%, rgba(16, 185, 129, 0.45), transparent 60%);
+    radial-gradient(40rem 40rem at 12% 18%, var(--glass-blob-1), transparent 60%),
+    radial-gradient(38rem 38rem at 88% 82%, var(--glass-blob-2), transparent 60%);
 }
 [data-skin="glass"] .app { position: relative; z-index: 1; }
 [data-skin="glass"] ::selection { background: rgba(255, 255, 255, 0.35); color: #fff; }
@@ -192,8 +198,8 @@
   background: color-mix(in srgb, var(--destructive) 85%, transparent);
 }
 [data-skin="glass"] .group\/button:focus-visible {
-  outline: 0;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 65%, transparent);
+  outline: 3px solid color-mix(in srgb, var(--ring) 65%, transparent);
+  outline-offset: 1px;
 }
 
 /* DEFAULT — bright bevelled glass lozenge with an outer glow halo.
@@ -221,6 +227,7 @@
   color: var(--secondary-foreground);
   border-color: var(--glass-border-color);
   box-shadow: var(--glass-edge);
+  text-shadow: var(--glass-text-shadow);
 }
 [data-skin="glass"] .group\/button[data-variant="secondary"]:hover {
   background: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.12));
@@ -228,13 +235,14 @@
 
 /* OUTLINE — clear pane: transparent fill, hairline frame only */
 [data-skin="glass"] .group\/button[data-variant="outline"] {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, calc(var(--glass-alpha) * 0.33));
   border-color: var(--glass-border-color);
   box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, var(--glass-sheen));
+  text-shadow: var(--glass-text-shadow);
 }
 [data-skin="glass"] .group\/button[data-variant="outline"]:hover {
   background: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.04));
-  border-color: rgba(255, 255, 255, 0.55);
+  border-color: rgba(255, 255, 255, calc(var(--glass-border-alpha) * 2));
 }
 
 /* DESTRUCTIVE — tinted rose glass with matching glow */
@@ -257,6 +265,7 @@
   box-shadow: none;
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
+  text-shadow: var(--glass-text-shadow);
 }
 [data-skin="glass"] .group\/button[data-variant="ghost"]:hover {
   background: rgba(255, 255, 255, calc(var(--glass-border-alpha) * 0.55));
@@ -270,6 +279,7 @@
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
   color: var(--glass-link);
+  text-shadow: var(--glass-text-shadow);
   text-decoration: underline;
 }
 
@@ -298,7 +308,7 @@
               inset 0 -1px 0 0 rgba(0, 0, 0, 0.12);
 }
 [data-skin="glass"] [data-slot="input"]::placeholder,
-[data-skin="glass"] [data-slot="textarea"]::placeholder { color: rgba(244, 246, 255, 0.6); }
+[data-skin="glass"] [data-slot="textarea"]::placeholder { color: rgba(244, 246, 255, 0.78); }
 /* disabled fields stack component opacity on top — lift the placeholder to compensate */
 [data-skin="glass"] [data-slot="input"]:disabled::placeholder,
 [data-skin="glass"] [data-slot="textarea"]:disabled::placeholder { color: rgba(244, 246, 255, 0.8); }
@@ -440,7 +450,7 @@
 }
 /* OUTLINE — clear pane: hairline frame only */
 [data-skin="glass"] [data-slot="badge"][data-variant="outline"] {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, calc(var(--glass-alpha) * 0.33));
   color: var(--foreground);
   border-color: var(--glass-border-color);
 }
@@ -475,13 +485,13 @@
   border-radius: 9999px;
   background: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.02));
 }
-[data-skin="glass"] [data-slot="progress-indicator"] { border-radius: 9999px; background: rgba(255, 255, 255, 0.9); }
+[data-skin="glass"] [data-slot="progress-indicator"] { border-radius: 9999px; background: var(--glass-fill-solid); }
 
 [data-skin="glass"] [data-slot="slider-track"] {
   border-radius: 9999px;
   background: rgba(255, 255, 255, calc(var(--glass-border-alpha) * 0.64));
 }
-[data-skin="glass"] [data-slot="slider-range"] { background: rgba(255, 255, 255, 0.9); }
+[data-skin="glass"] [data-slot="slider-range"] { background: var(--glass-fill-solid); }
 [data-skin="glass"] [data-slot="slider-thumb"] {
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 9999px;

@@ -276,8 +276,8 @@
   text-transform: none;
   color: var(--foreground);
   text-decoration: underline;
-  text-decoration-thickness: 3px;
-  text-underline-offset: 3px;
+  text-decoration-thickness: calc(var(--bru-border) + 1px);
+  text-underline-offset: calc(var(--bru-border) + 1px);
 }
 [data-skin="brutalist"] .group\/button[data-variant="link"]:hover {
   color: var(--destructive);
@@ -417,15 +417,15 @@
   background: var(--primary);
   color: var(--primary-foreground);
 }
-[data-skin="brutalist"] [data-slot="badge"][data-slot="badge"][class*="secondary"] {
+[data-skin="brutalist"] [data-slot="badge"][data-slot="badge"][class*="bg-secondary"] {
   background: var(--secondary);
   color: var(--secondary-foreground);
 }
-[data-skin="brutalist"] [data-slot="badge"][data-slot="badge"][class*="outline"] {
+[data-skin="brutalist"] [data-slot="badge"][data-slot="badge"][class*="text-foreground"] {
   background: transparent;
   color: var(--foreground);
 }
-[data-skin="brutalist"] [data-slot="badge"][data-slot="badge"][class*="destructive"] {
+[data-skin="brutalist"] [data-slot="badge"][data-slot="badge"][class*="bg-destructive"] {
   background: var(--destructive);
   color: var(--destructive-foreground);
 }
