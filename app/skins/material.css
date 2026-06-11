@@ -18,6 +18,7 @@
   --md-elevation: 6;      /* master elevation scalar -> drives all shadows */
   --md-state-opacity: 0.08; /* M3 state-layer alpha (hover) */
   --md-tint: 5;           /* tonal surface tint percentage (surface elevation) */
+  --md-hero-shade: 16%;   /* hero gradient darkening amount */
 
   --radius: var(--md-shape-lg);
 
@@ -107,7 +108,7 @@
 [data-skin="material"] .hero {
   background:
     radial-gradient(120% 140% at 85% -20%, color-mix(in srgb, var(--primary-foreground) 22%, var(--primary)) 0%, transparent 55%),
-    linear-gradient(160deg, var(--primary) 0%, color-mix(in srgb, #000 16%, var(--primary)) 100%);
+    linear-gradient(160deg, var(--primary) 0%, color-mix(in srgb, #000 var(--md-hero-shade), var(--primary)) 100%);
   border: 0;
   border-radius: var(--md-shape-lg);
   box-shadow: var(--md-e2);
@@ -147,6 +148,10 @@
   letter-spacing: .006em; /* ~0.1px label-large tracking, not toy 2% */
   transition: box-shadow .18s ease, background-color .15s ease;
 }
+/* M3 Expressive size scale (button.tsx emits data-size) */
+[data-skin="material"] .group\/button[data-size="sm"] { height: 32px; padding-inline: 16px; }
+[data-skin="material"] .group\/button[data-size="lg"] { height: 48px; padding-inline: 28px; font-size: 1rem; }
+[data-skin="material"] .group\/button[data-size="icon"] { padding-inline: 0; } /* keep round icon button square */
 /* State layer: translucent overlay (the M3 signature) */
 [data-skin="material"] .group\/button::after {
   content: "";

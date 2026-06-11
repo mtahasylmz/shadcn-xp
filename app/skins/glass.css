@@ -51,6 +51,7 @@
   --glass-border-alpha: 0.28;   /* hairline border opacity — governs ALL edges */
   --glass-elevation: 32px;      /* drop-shadow spread (pane float height) */
   --glass-sheen: 0.35;          /* top-lip highlight strength */
+  --glass-shadow-ink: 13 6 40;  /* shadow/glow ink channels (space-separated RGB) */
 
   /* === Composed values (built from the knobs above) ===================== */
   --glass-blur: saturate(var(--glass-saturate)) blur(var(--glass-blur-px));
@@ -67,16 +68,16 @@
     inset 0 1px 0 0 rgba(255, 255, 255, var(--glass-sheen)),
     inset 0 -1px 0 0 rgba(0, 0, 0, 0.15);
   --glass-glow:
-    0 calc(var(--glass-elevation) * 0.25) var(--glass-elevation) rgba(13, 6, 40, 0.45),
+    0 calc(var(--glass-elevation) * 0.25) var(--glass-elevation) rgb(var(--glass-shadow-ink) / 0.45),
     var(--glass-edge);
   /* text legibility lift on bright frosted surfaces */
-  --glass-text-shadow: 0 1px 2px rgba(13, 6, 40, 0.4);
+  --glass-text-shadow: 0 1px 2px rgb(var(--glass-shadow-ink) / 0.4);
   /* link-variant text color (white + shadow, AA on the gradient) */
   --glass-link: #ffffff;
   /* solid white fill shared by progress indicator + slider range */
   --glass-fill-solid: rgba(255, 255, 255, 0.9);
   /* brand backdrop: gradient wash + the two refraction blobs */
-  --glass-gradient: linear-gradient(135deg, #5b21b6 0%, #2563eb 45%, #06b6d4 100%);
+  --glass-gradient: linear-gradient(135deg, #4c1d95 0%, #1e40af 45%, #0e7490 100%);
   --glass-blob-1: rgba(236, 72, 153, 0.32);
   --glass-blob-2: rgba(16, 185, 129, 0.3);
 }
@@ -120,7 +121,7 @@
   -webkit-backdrop-filter: saturate(var(--glass-saturate)) blur(calc(var(--glass-blur-px) + 6px));
   backdrop-filter: saturate(var(--glass-saturate)) blur(calc(var(--glass-blur-px) + 6px));
   box-shadow:
-    0 calc(var(--glass-elevation) * 0.25) var(--glass-elevation) rgba(13, 6, 40, 0.45),
+    0 calc(var(--glass-elevation) * 0.25) var(--glass-elevation) rgb(var(--glass-shadow-ink) / 0.45),
     inset 0 1px 0 0 rgba(255, 255, 255, calc(var(--glass-sheen) * 1.4)),
     inset 0 -1px 0 0 rgba(0, 0, 0, 0.15);
 }
@@ -221,21 +222,21 @@
     inset 0 1px 0 0 color-mix(in srgb, var(--primary) 98%, transparent);
 }
 
-/* SECONDARY — translucent frosted fill, no glow; lifted above outline's clear pane */
+/* SECONDARY — smoked glass fill so white text stays legible over the bright zone */
 [data-skin="glass"] .group\/button[data-variant="secondary"] {
-  background: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.08));
+  background: rgba(30, 27, 75, 0.38);
   color: var(--secondary-foreground);
   border-color: var(--glass-border-color);
   box-shadow: var(--glass-edge);
   text-shadow: var(--glass-text-shadow);
 }
 [data-skin="glass"] .group\/button[data-variant="secondary"]:hover {
-  background: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.12));
+  background: rgba(30, 27, 75, 0.46);
 }
 
-/* OUTLINE — clear pane: transparent fill, hairline frame only */
+/* OUTLINE — neutral-dark clear pane: lowers backdrop luminance under white text */
 [data-skin="glass"] .group\/button[data-variant="outline"] {
-  background: rgba(255, 255, 255, calc(var(--glass-alpha) * 0.33));
+  background: rgba(30, 27, 75, 0.18);
   border-color: var(--glass-border-color);
   box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, var(--glass-sheen));
   text-shadow: var(--glass-text-shadow);
@@ -308,10 +309,10 @@
               inset 0 -1px 0 0 rgba(0, 0, 0, 0.12);
 }
 [data-skin="glass"] [data-slot="input"]::placeholder,
-[data-skin="glass"] [data-slot="textarea"]::placeholder { color: rgba(244, 246, 255, 0.78); }
-/* disabled fields stack component opacity on top — lift the placeholder to compensate */
+[data-skin="glass"] [data-slot="textarea"]::placeholder { color: rgba(244, 246, 255, 0.95); }
+/* disabled fields stack component opacity on top — keep the placeholder lifted to compensate */
 [data-skin="glass"] [data-slot="input"]:disabled::placeholder,
-[data-skin="glass"] [data-slot="textarea"]:disabled::placeholder { color: rgba(244, 246, 255, 0.8); }
+[data-skin="glass"] [data-slot="textarea"]:disabled::placeholder { color: rgba(244, 246, 255, 0.95); }
 [data-skin="glass"] [data-slot="input"]:focus-visible,
 [data-skin="glass"] [data-slot="textarea"]:focus-visible,
 [data-skin="glass"] [data-slot="select-trigger"]:focus-visible {
@@ -442,15 +443,15 @@
   border-color: color-mix(in srgb, var(--primary) 76%, transparent);
   box-shadow: none;
 }
-/* SECONDARY — frosted chip, light text; lifted above outline's clear pane */
+/* SECONDARY — smoked glass chip, light text; lifted above outline's clear pane */
 [data-skin="glass"] [data-slot="badge"][data-variant="secondary"] {
-  background: rgba(255, 255, 255, calc(var(--glass-alpha) + 0.08));
+  background: rgba(30, 27, 75, 0.38);
   color: var(--secondary-foreground);
   border-color: var(--glass-border-color);
 }
-/* OUTLINE — clear pane: hairline frame only */
+/* OUTLINE — neutral-dark clear pane: hairline frame only */
 [data-skin="glass"] [data-slot="badge"][data-variant="outline"] {
-  background: rgba(255, 255, 255, calc(var(--glass-alpha) * 0.33));
+  background: rgba(30, 27, 75, 0.18);
   color: var(--foreground);
   border-color: var(--glass-border-color);
 }

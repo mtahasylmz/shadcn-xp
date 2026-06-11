@@ -168,7 +168,7 @@
 }
 [data-skin="swiss"] .hero-kicker {
   color: var(--primary-foreground);
-  opacity: .85;
+  opacity: 1;
   font-family: var(--app-font-mono);
   text-transform: uppercase;
   letter-spacing: var(--sw-tracking-label);
@@ -181,7 +181,7 @@
   letter-spacing: var(--sw-tracking-tight);
   font-weight: 700;
 }
-[data-skin="swiss"] .hero-sub { color: color-mix(in srgb, var(--primary-foreground) 86%, var(--primary)); }
+[data-skin="swiss"] .hero-sub { color: var(--primary-foreground); }
 
 /* ---- Buttons: differentiated variants ---------------------------------- */
 [data-skin="swiss"] .group\/button {
@@ -315,7 +315,8 @@
 [data-skin="swiss"] [data-slot="textarea"]::placeholder { color: var(--muted-foreground); }
 [data-skin="swiss"] [data-slot="input"]:focus-visible,
 [data-skin="swiss"] [data-slot="textarea"]:focus-visible,
-[data-skin="swiss"] [data-slot="select-trigger"]:focus-visible {
+[data-skin="swiss"] [data-slot="select-trigger"]:focus-visible,
+[data-skin="swiss"] .skin-select:focus-visible {
   outline: 0;
   border-bottom-color: var(--ring);
   /* thicken the underline without changing border width — no reflow */

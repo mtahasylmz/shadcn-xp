@@ -105,14 +105,14 @@
   --neu-fill-color: var(--primary);
   /* Coloured-fill gradient written once against --neu-fill-color; variants
      retarget it the same way they retarget --neu-raised-fill. */
-  --neu-fill-gradient: linear-gradient(145deg, color-mix(in srgb, var(--neu-fill-color) 88%, #ffffff), var(--neu-fill-color));
+  --neu-fill-gradient: linear-gradient(145deg, var(--neu-fill-color), color-mix(in srgb, var(--neu-fill-color) 90%, #000000));
   --neu-raised-fill:
     inset 0 1px 1px color-mix(in srgb, #ffffff 55%, transparent),
     inset 0 -2px 4px color-mix(in srgb, #000000 18%, transparent),
     var(--neu-d2) var(--neu-d2) calc(var(--neu-blur) * 0.9) color-mix(in srgb, var(--neu-fill-color) 35%, transparent);
 
   /* Focus halo that survives the soft shadows (used on every control). */
-  --neu-focus-ring: 0 0 0 calc(var(--neu-glow) * 0.5) color-mix(in srgb, var(--ring) 45%, transparent);
+  --neu-focus-ring: 0 0 0 calc(var(--neu-glow) * 0.5) color-mix(in srgb, var(--ring) 90%, transparent);
 }
 
 [data-skin="neumorphic"] body { background: var(--background); color: var(--foreground); }
@@ -483,7 +483,7 @@
   background: var(--neu-fill-gradient);
   box-shadow:
     var(--neu-inset-sm),
-    0 0 var(--neu-glow) color-mix(in srgb, var(--primary) 45%, transparent);
+    0 0 var(--neu-glow) color-mix(in srgb, var(--neu-fill-color) 45%, transparent);
 }
 [data-skin="neumorphic"] [data-slot="switch-thumb"] {
   background: var(--neu-light);
@@ -507,7 +507,7 @@
 [data-skin="neumorphic"] [data-slot="switch"][data-state="checked"]:focus-visible {
   box-shadow:
     var(--neu-inset-sm),
-    0 0 var(--neu-glow) color-mix(in srgb, var(--primary) 45%, transparent),
+    0 0 var(--neu-glow) color-mix(in srgb, var(--neu-fill-color) 45%, transparent),
     var(--neu-focus-ring);
 }
 

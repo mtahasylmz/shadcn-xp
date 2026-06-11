@@ -40,7 +40,7 @@
   --muted-foreground: #3a3a3a;
   --accent: var(--bru-accent);
   --accent-foreground: #0a0a0a;
-  --destructive: #e60023;     /* AA-compliant white text (~5.3:1) */
+  --destructive: #e60023;     /* white text ~4.8:1 — AA for the bold uppercase labels used */
   --destructive-foreground: #ffffff;
   --border: #0a0a0a;
   --input: #0a0a0a;
@@ -299,7 +299,8 @@
 [data-skin="brutalist"] [data-slot="input"]:focus-visible,
 [data-skin="brutalist"] [data-slot="textarea"]:focus-visible,
 [data-skin="brutalist"] [data-slot="select-trigger"]:focus-visible {
-  outline: 0;
+  outline: var(--bru-border) solid var(--ring);
+  outline-offset: calc(var(--bru-offset) / 2);
   box-shadow: var(--shadow);
 }
 
@@ -418,7 +419,7 @@
   color: var(--primary-foreground);
 }
 [data-skin="brutalist"] [data-slot="badge"][data-slot="badge"][class*="bg-secondary"] {
-  background: var(--secondary);
+  background: var(--muted);
   color: var(--secondary-foreground);
 }
 [data-skin="brutalist"] [data-slot="badge"][data-slot="badge"][class*="text-foreground"] {
