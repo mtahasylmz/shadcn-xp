@@ -16,7 +16,7 @@
 
   --background: #1b1145;
   --foreground: #f4f6ff;
-  --card: rgba(255, 255, 255, 0.12);
+  --card: var(--glass-bg);
   --card-foreground: #f4f6ff;
   --popover: rgba(30, 27, 75, 0.55);
   --popover-foreground: #f4f6ff;
@@ -30,19 +30,19 @@
   --accent: rgba(255, 255, 255, 0.2);
   --accent-foreground: #ffffff;
   --destructive: #ff6b81;
-  --border: rgba(255, 255, 255, 0.24);
-  --input: rgba(255, 255, 255, 0.24);
+  --border: var(--glass-border-color);
+  --input: var(--glass-border-color);
   --ring: rgba(255, 255, 255, 0.7);
   --chart-1: #ffffff;
   --chart-2: #a5f3fc;
   --chart-3: #f0abfc;
   --chart-4: #fde68a;
   --chart-5: #bbf7d0;
-  --sidebar: rgba(255, 255, 255, 0.1);
+  --sidebar: rgba(255, 255, 255, calc(var(--glass-alpha) - 0.02));
   --sidebar-foreground: #f4f6ff;
   --sidebar-accent: rgba(255, 255, 255, 0.2);
   --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: rgba(255, 255, 255, 0.24);
+  --sidebar-border: var(--glass-border-color);
 
   /* === Tunable shape knobs (editor sliders) ============================== */
   --glass-blur-px: 14px;        /* backdrop-filter blur radius */

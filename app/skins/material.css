@@ -55,7 +55,8 @@
   --sidebar-border: #cac4d0;
 
   /* ---- Composed elevation tokens (derived from --md-elevation) ---- */
-  /* Level 1: raised buttons / inline controls (soft, M3-correct) */
+  /* Level 1: hover elevation for filled buttons / floating inline controls
+     (M3 filled buttons sit at elevation 0 at rest; level 1 at rest is the Elevated variant) */
   --md-e1:
     0 1px 2px rgba(0,0,0,.30),
     0 calc(var(--md-elevation) * .16px) calc(var(--md-elevation) * .5px) 1px rgba(0,0,0,.15);
@@ -113,7 +114,7 @@
   border-radius: var(--md-shape-lg);
   box-shadow: var(--md-e2);
 }
-[data-skin="material"] .hero-kicker { color: color-mix(in srgb, var(--primary-foreground) 70%, var(--primary)); letter-spacing: .06em; text-transform: uppercase; }
+[data-skin="material"] .hero-kicker { color: color-mix(in srgb, var(--primary-foreground) 80%, var(--primary)); letter-spacing: .06em; text-transform: uppercase; }
 [data-skin="material"] .hero-title { color: var(--primary-foreground); font-weight: 500; }
 [data-skin="material"] .hero-sub { color: color-mix(in srgb, var(--primary-foreground) 86%, var(--primary)); }
 
@@ -143,7 +144,7 @@
   padding-inline: 24px;
   background: var(--primary);
   color: var(--primary-foreground);
-  box-shadow: var(--md-e1);
+  box-shadow: none; /* M3 filled buttons are elevation 0 at rest */
   font-weight: 500;
   letter-spacing: .006em; /* ~0.1px label-large tracking, not toy 2% */
   transition: box-shadow .18s ease, background-color .15s ease;
@@ -165,9 +166,9 @@
   z-index: -1;
 }
 [data-skin="material"] .group\/button:hover::after { opacity: var(--md-state-opacity); }
-[data-skin="material"] .group\/button:hover { box-shadow: var(--md-e2); }
+[data-skin="material"] .group\/button:hover { box-shadow: var(--md-e1); }
 [data-skin="material"] .group\/button:active:not(:disabled)::after { opacity: calc(var(--md-state-opacity) * 1.5); }
-[data-skin="material"] .group\/button:active:not(:disabled) { box-shadow: var(--md-e1); }
+[data-skin="material"] .group\/button:active:not(:disabled) { box-shadow: none; }
 [data-skin="material"] .group\/button:focus-visible {
   outline: 3px solid var(--ring);
   outline-offset: var(--ring-offset);
@@ -282,12 +283,19 @@
 [data-skin="material"] [data-slot="context-menu-content"],
 [data-skin="material"] [data-slot="select-content"],
 [data-skin="material"] [data-slot="command"],
-[data-skin="material"] [data-slot="hover-card-content"],
+[data-skin="material"] [data-slot="hover-card-content"] {
+  border: 0;
+  border-radius: var(--md-shape-sm);
+  background: var(--md-surface-2);
+  color: var(--popover-foreground);
+  box-shadow: var(--md-e3);
+}
+/* Dialogs & sheets: M3 dialogs use the extra-large shape, not the menu shape */
 [data-skin="material"] [data-slot="dialog-content"],
 [data-skin="material"] [data-slot="alert-dialog-content"],
 [data-skin="material"] [data-slot="sheet-content"] {
   border: 0;
-  border-radius: var(--md-shape-sm);
+  border-radius: var(--md-shape-lg);
   background: var(--md-surface-2);
   color: var(--popover-foreground);
   box-shadow: var(--md-e3);

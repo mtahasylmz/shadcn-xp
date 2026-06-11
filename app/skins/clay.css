@@ -23,7 +23,7 @@
   --secondary: #ffe1ef;
   --secondary-foreground: #7a3f5c;
   --muted: #e7e1fb;
-  --muted-foreground: #6a6090;    /* darkened from #8076a6 for legibility */
+  --muted-foreground: #655b8b;    /* darkened from #6a6090 so inactive tab labels clear AA on --muted */
   --accent: #7be0d4;
   --accent-foreground: #1e544d;
   --destructive: #dd2e47;         /* deepened so #fff text clears AA (≥4.5:1) */
@@ -40,7 +40,7 @@
   --chart-5: #87c5ff;
   --sidebar: #f6f2ff;
   --sidebar-foreground: #423a63;
-  --sidebar-accent: #8b7bf7;
+  --sidebar-accent: #6f5de3;      /* matches --primary so white accent-foreground clears AA */
   --sidebar-accent-foreground: #ffffff;
   --sidebar-border: #ddd4f7;
 
@@ -215,7 +215,7 @@
 [data-skin="clay"] .group\/button[data-variant="link"] {
   background: none;
   box-shadow: none;
-  color: var(--primary);
+  color: #6353d6; /* darker than --primary: 5.10:1 on card, 4.78:1 on bg (AA for 14px text) */
   text-decoration: underline;
   text-underline-offset: 3px;
 }
