@@ -1,5 +1,6 @@
 import { ComponentStrip } from "@/components/showcase/component-strip"
 import { LabListener } from "@/components/showcase/lab-listener"
+import { TokensOnly } from "@/components/showcase/tokens-only"
 
 // Minimal, chrome-less render of the component strip. The skin is set from the
 // ?skin= URL param by the init script in the root layout, so this page can be
@@ -9,6 +10,7 @@ export default function EmbedPage() {
   return (
     <div className="embed-root">
       <LabListener />
+      <TokensOnly />
       <ComponentStrip />
     </div>
   )

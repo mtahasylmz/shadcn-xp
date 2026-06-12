@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 // Set the active skin before first paint (no flash). A ?skin= URL param wins
 // over localStorage — that's how the compare iframes pin each side's skin.
-const skinInit = `try{var p=new URLSearchParams(location.search).get('skin');var s=p||localStorage.getItem('skin')||'xp';document.documentElement.setAttribute('data-skin',s)}catch(e){document.documentElement.setAttribute('data-skin','xp')}`
+const skinInit = `try{var q=new URLSearchParams(location.search);var s=q.get('skin')||localStorage.getItem('skin')||'xp';document.documentElement.setAttribute('data-skin',s);if(q.get('tokensOnly')){document.documentElement.style.visibility='hidden'}}catch(e){document.documentElement.setAttribute('data-skin','xp')}`
 
 export default function RootLayout({
   children,
