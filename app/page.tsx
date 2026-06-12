@@ -16,6 +16,7 @@ import { Specimen } from "@/components/showcase/specimen"
 import { SkinSwitcher, SkinStrip } from "@/components/showcase/skin-switcher"
 import { ComparePanel } from "@/components/showcase/compare-panel"
 import { TokenDeltaPanel } from "@/components/showcase/token-delta-panel"
+import { LayerLab } from "@/components/showcase/layer-lab"
 import { TokenEditor } from "@/components/showcase/token-editor"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -197,6 +198,8 @@ export default function Page() {
               </section>
 
               <TokenDeltaPanel />
+
+              <LayerLab />
 
               <TokenEditor />
 

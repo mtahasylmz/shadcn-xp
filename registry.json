@@ -7,7 +7,7 @@
       "name": "skin-base",
       "type": "registry:item",
       "title": "Base skin (tunable, no concept)",
-      "description": "Generic, concept-free skin with universal structural dials (border, bevel, elevation, blur, surface opacity, press) — neutral at default = stock shadcn, turn them up to add structure. Scoped to [data-skin=\"base\"].",
+      "description": "Generic, concept-free skin with universal structural dials (border, bevel, elevation, blur, surface opacity, press) \u2014 neutral at default = stock shadcn, turn them up to add structure. Scoped to [data-skin=\"base\"].",
       "files": [
         {
           "path": "app/skins/base.css",
@@ -91,7 +91,7 @@
       "name": "theme-xp",
       "type": "registry:theme",
       "title": "Windows XP theme (tokens only)",
-      "description": "The XP token half ONLY — colors, radius 0, Tahoma — expressed as native shadcn cssVars. This is exactly what a tweakcn theme outputs: a flat, square recolor. Pair with skin-xp for the bevels/chrome that tokens can't express.",
+      "description": "The XP token half ONLY \u2014 colors, radius 0, Tahoma \u2014 expressed as native shadcn cssVars. This is exactly what a tweakcn theme outputs: a flat, square recolor. Pair with skin-xp for the bevels/chrome that tokens can't express.",
       "cssVars": {
         "theme": {
           "font-sans": "Tahoma, Verdana, Geneva, 'DejaVu Sans', 'Segoe UI', sans-serif",
@@ -128,6 +128,146 @@
           "sidebar-border": "#808080"
         }
       }
+    },
+    {
+      "name": "skin-win98",
+      "type": "registry:item",
+      "title": "Windows 98 skin",
+      "description": "Windows 98 concept skin: classic grey 4-edge 3D bevels, navy title gradients, teal desktop. A CSS overlay scoped to [data-skin=\"win98\"] over unmodified shadcn components.",
+      "files": [
+        {
+          "path": "app/skins/win98.css",
+          "type": "registry:file",
+          "target": "app/skins/win98.css"
+        }
+      ],
+      "docs": "1) @import \"./skins/win98.css\"; in your globals.css.  2) Set data-skin=\"win98\" on <html>."
+    },
+    {
+      "name": "skin-aqua",
+      "type": "registry:item",
+      "title": "Mac OS X Aqua skin",
+      "description": "Mac OS X Aqua concept skin: glossy gel lozenges, pinstripes, candy-blue gradients. A CSS overlay scoped to [data-skin=\"aqua\"] over unmodified shadcn components.",
+      "files": [
+        {
+          "path": "app/skins/aqua.css",
+          "type": "registry:file",
+          "target": "app/skins/aqua.css"
+        }
+      ],
+      "docs": "1) @import \"./skins/aqua.css\"; in your globals.css.  2) Set data-skin=\"aqua\" on <html>."
+    },
+    {
+      "name": "skin-macos",
+      "type": "registry:item",
+      "title": "macOS (Big Sur/Sonoma) skin",
+      "description": "Modern macOS concept skin: vibrancy blur, hairline borders, traffic-light chrome, system blue. A CSS overlay scoped to [data-skin=\"macos\"] over unmodified shadcn components.",
+      "files": [
+        {
+          "path": "app/skins/macos.css",
+          "type": "registry:file",
+          "target": "app/skins/macos.css"
+        }
+      ],
+      "docs": "1) @import \"./skins/macos.css\"; in your globals.css.  2) Set data-skin=\"macos\" on <html>."
+    },
+    {
+      "name": "skin-material",
+      "type": "registry:item",
+      "title": "Material 3 skin",
+      "description": "Material Design 3 concept skin: tonal surfaces, M3 shape scale, state layers, elevation system. A CSS overlay scoped to [data-skin=\"material\"] over unmodified shadcn components.",
+      "files": [
+        {
+          "path": "app/skins/material.css",
+          "type": "registry:file",
+          "target": "app/skins/material.css"
+        }
+      ],
+      "docs": "1) @import \"./skins/material.css\"; in your globals.css.  2) Set data-skin=\"material\" on <html>."
+    },
+    {
+      "name": "skin-clay",
+      "type": "registry:item",
+      "title": "Claymorphism skin",
+      "description": "Claymorphism concept skin: puffy inflated 3D, pastel palette, big rounded corners. A CSS overlay scoped to [data-skin=\"clay\"] over unmodified shadcn components.",
+      "files": [
+        {
+          "path": "app/skins/clay.css",
+          "type": "registry:file",
+          "target": "app/skins/clay.css"
+        }
+      ],
+      "docs": "1) @import \"./skins/clay.css\"; in your globals.css.  2) Set data-skin=\"clay\" on <html>."
+    },
+    {
+      "name": "skin-cyberpunk",
+      "type": "registry:item",
+      "title": "Cyberpunk skin",
+      "description": "Cyberpunk concept skin: neon cyan/magenta glow, clipped angular corners, dark HUD panels. A CSS overlay scoped to [data-skin=\"cyberpunk\"] over unmodified shadcn components.",
+      "files": [
+        {
+          "path": "app/skins/cyberpunk.css",
+          "type": "registry:file",
+          "target": "app/skins/cyberpunk.css"
+        }
+      ],
+      "docs": "1) @import \"./skins/cyberpunk.css\"; in your globals.css.  2) Set data-skin=\"cyberpunk\" on <html>."
+    },
+    {
+      "name": "skin-pixel",
+      "type": "registry:item",
+      "title": "8-bit Pixel skin",
+      "description": "8-bit concept skin: stepped pixel bevels, Press Start 2P, retro palette, CRT scanlines. A CSS overlay scoped to [data-skin=\"pixel\"] over unmodified shadcn components.",
+      "files": [
+        {
+          "path": "app/skins/pixel.css",
+          "type": "registry:file",
+          "target": "app/skins/pixel.css"
+        }
+      ],
+      "docs": "1) @import \"./skins/pixel.css\"; in your globals.css.  2) Set data-skin=\"pixel\" on <html>."
+    },
+    {
+      "name": "skin-synthwave",
+      "type": "registry:item",
+      "title": "Synthwave skin",
+      "description": "Synthwave/Outrun concept skin: sunset gradient, neon glow, perspective grid horizon. A CSS overlay scoped to [data-skin=\"synthwave\"] over unmodified shadcn components.",
+      "files": [
+        {
+          "path": "app/skins/synthwave.css",
+          "type": "registry:file",
+          "target": "app/skins/synthwave.css"
+        }
+      ],
+      "docs": "1) @import \"./skins/synthwave.css\"; in your globals.css.  2) Set data-skin=\"synthwave\" on <html>."
+    },
+    {
+      "name": "skin-editorial",
+      "type": "registry:item",
+      "title": "Editorial skin",
+      "description": "Editorial/print concept skin: ink on cream, serif hierarchy, hairline rules, letterpress accents. A CSS overlay scoped to [data-skin=\"editorial\"] over unmodified shadcn components.",
+      "files": [
+        {
+          "path": "app/skins/editorial.css",
+          "type": "registry:file",
+          "target": "app/skins/editorial.css"
+        }
+      ],
+      "docs": "1) @import \"./skins/editorial.css\"; in your globals.css.  2) Set data-skin=\"editorial\" on <html>."
+    },
+    {
+      "name": "skin-swiss",
+      "type": "registry:item",
+      "title": "Swiss skin",
+      "description": "Swiss International Typographic concept skin: Helvetica, modular scale, signal-red accent, ink rules. A CSS overlay scoped to [data-skin=\"swiss\"] over unmodified shadcn components.",
+      "files": [
+        {
+          "path": "app/skins/swiss.css",
+          "type": "registry:file",
+          "target": "app/skins/swiss.css"
+        }
+      ],
+      "docs": "1) @import \"./skins/swiss.css\"; in your globals.css.  2) Set data-skin=\"swiss\" on <html>."
     }
   ]
 }

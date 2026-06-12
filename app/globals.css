@@ -524,6 +524,117 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+
+/* ---- LayerLab: hands-on three-layer composer ---------------------------- */
+.lab {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  overflow: hidden;
+}
+.lab-body {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+@media (min-width: 880px) {
+  .lab-body {
+    grid-template-columns: minmax(300px, 380px) 1fr;
+  }
+}
+.lab-steps {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-bottom: 1px solid var(--border);
+}
+@media (min-width: 880px) {
+  .lab-steps {
+    border-bottom: 0;
+    border-right: 1px solid var(--border);
+  }
+}
+.lab-step {
+  opacity: 0.85;
+}
+.lab-step[data-done] {
+  opacity: 1;
+}
+.lab-step-title {
+  font-weight: 700;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.lab-step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font-size: 11px;
+  flex: none;
+}
+.lab-step[data-done] .lab-step-num {
+  background: var(--foreground);
+  color: var(--background);
+  border-color: var(--foreground);
+}
+.lab-step-note {
+  margin: 6px 0 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+.lab-step-note em {
+  font-style: normal;
+  font-weight: 600;
+  color: var(--foreground);
+}
+.lab-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.lab-slider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  font-size: 11px;
+  font-family: var(--app-font-mono);
+  color: var(--muted-foreground);
+}
+.lab-slider input[type="range"] {
+  flex: 1;
+  accent-color: var(--primary);
+  cursor: pointer;
+  min-width: 80px;
+}
+.lab-preview {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.lab-preview figcaption {
+  padding: 7px 12px;
+  font-family: var(--app-font-mono);
+  font-size: 11px;
+  color: var(--muted-foreground);
+  border-bottom: 1px solid var(--border);
+}
+.lab-preview iframe {
+  width: 100%;
+  height: 560px;
+  border: 0;
+  display: block;
+  background: #fff;
+}
 .compare-pane {
   margin: 0;
   background: var(--card);
