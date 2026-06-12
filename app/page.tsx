@@ -13,7 +13,7 @@ import {
 } from "lucide-react"
 
 import { Specimen } from "@/components/showcase/specimen"
-import { SkinSwitcher } from "@/components/showcase/skin-switcher"
+import { SkinSwitcher, SkinStrip } from "@/components/showcase/skin-switcher"
 import { ComparePanel } from "@/components/showcase/compare-panel"
 import { TokenDeltaPanel } from "@/components/showcase/token-delta-panel"
 import { TokenEditor } from "@/components/showcase/token-editor"
@@ -181,20 +181,26 @@ export default function Page() {
 
             <main className="gallery">
               <section className="hero">
-                <div className="hero-kicker">$ shadcn skins — one set, many concepts</div>
-                <h1 className="hero-title">Stock shadcn/ui, re-conceptualized</h1>
+                <div className="hero-kicker">$ shadcn skins — beyond theming</div>
+                <h1 className="hero-title">
+                  A theme editor recolors components. This re-conceptualizes them.
+                </h1>
                 <p className="hero-sub">
-                  Every component below is the unmodified shadcn/ui source. The
-                  entire look is a CSS overlay scoped to <code>[data-skin]</code>
-                  . Switch skins in the top bar — the markup never changes.
+                  Every component on this page is the unmodified shadcn/ui
+                  source. Tokens (tweakcn&apos;s territory) set its colors,
+                  radius and fonts — the swappable <code>[data-skin]</code>{" "}
+                  overlay adds what tokens never can: bevels, window chrome,
+                  glow, press physics. Fifteen complete concepts, one click
+                  apart, each with tunable shape knobs:
                 </p>
+                <SkinStrip />
               </section>
+
+              <TokenDeltaPanel />
 
               <TokenEditor />
 
               <ComparePanel />
-
-              <TokenDeltaPanel />
 
               <Specimen id="buttons" title="Button" tag="variants · sizes · states" slots={["button"]}>
                 <div className="demo-col" style={{ gap: 16 }}>
