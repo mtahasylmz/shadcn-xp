@@ -476,7 +476,7 @@ html {
   font-size: 12px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--muted-foreground);
+  color: color-mix(in srgb, var(--foreground) 55%, var(--muted-foreground));
   margin-bottom: 18px;
 }
 .hero-title {
@@ -546,7 +546,7 @@ html {
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted-foreground);
+  color: color-mix(in srgb, var(--foreground) 55%, var(--muted-foreground));
   margin-bottom: 10px;
 }
 .hero-stage-dot {
@@ -597,12 +597,16 @@ html {
 }
 .hero-proof-frame {
   position: relative;
-  height: 184px;
+  height: 188px;
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: calc(var(--radius) - 2px);
   background: #fff;
   box-shadow: 0 14px 34px -18px color-mix(in srgb, var(--foreground) 42%, transparent);
+  /* fade the bottom so the crop reads as an intentional 'preview continues'
+     edge instead of a hard cut through a control (matches the rail convention) */
+  -webkit-mask-image: linear-gradient(180deg, #000 0, #000 80%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 0, #000 80%, transparent 100%);
 }
 /* make the structural ("+ structure") pane the visual hero of the pair */
 .hero-proof-pane:last-child .hero-proof-frame {
