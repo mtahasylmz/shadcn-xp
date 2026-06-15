@@ -180,7 +180,7 @@ export default function Page() {
                 <div className="hero-grid">
                   <div className="hero-copy">
                     <div className="hero-kicker">
-                      shadcn/ui · concept skin engine
+                      one component set · fifteen aesthetics
                     </div>
                     <h1 className="hero-title">
                       A theme editor recolors components.{" "}

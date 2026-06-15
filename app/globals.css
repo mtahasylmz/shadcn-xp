@@ -446,10 +446,10 @@ html {
 }
 .hero-title {
   font-family: var(--app-font-heading);
-  font-size: clamp(26px, 3vw, 40px);
+  font-size: clamp(28px, 3.4vw, 44px);
   font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -0.03em;
+  line-height: 1.07;
+  letter-spacing: -0.032em;
   margin-bottom: 18px;
 }
 /* Two-tone headline: the accent line takes the brand color (= each skin's
@@ -537,42 +537,55 @@ html {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-family: var(--app-font-mono);
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--foreground);
-  margin-bottom: 7px;
+  margin-bottom: 8px;
 }
 .hero-proof-tag {
+  font-family: var(--app-font-mono);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.02em;
-  padding: 2px 7px;
-  border-radius: 5px;
+  padding: 3px 9px;
+  border-radius: 999px;
   text-transform: uppercase;
 }
 .hero-proof-tag.is-stock {
-  background: color-mix(in srgb, var(--muted-foreground) 16%, transparent);
-  color: var(--muted-foreground);
+  background: color-mix(in srgb, var(--muted-foreground) 22%, var(--card));
+  color: var(--foreground);
 }
 .hero-proof-tag.is-skin {
-  background: color-mix(in srgb, var(--brand) 16%, transparent);
-  color: var(--brand);
+  background: var(--brand);
+  color: var(--brand-foreground);
+}
+.hero-proof-sub {
+  font-size: 12px;
+  color: var(--muted-foreground);
 }
 .hero-proof-frame {
   position: relative;
-  height: 168px;
+  height: 184px;
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: calc(var(--radius) - 2px);
   background: #fff;
-  box-shadow: 0 12px 30px -18px color-mix(in srgb, var(--foreground) 40%, transparent);
+  box-shadow: 0 14px 34px -18px color-mix(in srgb, var(--foreground) 42%, transparent);
+}
+/* make the structural ("+ structure") pane the visual hero of the pair */
+.hero-proof-pane:last-child .hero-proof-frame {
+  box-shadow: 0 18px 40px -16px color-mix(in srgb, var(--brand) 45%, transparent);
+  outline: 2px solid color-mix(in srgb, var(--brand) 55%, transparent);
+  outline-offset: 1px;
 }
 .hero-proof-frame iframe {
   width: 100%;
   height: 520px;
   border: 0;
   display: block;
+}
+.hero-proof-cap {
+  margin: 12px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--muted-foreground);
 }
 
 /* Bento layout — break the uniform stack into a large/small cadence. Light
@@ -586,6 +599,7 @@ html {
 @media (min-width: 720px) {
   .specimen-grid {
     grid-template-columns: 1fr 1fr;
+    align-items: start; /* cards take natural height — no stretched-card voids */
   }
   .specimen-grid .span-2 {
     grid-column: 1 / -1;
@@ -609,11 +623,13 @@ html {
   flex-direction: column;
   justify-content: center;
 }
-/* subtle depth on the neutral baseline so cards don't read as flat cutouts
-   (concept skins paint their own elevation) */
+/* depth on the neutral baseline so cards read as lifted surfaces, not flat
+   cutouts (concept skins paint their own elevation) */
 :root[data-skin="default"] .specimen,
 :root[data-skin="base"] .specimen {
-  box-shadow: 0 1px 2px color-mix(in srgb, var(--foreground) 6%, transparent);
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--foreground) 5%, transparent),
+    0 8px 24px -16px color-mix(in srgb, var(--foreground) 28%, transparent);
 }
 /* tonal rhythm on the neutral baseline: wide feature cards stay white, paired
    cells take a faint tint, so the bento alternates instead of reading uniform */

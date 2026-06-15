@@ -31,13 +31,13 @@ export function HeroProof() {
   return (
     <div className="hero-proof" inert>
       <div className="hero-stage-label">
-        <span className="hero-stage-dot" /> the same markup, two ways
+        <span className="hero-stage-dot" /> the exact same markup, two ways
       </div>
       <div className="hero-proof-panes">
         <figure className="hero-proof-pane">
           <figcaption>
             <span className="hero-proof-tag is-stock">recolor only</span>
-            plain shadcn
+            <span className="hero-proof-sub">all a theme editor reaches</span>
           </figcaption>
           <div className="hero-proof-frame">
             <iframe title="Plain shadcn" src="/embed?skin=default" scrolling="no" />
@@ -45,13 +45,18 @@ export function HeroProof() {
         </figure>
         <figure className="hero-proof-pane">
           <figcaption>
-            <span className="hero-proof-tag is-skin">+ structure</span> {label}
+            <span className="hero-proof-tag is-skin">+ structure</span>
+            <span className="hero-proof-sub">the {label} overlay</span>
           </figcaption>
           <div className="hero-proof-frame">
             <iframe title={`${label} skin`} src={`/embed?skin=${skin}`} scrolling="no" />
           </div>
         </figure>
       </div>
+      <p className="hero-proof-cap">
+        Same buttons, same code — only the right pane gains bevels, chrome and
+        press physics. That layer is what this engine adds.
+      </p>
     </div>
   )
 }
