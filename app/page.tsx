@@ -198,9 +198,9 @@ export default function Page() {
                     </p>
                     <SkinGallery />
                     <p className="hero-delta">
-                      A token editor like <strong>tweakcn</strong> recolors —
-                      this adds the structure it can&apos;t: bevels, chrome,
-                      glow, press physics.
+                      A token editor like <strong>tweakcn</strong>{" "}
+                      recolors — this adds the structure it can&apos;t: bevels,
+                      chrome, glow, press physics.
                     </p>
                   </div>
 
