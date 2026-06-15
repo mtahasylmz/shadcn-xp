@@ -644,6 +644,7 @@ html {
   .specimen-grid {
     grid-template-columns: 1fr 1fr;
     align-items: start; /* cards take natural height — no stretched-card voids */
+    grid-auto-flow: row dense; /* backfill gaps a wide span would otherwise leave */
   }
   .specimen-grid .span-2 {
     grid-column: 1 / -1;
@@ -723,6 +724,7 @@ html {
   border: 1px solid currentColor;
   border-radius: 4px;
   opacity: 0.75;
+  white-space: nowrap; /* keep the trailing chevron on the label's line */
 }
 .code-toggle:hover {
   opacity: 1;
@@ -825,12 +827,12 @@ html {
   border-radius: 999px;
   text-decoration: none;
   color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
   transition: background 0.12s ease, transform 0.12s ease;
 }
 .cta-btn:hover {
-  background: rgba(255, 255, 255, 0.13);
+  background: rgba(255, 255, 255, 0.18);
   transform: translateY(-1px);
 }
 .cta-btn-primary {
@@ -1015,6 +1017,19 @@ html {
 @keyframes gallery-pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.35; transform: scale(0.6); }
+}
+
+/* Respect reduced-motion: kill the infinite pulse and tame transitions/smooth
+   scroll for motion-sensitive users (the tour itself is opt-in via Play). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
 .gallery-rail {
   display: flex;

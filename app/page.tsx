@@ -597,8 +597,8 @@ export default function Page() {
             <h2 className="closing-cta-title">Ship shadcn in any skin.</h2>
             <p className="closing-cta-sub">
               Fifteen drop-in concept skins over unmodified components — add one
-              with the shadcn registry, then tune its tokens and shape. Or tour
-              them all again from the top.
+              with the shadcn registry, then tune its tokens and shape. Jump
+              back to the top to tour them again.
             </p>
             <div className="closing-cta-actions">
               <a
