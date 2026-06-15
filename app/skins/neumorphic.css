@@ -84,10 +84,18 @@
   --neu-raised:
     var(--neu-distance) var(--neu-distance) var(--neu-blur) var(--neu-dark),
     calc(var(--neu-distance) * -1) calc(var(--neu-distance) * -1) var(--neu-blur) var(--neu-light);
-  /* Large elevation for top-level containers (cards, dialogs, app bar). */
+  /* Large elevation for top-level containers (cards, dialogs, app bar).
+     "Container elevation" raises the SOFT glow (blur) across the full range,
+     but the OFFSET is kept in a gentle band so the neumorphic extrusion stays
+     soft — a large offset turns the dual shadow into a harsh, asymmetric drop
+     shadow that overlaps neighbours and breaks the soft-UI look. The band is
+     centred on the 2x default, so the default appearance is unchanged. */
+  --neu-elevate-offset: clamp(1.6, var(--neu-elevate), 2.4);
+  --neu-lg-d: calc(var(--neu-distance) * var(--neu-elevate-offset));
+  --neu-lg-b: calc(var(--neu-blur) * var(--neu-elevate));
   --neu-raised-lg:
-    calc(var(--neu-distance) * var(--neu-elevate)) calc(var(--neu-distance) * var(--neu-elevate)) calc(var(--neu-blur) * var(--neu-elevate)) var(--neu-dark),
-    calc(var(--neu-distance) * var(--neu-elevate) * -1) calc(var(--neu-distance) * var(--neu-elevate) * -1) calc(var(--neu-blur) * var(--neu-elevate)) var(--neu-light);
+    var(--neu-lg-d) var(--neu-lg-d) var(--neu-lg-b) var(--neu-dark),
+    calc(var(--neu-lg-d) * -1) calc(var(--neu-lg-d) * -1) var(--neu-lg-b) var(--neu-light);
 
   /* Inset: pressed into the surface. */
   --neu-inset:
