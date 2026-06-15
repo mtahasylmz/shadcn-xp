@@ -457,10 +457,15 @@ html {
   z-index: 0;
   pointer-events: none;
   background:
-    radial-gradient(58rem 34rem at 104% -16%,
-      color-mix(in srgb, var(--brand) 30%, transparent), transparent 58%),
-    radial-gradient(44rem 30rem at -10% 116%,
-      color-mix(in srgb, var(--accent) 18%, transparent), transparent 55%);
+    radial-gradient(50rem 32rem at 84% -2%,
+      color-mix(in srgb, var(--brand) 42%, transparent), transparent 60%),
+    radial-gradient(38rem 26rem at 8% 106%,
+      color-mix(in srgb, var(--accent) 24%, transparent), transparent 58%);
+}
+/* faint tonal base so the hero sits on depth, not flat white, on the baseline */
+:root[data-skin="default"] .hero,
+:root[data-skin="base"] .hero {
+  background: color-mix(in srgb, var(--muted) 32%, var(--card));
 }
 .hero > * {
   position: relative;
@@ -508,9 +513,9 @@ html {
   margin: 22px 0 0;
   padding-left: 13px;
   border-left: 2px solid var(--brand);
-  font-size: 13.5px;
+  font-size: 14px;
   line-height: 1.5;
-  color: var(--muted-foreground);
+  color: color-mix(in srgb, var(--foreground) 80%, var(--muted-foreground));
 }
 .hero-delta strong {
   color: var(--foreground);

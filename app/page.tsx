@@ -357,7 +357,7 @@ export default function Page() {
                 </div>
               </Specimen>
 
-              <Specimen id="card" title="Card" tag="composed surface" slots={["card"]}>
+              <Specimen id="card" title="Card" tag="composed surface" slots={["card"]} wide>
                 <Card style={{ maxWidth: 360 }}>
                   <CardHeader>
                     <CardTitle>Project settings</CardTitle>
