@@ -146,7 +146,8 @@ export default function Page() {
             <span className="app-brand-mark">
               <Layers className="size-4" />
             </span>
-            shadcn/ui · concept skins
+            shadcn/ui
+            <span className="app-brand-suffix"> · concept skins</span>
           </span>
           <span className="app-bar-controls">
             <label htmlFor="skin">skin</label>
@@ -182,21 +183,64 @@ export default function Page() {
 
             <main className="gallery">
               <section className="hero">
-                <div className="hero-kicker">shadcn/ui · concept skin engine</div>
-                <h1 className="hero-title">
-                  A theme editor recolors components.
-                  <br />
-                  <span className="hero-title-accent">
-                    This re-conceptualizes them.
-                  </span>
-                </h1>
-                <p className="hero-sub">
-                  One unmodified shadcn/ui component set, re-skinned into{" "}
-                  <strong>15 complete visual concepts</strong> — bevels, window
-                  chrome, glow, press physics — that no token editor can express.
-                  Hit play and watch the whole page transform.
-                </p>
-                <SkinGallery />
+                <div className="hero-grid">
+                  <div className="hero-copy">
+                    <div className="hero-kicker">
+                      shadcn/ui · concept skin engine
+                    </div>
+                    <h1 className="hero-title">
+                      A theme editor recolors components.
+                      <br />
+                      <span className="hero-title-accent">
+                        This re-conceptualizes them.
+                      </span>
+                    </h1>
+                    <p className="hero-sub">
+                      One unmodified shadcn/ui component set, re-skinned into{" "}
+                      <strong>15 complete visual concepts</strong> — Windows XP,
+                      Brutalist, Glass, Terminal, Synthwave and more. Bevels,
+                      chrome, glow, press physics: structure no token editor can
+                      express. Hit play and watch the whole page transform.
+                    </p>
+                    <SkinGallery />
+                  </div>
+
+                  {/* live artifact — real shadcn components, re-skinned by the
+                      page's own data-skin (morphs as the tour cycles) */}
+                  <div className="hero-stage" inert>
+                    <div className="hero-stage-label">
+                      <span className="hero-stage-dot" /> live preview · same
+                      markup, current skin
+                    </div>
+                    <Card className="hero-card">
+                      <CardHeader>
+                        <CardTitle>Upgrade plan</CardTitle>
+                        <CardDescription>
+                          One component set — every concept.
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="demo-col" style={{ gap: 14 }}>
+                        <div className="demo-row" style={{ gap: 8 }}>
+                          <Badge>Pro</Badge>
+                          <Badge variant="secondary">Team</Badge>
+                          <Badge variant="outline">Trial</Badge>
+                        </div>
+                        <div
+                          className="demo-row"
+                          style={{ justifyContent: "space-between" }}
+                        >
+                          <Label>Notifications</Label>
+                          <Switch defaultChecked />
+                        </div>
+                        <Input placeholder="you@example.com" />
+                      </CardContent>
+                      <CardFooter className="demo-row" style={{ gap: 10 }}>
+                        <Button>Upgrade</Button>
+                        <Button variant="outline">Maybe later</Button>
+                      </CardFooter>
+                    </Card>
+                  </div>
+                </div>
               </section>
 
               <div className="section-eyebrow" id="proof-eyebrow">
