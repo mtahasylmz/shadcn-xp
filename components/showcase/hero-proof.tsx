@@ -36,8 +36,8 @@ export function HeroProof() {
       <div className="hero-proof-panes">
         <figure className="hero-proof-pane">
           <figcaption>
-            <span className="hero-proof-tag is-stock">tokens only</span> plain
-            shadcn
+            <span className="hero-proof-tag is-stock">recolor only</span>
+            plain shadcn
           </figcaption>
           <div className="hero-proof-frame">
             <iframe title="Plain shadcn" src="/embed?skin=default" scrolling="no" />
@@ -45,7 +45,7 @@ export function HeroProof() {
         </figure>
         <figure className="hero-proof-pane">
           <figcaption>
-            <span className="hero-proof-tag is-skin">+ overlay</span> {label}
+            <span className="hero-proof-tag is-skin">+ structure</span> {label}
           </figcaption>
           <div className="hero-proof-frame">
             <iframe title={`${label} skin`} src={`/embed?skin=${skin}`} scrolling="no" />

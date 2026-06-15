@@ -48,7 +48,7 @@ export function TokenDeltaPanel() {
   ] as const
 
   return (
-    <section className="compare" id="proof">
+    <section className="compare">
       <div className="compare-head">
         <span className="compare-title">
           The proof for <em>{label}</em> — same markup in all three panes

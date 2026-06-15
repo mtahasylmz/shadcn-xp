@@ -220,6 +220,15 @@ html {
   display: flex;
   align-items: center;
   gap: 10px;
+  /* the persistent picker — hidden until the hero (and its gallery) scroll away
+     so it never competes with the hero control above the fold */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.app-bar-controls[data-shown] {
+  opacity: 1;
+  pointer-events: auto;
 }
 .app-bar-controls label {
   font-size: 12px;
@@ -329,20 +338,27 @@ html {
 }
 .app-nav a {
   display: block;
-  padding: 5px 8px;
+  padding: 6px 10px 6px 12px;
   font-size: 13px;
-  color: var(--foreground);
+  color: color-mix(in srgb, var(--foreground) 78%, var(--muted-foreground));
   text-decoration: none;
-  border-radius: calc(var(--radius) - 3px);
+  border-left: 2px solid transparent;
+  border-radius: 0 calc(var(--radius) - 3px) calc(var(--radius) - 3px) 0;
 }
 .app-nav a:hover {
-  background: var(--accent);
-  color: var(--accent-foreground);
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--foreground) 6%, transparent);
 }
 .app-nav a[data-active] {
   color: var(--brand);
   font-weight: 600;
+  border-left-color: var(--brand);
   background: color-mix(in srgb, var(--brand) 10%, transparent);
+}
+/* keep the pinned sidebar reachable on short viewports */
+.app-nav-inner {
+  max-height: calc(100vh - var(--app-bar-h) - 24px);
+  overflow-y: auto;
 }
 
 /* Mobile section nav — sticky scroll-spy chip rail under the app-bar, restoring
@@ -459,7 +475,7 @@ html {
 /* the differentiator, promoted to its own emphasized line */
 .hero-delta {
   max-width: 58ch;
-  margin: 0 0 26px;
+  margin: 22px 0 0;
   padding-left: 13px;
   border-left: 2px solid var(--brand);
   font-size: 13.5px;
@@ -522,15 +538,16 @@ html {
   align-items: center;
   gap: 8px;
   font-family: var(--app-font-mono);
-  font-size: 11px;
-  color: var(--muted-foreground);
-  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--foreground);
+  margin-bottom: 7px;
 }
 .hero-proof-tag {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.03em;
-  padding: 2px 6px;
+  letter-spacing: 0.02em;
+  padding: 2px 7px;
   border-radius: 5px;
   text-transform: uppercase;
 }
@@ -583,10 +600,14 @@ html {
   background: var(--card);
   overflow: hidden;
 }
-/* let paired bento cells share a row height — the body fills, so card bottoms
-   align instead of leaving one card with ragged dead space */
+/* let paired bento cells share a row height — the body fills AND centers its
+   demo vertically, so a sparse card reads as balanced, not top-stuck with a
+   dead gap below */
 .specimen-body {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 /* subtle depth on the neutral baseline so cards don't read as flat cutouts
    (concept skins paint their own elevation) */

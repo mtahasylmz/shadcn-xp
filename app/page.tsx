@@ -13,10 +13,10 @@ import {
 } from "lucide-react"
 
 import { Specimen } from "@/components/showcase/specimen"
-import { SkinSwitcher } from "@/components/showcase/skin-switcher"
 import { SkinGallery } from "@/components/showcase/skin-gallery"
 import { SectionNav, MobileSectionNav } from "@/components/showcase/section-nav"
 import { HeroProof } from "@/components/showcase/hero-proof"
+import { HeaderSkin } from "@/components/showcase/header-skin"
 import { ComparePanel } from "@/components/showcase/compare-panel"
 import { TokenDeltaPanel } from "@/components/showcase/token-delta-panel"
 import { TokenEditor } from "@/components/showcase/token-editor"
@@ -151,10 +151,7 @@ export default function Page() {
             shadcn/ui
             <span className="app-brand-suffix"> · concept skins</span>
           </span>
-          <span className="app-bar-controls">
-            <label htmlFor="skin">skin</label>
-            <SkinSwitcher />
-          </span>
+          <HeaderSkin />
         </header>
 
         <MobileSectionNav />
@@ -196,12 +193,12 @@ export default function Page() {
                       <strong>15 complete concepts</strong> — XP, Brutalist,
                       Glass, Terminal, Synthwave and more.
                     </p>
+                    <SkinGallery />
                     <p className="hero-delta">
                       A token editor like <strong>tweakcn</strong> recolors —
                       this adds the structure it can&apos;t: bevels, chrome,
-                      glow, press physics. Hit play and watch the page transform.
+                      glow, press physics.
                     </p>
-                    <SkinGallery />
                   </div>
 
                   {/* in-hero proof — the same stock markup, plain vs skinned,
@@ -212,7 +209,7 @@ export default function Page() {
                 </div>
               </section>
 
-              <div className="section-eyebrow" id="proof-eyebrow">
+              <div className="section-eyebrow" id="proof">
                 <span className="section-eyebrow-num">01</span>
                 <span className="section-eyebrow-label">The proof</span>
                 <span className="section-eyebrow-note">
