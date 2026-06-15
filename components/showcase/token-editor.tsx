@@ -191,7 +191,11 @@ export function TokenEditor() {
     applyVar(varName, kind === "radius" ? `${raw.replace(/[^0-9.]/g, "") || 0}px` : raw)
   }
   function setShape(p: ShapeParam, raw: string) {
-    applyVar(p.varName, `${raw}${p.unit}`)
+    // "x" is a display-only multiplier label, NOT a CSS unit — appending it
+    // (e.g. --neu-elevate: "3x") makes calc(6px * 3x) invalid and silently
+    // drops the property, so the knob would break the shadow it controls.
+    const cssUnit = p.unit === "x" ? "" : p.unit
+    applyVar(p.varName, `${raw}${cssUnit}`)
   }
 
   function reset() {
