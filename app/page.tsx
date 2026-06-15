@@ -170,13 +170,7 @@ export default function Page() {
             </span>
           </div>
 
-          <div className="app-main">
-            <aside className="app-nav">
-              <SectionNav />
-            </aside>
-
-            <main className="gallery">
-              <section className="hero" id="top">
+          <section className="hero" id="top">
                 <div className="hero-grid">
                   <div className="hero-copy">
                     <div className="hero-kicker">
@@ -207,8 +201,9 @@ export default function Page() {
                     <HeroProof />
                   </div>
                 </div>
-              </section>
+          </section>
 
+          <div className="story">
               <div className="section-eyebrow" id="proof">
                 <span className="section-eyebrow-num">01</span>
                 <span className="section-eyebrow-label">The proof</span>
@@ -230,7 +225,14 @@ export default function Page() {
               <TokenEditor />
 
               <ComparePanel />
+          </div>
 
+          <div className="app-main">
+            <aside className="app-nav">
+              <SectionNav />
+            </aside>
+
+            <main className="gallery">
               <div className="section-eyebrow" id="components">
                 <span className="section-eyebrow-num">03</span>
                 <span className="section-eyebrow-label">The components</span>

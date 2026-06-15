@@ -403,12 +403,42 @@ html {
   background: var(--brand);
   border-color: var(--brand);
 }
+.mobile-nav-group {
+  flex: none;
+  align-self: center;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted-foreground);
+  padding-left: 4px;
+}
+.mobile-nav-group:first-child {
+  padding-left: 0;
+}
 
 .gallery {
   display: flex;
   flex-direction: column;
   gap: 16px;
   min-width: 0;
+}
+
+/* The "engine" zone (proof + try) now runs full-width above the component
+   sidebar — a distinct workbench surface so it reads as its own act between
+   the bright hero and the bento gallery. */
+.story {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+:root[data-skin="default"] .story,
+:root[data-skin="base"] .story {
+  background: color-mix(in srgb, var(--muted) 45%, transparent);
+  border: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  border-radius: calc(var(--radius) + 4px);
+  padding: 6px clamp(12px, 2vw, 22px) 22px;
+  margin-top: 8px;
 }
 
 .hero {

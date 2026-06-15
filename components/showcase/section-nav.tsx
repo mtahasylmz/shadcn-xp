@@ -97,18 +97,25 @@ export function MobileSectionNav() {
     el?.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" })
   }, [active])
 
+  const firstComponentId = SECTIONS.find(([id]) => !STORY_IDS.has(id))?.[0]
+
   return (
     <div className="mobile-nav" ref={railRef} aria-label="Sections">
+      <span className="mobile-nav-group">Story</span>
       {SECTIONS.map(([id, label]) => (
-        <a
-          key={id}
-          href={`#${id}`}
-          className="mobile-nav-chip"
-          data-active={active === id || undefined}
-          aria-current={active === id ? "true" : undefined}
-        >
-          {label}
-        </a>
+        <React.Fragment key={id}>
+          {id === firstComponentId ? (
+            <span className="mobile-nav-group">Components</span>
+          ) : null}
+          <a
+            href={`#${id}`}
+            className="mobile-nav-chip"
+            data-active={active === id || undefined}
+            aria-current={active === id ? "true" : undefined}
+          >
+            {label}
+          </a>
+        </React.Fragment>
       ))}
     </div>
   )
