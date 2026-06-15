@@ -56,12 +56,14 @@ export function Specimen({
   title,
   tag,
   slots = [],
+  wide = false,
   children,
 }: {
   id: string
   title: string
   tag?: string
   slots?: string[]
+  wide?: boolean
   children: React.ReactNode
 }) {
   const [open, setOpen] = React.useState(false)
@@ -78,7 +80,7 @@ export function Specimen({
   }
 
   return (
-    <section id={id} className="specimen">
+    <section id={id} className={wide ? "specimen span-2" : "specimen"}>
       <div className="specimen-head">
         <span className="specimen-title">{title}</span>
         <span className="specimen-head-right">

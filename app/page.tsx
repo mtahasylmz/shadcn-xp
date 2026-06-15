@@ -15,6 +15,7 @@ import {
 import { Specimen } from "@/components/showcase/specimen"
 import { SkinSwitcher } from "@/components/showcase/skin-switcher"
 import { SkinGallery } from "@/components/showcase/skin-gallery"
+import { SectionNav, MobileSectionNav } from "@/components/showcase/section-nav"
 import { ComparePanel } from "@/components/showcase/compare-panel"
 import { TokenDeltaPanel } from "@/components/showcase/token-delta-panel"
 import { TokenEditor } from "@/components/showcase/token-editor"
@@ -155,6 +156,8 @@ export default function Page() {
           </span>
         </header>
 
+        <MobileSectionNav />
+
         {/* the skinned surface */}
         <div className="stage">
           <div className="stage-head">
@@ -171,18 +174,11 @@ export default function Page() {
 
           <div className="app-main">
             <aside className="app-nav">
-              <nav className="app-nav-inner">
-                <span className="app-nav-title">Components</span>
-                {NAV.map(([id, label]) => (
-                  <a key={id} href={`#${id}`}>
-                    {label}
-                  </a>
-                ))}
-              </nav>
+              <SectionNav />
             </aside>
 
             <main className="gallery">
-              <section className="hero">
+              <section className="hero" id="top">
                 <div className="hero-grid">
                   <div className="hero-copy">
                     <div className="hero-kicker">
@@ -197,10 +193,11 @@ export default function Page() {
                     </h1>
                     <p className="hero-sub">
                       One unmodified shadcn/ui component set, re-skinned into{" "}
-                      <strong>15 complete visual concepts</strong> — Windows XP,
-                      Brutalist, Glass, Terminal, Synthwave and more. Bevels,
-                      chrome, glow, press physics: structure no token editor can
-                      express. Hit play and watch the whole page transform.
+                      <strong>15 complete concepts</strong> — XP, Brutalist,
+                      Glass, Terminal, Synthwave and more. A token editor like
+                      tweakcn recolors; this adds the structure it can&apos;t —
+                      bevels, chrome, glow, press physics. Hit play and watch the
+                      page transform.
                     </p>
                     <SkinGallery />
                   </div>
@@ -253,7 +250,7 @@ export default function Page() {
 
               <TokenDeltaPanel />
 
-              <div className="section-eyebrow">
+              <div className="section-eyebrow" id="try">
                 <span className="section-eyebrow-num">02</span>
                 <span className="section-eyebrow-label">Try it live</span>
                 <span className="section-eyebrow-note">
@@ -265,7 +262,7 @@ export default function Page() {
 
               <ComparePanel />
 
-              <div className="section-eyebrow">
+              <div className="section-eyebrow" id="components">
                 <span className="section-eyebrow-num">03</span>
                 <span className="section-eyebrow-label">The components</span>
                 <span className="section-eyebrow-note">
@@ -273,7 +270,8 @@ export default function Page() {
                 </span>
               </div>
 
-              <Specimen id="buttons" title="Button" tag="variants · sizes · states" slots={["button"]}>
+              <div className="specimen-grid">
+              <Specimen id="buttons" title="Button" tag="variants · sizes · states" slots={["button"]} wide>
                 <div className="demo-col" style={{ gap: 16 }}>
                   <div className="demo-col">
                     <span className="demo-label">variants</span>
@@ -464,7 +462,7 @@ export default function Page() {
                 </div>
               </Specimen>
 
-              <Specimen id="table" title="Table" tag="data grid" slots={["table", "table-head", "table-cell"]}>
+              <Specimen id="table" title="Table" tag="data grid" slots={["table", "table-head", "table-cell"]} wide>
                 <Table>
                   <TableHeader>
                     <TableRow>
@@ -601,7 +599,7 @@ export default function Page() {
                 </div>
               </Specimen>
 
-              <Specimen id="chart" title="Chart" tag="recharts · token-driven" slots={["chart"]}>
+              <Specimen id="chart" title="Chart" tag="recharts · token-driven" slots={["chart"]} wide>
                 <ChartContainer config={chartConfig} className="max-h-[260px] w-full">
                   <BarChart accessibilityLayer data={chartData}>
                     <CartesianGrid vertical={false} />
@@ -617,9 +615,35 @@ export default function Page() {
                   </BarChart>
                 </ChartContainer>
               </Specimen>
+              </div>
             </main>
           </div>
         </div>
+
+        <section className="closing-cta">
+          <div className="closing-cta-inner">
+            <div className="closing-cta-kicker">one install · any aesthetic</div>
+            <h2 className="closing-cta-title">Ship shadcn in any skin.</h2>
+            <p className="closing-cta-sub">
+              Fifteen drop-in concept skins over unmodified components — add one
+              with the shadcn registry, then tune its tokens and shape. Or tour
+              them all again from the top.
+            </p>
+            <div className="closing-cta-actions">
+              <a
+                className="cta-btn cta-btn-primary"
+                href="https://github.com/mtahasylmz/shadcn-xp"
+                target="_blank"
+                rel="noreferrer"
+              >
+                View on GitHub
+              </a>
+              <a className="cta-btn" href="#top">
+                ↑ Back to top
+              </a>
+            </div>
+          </div>
+        </section>
 
         <footer className="app-status">
           <span>{NAV.length} components · stock shadcn/ui · radix base</span>
