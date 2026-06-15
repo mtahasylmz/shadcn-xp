@@ -54,7 +54,7 @@ export function HeroProof() {
         </figure>
       </div>
       <p className="hero-proof-cap">
-        Same buttons, same code — only the right pane gains bevels, chrome and
+        Same buttons, same code — only the lower pane gains bevels, chrome and
         press physics. That layer is what this engine adds.
       </p>
     </div>
