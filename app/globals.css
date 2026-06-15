@@ -157,6 +157,20 @@
    here we give them a clean default so the "Default" skin looks presentable.
    ========================================================================== */
 
+/* One source of truth for the sticky app-bar height, so every anchor offset and
+   sticky top derives from it (no uncoordinated magic numbers). */
+:root {
+  --app-bar-h: 72px;
+}
+@media (max-width: 879px) {
+  :root {
+    --app-bar-h: 112px; /* app-bar + sticky mobile section rail */
+  }
+}
+html {
+  scroll-padding-top: var(--app-bar-h);
+}
+
 .app {
   width: 100%;
   max-width: 1100px;
@@ -288,7 +302,7 @@
   .app-nav {
     display: block;
     position: sticky;
-    top: 76px;
+    top: calc(var(--app-bar-h) + 4px);
     align-self: start;
   }
 }
@@ -431,11 +445,25 @@
   font-size: clamp(15px, 1.4vw, 17px);
   line-height: 1.55;
   max-width: 58ch;
-  margin-bottom: 28px;
+  margin-bottom: 14px;
 }
 .hero-sub strong {
   color: var(--foreground);
   font-weight: 600;
+}
+/* the differentiator, promoted to its own emphasized line */
+.hero-delta {
+  max-width: 58ch;
+  margin: 0 0 26px;
+  padding-left: 13px;
+  border-left: 2px solid var(--brand);
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+.hero-delta strong {
+  color: var(--foreground);
+  font-weight: 700;
 }
 .hero-grid {
   display: grid;
@@ -475,6 +503,7 @@
 /* the live card sits a touch lifted so it reads as the focal artifact, but
    skins repaint it via their own .specimen/card rules — keep this minimal */
 .hero-card {
+  width: 100%;
   box-shadow: 0 20px 50px -24px color-mix(in srgb, var(--foreground) 45%, transparent);
 }
 
@@ -496,11 +525,23 @@
 }
 
 .specimen {
-  scroll-margin-top: 76px;
+  display: flex;
+  flex-direction: column;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: var(--card);
   overflow: hidden;
+}
+/* let paired bento cells share a row height — the body fills, so card bottoms
+   align instead of leaving one card with ragged dead space */
+.specimen-body {
+  flex: 1;
+}
+/* subtle depth on the neutral baseline so cards don't read as flat cutouts
+   (concept skins paint their own elevation) */
+:root[data-skin="default"] .specimen,
+:root[data-skin="base"] .specimen {
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--foreground) 6%, transparent);
 }
 .specimen-head {
   display: flex;

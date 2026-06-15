@@ -185,19 +185,20 @@ export default function Page() {
                       shadcn/ui · concept skin engine
                     </div>
                     <h1 className="hero-title">
-                      A theme editor recolors components.
-                      <br />
+                      A theme editor recolors components.{" "}
                       <span className="hero-title-accent">
-                        This re-conceptualizes them.
+                        This re-skins them — structure and all.
                       </span>
                     </h1>
                     <p className="hero-sub">
                       One unmodified shadcn/ui component set, re-skinned into{" "}
                       <strong>15 complete concepts</strong> — XP, Brutalist,
-                      Glass, Terminal, Synthwave and more. A token editor like
-                      tweakcn recolors; this adds the structure it can&apos;t —
-                      bevels, chrome, glow, press physics. Hit play and watch the
-                      page transform.
+                      Glass, Terminal, Synthwave and more.
+                    </p>
+                    <p className="hero-delta">
+                      A token editor like <strong>tweakcn</strong> recolors —
+                      this adds the structure it can&apos;t: bevels, chrome,
+                      glow, press physics. Hit play and watch the page transform.
                     </p>
                     <SkinGallery />
                   </div>
