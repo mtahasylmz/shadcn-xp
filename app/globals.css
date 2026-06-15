@@ -316,6 +316,13 @@ html {
     align-self: start;
   }
 }
+
+/* Column 2 of .app-main: the full vertical narrative (hero → story → gallery).
+   Plain block flow keeps the sections flush-stacked exactly as they were when
+   they sat directly under .stage; min-width:0 lets it shrink beside the rail. */
+.app-content {
+  min-width: 0;
+}
 .app-nav-inner {
   display: flex;
   flex-direction: column;
@@ -643,7 +650,10 @@ html {
 @media (min-width: 720px) {
   .specimen-grid {
     grid-template-columns: 1fr 1fr;
-    align-items: start; /* cards take natural height — no stretched-card voids */
+    /* stretch paired cells to equal row height so a short card's SURFACE fills
+       the row (no background void beside a tall neighbor); .specimen-body then
+       centers its demo so the filled card still reads balanced, not top-stuck */
+    align-items: stretch;
     grid-auto-flow: row dense; /* backfill gaps a wide span would otherwise leave */
   }
   .specimen-grid .span-2 {
@@ -1002,7 +1012,7 @@ html {
 .gallery-now-vibe {
   font-family: var(--app-font-mono);
   font-size: 12px;
-  color: color-mix(in srgb, var(--foreground) 28%, var(--muted-foreground));
+  color: color-mix(in srgb, var(--foreground) 48%, var(--muted-foreground));
 }
 .gallery-now-dot {
   width: 8px;

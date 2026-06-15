@@ -170,7 +170,16 @@ export default function Page() {
             </span>
           </div>
 
-          <section className="hero" id="top">
+          {/* Two-column workbench: the scroll-spy sidebar is sticky across the
+              ENTIRE journey (hero → story → component grid), not just the grid.
+              Sidebar in column 1, the whole vertical narrative in column 2. */}
+          <div className="app-main">
+            <aside className="app-nav">
+              <SectionNav />
+            </aside>
+
+            <div className="app-content">
+              <section className="hero" id="top">
                 <div className="hero-grid">
                   <div className="hero-copy">
                     <div className="hero-kicker">
@@ -189,9 +198,9 @@ export default function Page() {
                     </p>
                     <SkinGallery />
                     <p className="hero-delta">
-                      A token editor like <strong>tweakcn</strong>{" "}
-                      recolors — this adds the structure it can&apos;t: bevels,
-                      chrome, glow, press physics.
+                      A token editor like <strong>tweakcn</strong> recolors —
+                      this adds the structure it can&apos;t: bevels, chrome,
+                      glow, press physics.
                     </p>
                   </div>
 
@@ -201,399 +210,537 @@ export default function Page() {
                     <HeroProof />
                   </div>
                 </div>
-          </section>
+              </section>
 
-          <div className="story">
-              <div className="section-eyebrow" id="proof">
-                <span className="section-eyebrow-num">01</span>
-                <span className="section-eyebrow-label">The proof</span>
-                <span className="section-eyebrow-note">
-                  where a token editor stops and the engine begins
-                </span>
+              <div className="story">
+                <div className="section-eyebrow" id="proof">
+                  <span className="section-eyebrow-num">01</span>
+                  <span className="section-eyebrow-label">The proof</span>
+                  <span className="section-eyebrow-note">
+                    where a token editor stops and the engine begins
+                  </span>
+                </div>
+
+                <TokenDeltaPanel />
+
+                <div className="section-eyebrow" id="try">
+                  <span className="section-eyebrow-num">02</span>
+                  <span className="section-eyebrow-label">Try it live</span>
+                  <span className="section-eyebrow-note">
+                    retune tokens & shape, or compare against stock
+                  </span>
+                </div>
+
+                <TokenEditor />
+
+                <ComparePanel />
               </div>
 
-              <TokenDeltaPanel />
-
-              <div className="section-eyebrow" id="try">
-                <span className="section-eyebrow-num">02</span>
-                <span className="section-eyebrow-label">Try it live</span>
-                <span className="section-eyebrow-note">
-                  retune tokens & shape, or compare against stock
-                </span>
-              </div>
-
-              <TokenEditor />
-
-              <ComparePanel />
-          </div>
-
-          <div className="app-main">
-            <aside className="app-nav">
-              <SectionNav />
-            </aside>
-
-            <main className="gallery">
-              <div className="section-eyebrow" id="components">
-                <span className="section-eyebrow-num">03</span>
-                <span className="section-eyebrow-label">The components</span>
-                <span className="section-eyebrow-note">
-                  every shadcn primitive, live in the current skin
-                </span>
-              </div>
-
-              <div className="specimen-grid">
-              <Specimen id="buttons" title="Button" tag="variants · sizes · states" slots={["button"]} wide>
-                <div className="demo-col" style={{ gap: 16 }}>
-                  <div className="demo-col">
-                    <span className="demo-label">variants</span>
-                    <div className="demo-row">
-                      <Button>Default</Button>
-                      <Button variant="secondary">Secondary</Button>
-                      <Button variant="outline">Outline</Button>
-                      <Button variant="ghost">Ghost</Button>
-                      <Button variant="destructive">Destructive</Button>
-                      <Button variant="link">Link</Button>
-                    </div>
-                  </div>
-                  <div className="demo-col">
-                    <span className="demo-label">sizes & icons</span>
-                    <div className="demo-row">
-                      <Button size="sm">Small</Button>
-                      <Button>Default</Button>
-                      <Button size="lg">Large</Button>
-                      <Button size="icon" aria-label="Settings">
-                        <Settings />
-                      </Button>
-                      <Button>
-                        <Search data-icon="inline-start" />
-                        Search
-                      </Button>
-                      <Button disabled>Disabled</Button>
-                    </div>
-                  </div>
+              <main className="gallery">
+                <div className="section-eyebrow" id="components">
+                  <span className="section-eyebrow-num">03</span>
+                  <span className="section-eyebrow-label">The components</span>
+                  <span className="section-eyebrow-note">
+                    every shadcn primitive, live in the current skin
+                  </span>
                 </div>
-              </Specimen>
 
-              <Specimen id="badges" title="Badge" tag="status pills" slots={["badge"]}>
-                <div className="demo-row">
-                  <Badge>Default</Badge>
-                  <Badge variant="secondary">Secondary</Badge>
-                  <Badge variant="outline">Outline</Badge>
-                  <Badge variant="destructive">Destructive</Badge>
-                </div>
-              </Specimen>
-
-              <Specimen id="inputs" title="Text Fields" tag="input · textarea · label" slots={["input", "textarea"]}>
-                <div className="demo-grid demo-grid-2">
-                  <div className="demo-col">
-                    <Label htmlFor="name">Name</Label>
-                    <Input id="name" placeholder="Ada Lovelace" />
-                  </div>
-                  <div className="demo-col">
-                    <Label htmlFor="disabled">Disabled</Label>
-                    <Input id="disabled" placeholder="read only" disabled />
-                  </div>
-                  <div className="demo-col" style={{ gridColumn: "1 / -1" }}>
-                    <Label htmlFor="msg">Message</Label>
-                    <Textarea id="msg" placeholder="Type your message…" rows={3} />
-                  </div>
-                </div>
-              </Specimen>
-
-              <Specimen id="selection" title="Selection Controls" tag="checkbox · radio · switch" slots={["checkbox", "radio-group-item", "switch"]}>
-                <div className="demo-grid demo-grid-3">
-                  <div className="demo-col">
-                    <span className="demo-label">checkbox</span>
-                    <label className="flex items-center gap-2">
-                      <Checkbox defaultChecked /> Notifications
-                    </label>
-                    <label className="flex items-center gap-2">
-                      <Checkbox /> Auto-update
-                    </label>
-                  </div>
-                  <div className="demo-col">
-                    <span className="demo-label">radio</span>
-                    <RadioGroup defaultValue="a" className="flex flex-col gap-2">
-                      <label className="flex items-center gap-2">
-                        <RadioGroupItem value="a" /> Option A
-                      </label>
-                      <label className="flex items-center gap-2">
-                        <RadioGroupItem value="b" /> Option B
-                      </label>
-                    </RadioGroup>
-                  </div>
-                  <div className="demo-col">
-                    <span className="demo-label">switch</span>
-                    <label className="flex items-center gap-2">
-                      <Switch defaultChecked /> Wi-Fi
-                    </label>
-                    <label className="flex items-center gap-2">
-                      <Switch /> Bluetooth
-                    </label>
-                  </div>
-                </div>
-              </Specimen>
-
-              <Specimen id="select" title="Select" tag="dropdown list box" slots={["select-trigger", "select-content", "select-item"]}>
-                <div style={{ maxWidth: 260 }}>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Choose a framework…" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Meta-frameworks</SelectLabel>
-                        <SelectItem value="next">Next.js</SelectItem>
-                        <SelectItem value="remix">Remix</SelectItem>
-                        <SelectItem value="start">TanStack Start</SelectItem>
-                      </SelectGroup>
-                      <SelectGroup>
-                        <SelectLabel>Build tools</SelectLabel>
-                        <SelectItem value="vite">Vite</SelectItem>
-                        <SelectItem value="astro">Astro</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </Specimen>
-
-              <Specimen id="card" title="Card" tag="composed surface" slots={["card"]} wide>
-                <Card style={{ maxWidth: 360 }}>
-                  <CardHeader>
-                    <CardTitle>Project settings</CardTitle>
-                    <CardDescription>Manage your deployment.</CardDescription>
-                  </CardHeader>
-                  <CardContent className="text-sm">
-                    Builds run on push to <code>main</code>. Preview URLs are
-                    generated for every pull request.
-                  </CardContent>
-                  <CardFooter className="gap-2">
-                    <Button size="sm">Save</Button>
-                    <Button size="sm" variant="secondary">
-                      Cancel
-                    </Button>
-                  </CardFooter>
-                </Card>
-              </Specimen>
-
-              <Specimen id="tabs" title="Tabs" tag="segmented views" slots={["tabs-list", "tabs-trigger"]}>
-                <Tabs defaultValue="general" style={{ maxWidth: 440 }} className="gap-0">
-                  <TabsList>
-                    <TabsTrigger value="general">General</TabsTrigger>
-                    <TabsTrigger value="security">Security</TabsTrigger>
-                    <TabsTrigger value="team">Team</TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="general" className="border border-t-0 border-border p-3 text-sm">
-                    General workspace preferences.
-                  </TabsContent>
-                  <TabsContent value="security" className="border border-t-0 border-border p-3 text-sm">
-                    Two-factor authentication and sessions.
-                  </TabsContent>
-                  <TabsContent value="team" className="border border-t-0 border-border p-3 text-sm">
-                    Invite and manage collaborators.
-                  </TabsContent>
-                </Tabs>
-              </Specimen>
-
-              <Specimen id="accordion" title="Accordion" tag="collapsible groups" slots={["accordion-trigger", "accordion-content"]}>
-                <Accordion type="single" collapsible style={{ maxWidth: 520 }}>
-                  <AccordionItem value="a">
-                    <AccordionTrigger>What is the skin engine?</AccordionTrigger>
-                    <AccordionContent>
-                      A CSS overlay, scoped per skin, layered on top of stock
-                      shadcn/ui components.
-                    </AccordionContent>
-                  </AccordionItem>
-                  <AccordionItem value="b">
-                    <AccordionTrigger>Do the components still work?</AccordionTrigger>
-                    <AccordionContent>
-                      Yes — only paint changes. Behavior and accessibility are
-                      untouched.
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
-              </Specimen>
-
-              <Specimen id="alert" title="Alert" tag="inline callouts" slots={["alert"]}>
-                <div className="demo-col" style={{ gap: 12 }}>
-                  <Alert>
-                    <Info />
-                    <AlertTitle>Heads up</AlertTitle>
-                    <AlertDescription>
-                      Your changes have been saved.
-                    </AlertDescription>
-                  </Alert>
-                  <Alert variant="destructive">
-                    <TriangleAlert />
-                    <AlertTitle>Something went wrong</AlertTitle>
-                    <AlertDescription>
-                      The deployment failed. Check the build logs.
-                    </AlertDescription>
-                  </Alert>
-                </div>
-              </Specimen>
-
-              <Specimen id="table" title="Table" tag="data grid" slots={["table", "table-head", "table-cell"]} wide>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead className="text-right">Size</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {[
-                      ["index.tsx", "TypeScript", "2 KB"],
-                      ["globals.css", "Stylesheet", "9 KB"],
-                      ["logo.svg", "Vector", "4 KB"],
-                    ].map(([name, type, size]) => (
-                      <TableRow key={name}>
-                        <TableCell className="flex items-center gap-2">
-                          <Folder className="size-4 opacity-70" />
-                          {name}
-                        </TableCell>
-                        <TableCell>{type}</TableCell>
-                        <TableCell className="text-right">{size}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </Specimen>
-
-              <Specimen id="dialog" title="Dialog" tag="modal window" slots={["dialog-content"]}>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <Button>Open Dialog…</Button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Delete project?</DialogTitle>
-                      <DialogDescription>
-                        This action cannot be undone. This will permanently
-                        delete the project and all of its data.
-                      </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter className="gap-2">
-                      <DialogClose asChild>
-                        <Button variant="secondary">Cancel</Button>
-                      </DialogClose>
-                      <DialogClose asChild>
-                        <Button variant="destructive">Delete</Button>
-                      </DialogClose>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
-              </Specimen>
-
-              <Specimen id="menu" title="Dropdown Menu" tag="context actions" slots={["dropdown-menu-content", "dropdown-menu-item"]}>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="outline">
-                      Actions
-                      <ChevronDown data-icon="inline-end" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="w-48">
-                    <DropdownMenuLabel>Project</DropdownMenuLabel>
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem>
-                        Open
-                        <DropdownMenuShortcut>↵</DropdownMenuShortcut>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        Rename
-                        <DropdownMenuShortcut>F2</DropdownMenuShortcut>
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem variant="destructive">
-                        Delete
-                        <DropdownMenuShortcut>⌫</DropdownMenuShortcut>
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </Specimen>
-
-              <Specimen id="overlays" title="Tooltip & Popover" tag="floating info" slots={["tooltip-content", "popover-content"]}>
-                <div className="demo-row">
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button variant="outline">
-                        <Bell data-icon="inline-start" />
-                        Hover me
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>3 unread notifications</TooltipContent>
-                  </Tooltip>
-
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button variant="outline">Open Popover</Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-64">
-                      <div className="flex flex-col gap-1">
-                        <strong className="text-sm">Dimensions</strong>
-                        <p className="text-xs text-muted-foreground">
-                          Set the width and height of the layer.
-                        </p>
+                <div className="specimen-grid">
+                  <Specimen
+                    id="buttons"
+                    title="Button"
+                    tag="variants · sizes · states"
+                    slots={["button"]}
+                    wide
+                  >
+                    <div className="demo-col" style={{ gap: 16 }}>
+                      <div className="demo-col">
+                        <span className="demo-label">variants</span>
+                        <div className="demo-row">
+                          <Button>Default</Button>
+                          <Button variant="secondary">Secondary</Button>
+                          <Button variant="outline">Outline</Button>
+                          <Button variant="ghost">Ghost</Button>
+                          <Button variant="destructive">Destructive</Button>
+                          <Button variant="link">Link</Button>
+                        </div>
                       </div>
-                    </PopoverContent>
-                  </Popover>
-                </div>
-              </Specimen>
-
-              <Specimen id="ranges" title="Slider & Progress" tag="ranges" slots={["slider-track", "slider-range", "slider-thumb", "progress", "progress-indicator"]}>
-                <div className="demo-col" style={{ gap: 22, maxWidth: 440 }}>
-                  <div className="demo-col">
-                    <span className="demo-label">slider</span>
-                    <Slider defaultValue={[40]} max={100} step={1} />
-                  </div>
-                  <div className="demo-col">
-                    <span className="demo-label">progress — {progress}%</span>
-                    <Progress value={progress} />
-                    <div className="demo-row">
-                      <Button
-                        size="sm"
-                        onClick={() => setProgress((p) => Math.max(0, p - 10))}
-                      >
-                        −10%
-                      </Button>
-                      <Button
-                        size="sm"
-                        onClick={() => setProgress((p) => Math.min(100, p + 10))}
-                      >
-                        +10%
-                      </Button>
+                      <div className="demo-col">
+                        <span className="demo-label">sizes & icons</span>
+                        <div className="demo-row">
+                          <Button size="sm">Small</Button>
+                          <Button>Default</Button>
+                          <Button size="lg">Large</Button>
+                          <Button size="icon" aria-label="Settings">
+                            <Settings />
+                          </Button>
+                          <Button>
+                            <Search data-icon="inline-start" />
+                            Search
+                          </Button>
+                          <Button disabled>Disabled</Button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </Specimen>
+                  </Specimen>
 
-              <Specimen id="chart" title="Chart" tag="recharts · token-driven" slots={["chart"]} wide>
-                <ChartContainer config={chartConfig} className="max-h-[260px] w-full">
-                  <BarChart accessibilityLayer data={chartData}>
-                    <CartesianGrid vertical={false} />
-                    <XAxis
-                      dataKey="month"
-                      tickLine={false}
-                      axisLine={false}
-                      tickMargin={8}
-                    />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
-                    <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
-                  </BarChart>
-                </ChartContainer>
-              </Specimen>
-              </div>
-            </main>
+                  <Specimen
+                    id="badges"
+                    title="Badge"
+                    tag="status pills"
+                    slots={["badge"]}
+                  >
+                    <div className="demo-row">
+                      <Badge>Default</Badge>
+                      <Badge variant="secondary">Secondary</Badge>
+                      <Badge variant="outline">Outline</Badge>
+                      <Badge variant="destructive">Destructive</Badge>
+                    </div>
+                  </Specimen>
+
+                  <Specimen
+                    id="inputs"
+                    title="Text Fields"
+                    tag="input · textarea · label"
+                    slots={["input", "textarea"]}
+                  >
+                    <div className="demo-grid demo-grid-2">
+                      <div className="demo-col">
+                        <Label htmlFor="name">Name</Label>
+                        <Input id="name" placeholder="Ada Lovelace" />
+                      </div>
+                      <div className="demo-col">
+                        <Label htmlFor="disabled">Disabled</Label>
+                        <Input id="disabled" placeholder="read only" disabled />
+                      </div>
+                      <div
+                        className="demo-col"
+                        style={{ gridColumn: "1 / -1" }}
+                      >
+                        <Label htmlFor="msg">Message</Label>
+                        <Textarea
+                          id="msg"
+                          placeholder="Type your message…"
+                          rows={3}
+                        />
+                      </div>
+                    </div>
+                  </Specimen>
+
+                  <Specimen
+                    id="selection"
+                    title="Selection Controls"
+                    tag="checkbox · radio · switch"
+                    slots={["checkbox", "radio-group-item", "switch"]}
+                  >
+                    <div className="demo-grid demo-grid-3">
+                      <div className="demo-col">
+                        <span className="demo-label">checkbox</span>
+                        <label className="flex items-center gap-2">
+                          <Checkbox defaultChecked /> Notifications
+                        </label>
+                        <label className="flex items-center gap-2">
+                          <Checkbox /> Auto-update
+                        </label>
+                      </div>
+                      <div className="demo-col">
+                        <span className="demo-label">radio</span>
+                        <RadioGroup
+                          defaultValue="a"
+                          className="flex flex-col gap-2"
+                        >
+                          <label className="flex items-center gap-2">
+                            <RadioGroupItem value="a" /> Option A
+                          </label>
+                          <label className="flex items-center gap-2">
+                            <RadioGroupItem value="b" /> Option B
+                          </label>
+                        </RadioGroup>
+                      </div>
+                      <div className="demo-col">
+                        <span className="demo-label">switch</span>
+                        <label className="flex items-center gap-2">
+                          <Switch defaultChecked /> Wi-Fi
+                        </label>
+                        <label className="flex items-center gap-2">
+                          <Switch /> Bluetooth
+                        </label>
+                      </div>
+                    </div>
+                  </Specimen>
+
+                  <Specimen
+                    id="select"
+                    title="Select"
+                    tag="dropdown list box"
+                    slots={["select-trigger", "select-content", "select-item"]}
+                  >
+                    <div style={{ maxWidth: 260 }}>
+                      <Select>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Choose a framework…" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel>Meta-frameworks</SelectLabel>
+                            <SelectItem value="next">Next.js</SelectItem>
+                            <SelectItem value="remix">Remix</SelectItem>
+                            <SelectItem value="start">
+                              TanStack Start
+                            </SelectItem>
+                          </SelectGroup>
+                          <SelectGroup>
+                            <SelectLabel>Build tools</SelectLabel>
+                            <SelectItem value="vite">Vite</SelectItem>
+                            <SelectItem value="astro">Astro</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </Specimen>
+
+                  <Specimen
+                    id="card"
+                    title="Card"
+                    tag="composed surface"
+                    slots={["card"]}
+                    wide
+                  >
+                    <Card style={{ maxWidth: 360 }}>
+                      <CardHeader>
+                        <CardTitle>Project settings</CardTitle>
+                        <CardDescription>
+                          Manage your deployment.
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="text-sm">
+                        Builds run on push to <code>main</code>. Preview URLs
+                        are generated for every pull request.
+                      </CardContent>
+                      <CardFooter className="gap-2">
+                        <Button size="sm">Save</Button>
+                        <Button size="sm" variant="secondary">
+                          Cancel
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  </Specimen>
+
+                  <Specimen
+                    id="tabs"
+                    title="Tabs"
+                    tag="segmented views"
+                    slots={["tabs-list", "tabs-trigger"]}
+                  >
+                    <Tabs
+                      defaultValue="general"
+                      style={{ maxWidth: 440 }}
+                      className="gap-0"
+                    >
+                      <TabsList>
+                        <TabsTrigger value="general">General</TabsTrigger>
+                        <TabsTrigger value="security">Security</TabsTrigger>
+                        <TabsTrigger value="team">Team</TabsTrigger>
+                      </TabsList>
+                      <TabsContent
+                        value="general"
+                        className="border border-t-0 border-border p-3 text-sm"
+                      >
+                        General workspace preferences.
+                      </TabsContent>
+                      <TabsContent
+                        value="security"
+                        className="border border-t-0 border-border p-3 text-sm"
+                      >
+                        Two-factor authentication and sessions.
+                      </TabsContent>
+                      <TabsContent
+                        value="team"
+                        className="border border-t-0 border-border p-3 text-sm"
+                      >
+                        Invite and manage collaborators.
+                      </TabsContent>
+                    </Tabs>
+                  </Specimen>
+
+                  <Specimen
+                    id="accordion"
+                    title="Accordion"
+                    tag="collapsible groups"
+                    slots={["accordion-trigger", "accordion-content"]}
+                  >
+                    <Accordion
+                      type="single"
+                      collapsible
+                      style={{ maxWidth: 520 }}
+                    >
+                      <AccordionItem value="a">
+                        <AccordionTrigger>
+                          What is the skin engine?
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          A CSS overlay, scoped per skin, layered on top of
+                          stock shadcn/ui components.
+                        </AccordionContent>
+                      </AccordionItem>
+                      <AccordionItem value="b">
+                        <AccordionTrigger>
+                          Do the components still work?
+                        </AccordionTrigger>
+                        <AccordionContent>
+                          Yes — only paint changes. Behavior and accessibility
+                          are untouched.
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+                  </Specimen>
+
+                  <Specimen
+                    id="alert"
+                    title="Alert"
+                    tag="inline callouts"
+                    slots={["alert"]}
+                  >
+                    <div className="demo-col" style={{ gap: 12 }}>
+                      <Alert>
+                        <Info />
+                        <AlertTitle>Heads up</AlertTitle>
+                        <AlertDescription>
+                          Your changes have been saved.
+                        </AlertDescription>
+                      </Alert>
+                      <Alert variant="destructive">
+                        <TriangleAlert />
+                        <AlertTitle>Something went wrong</AlertTitle>
+                        <AlertDescription>
+                          The deployment failed. Check the build logs.
+                        </AlertDescription>
+                      </Alert>
+                    </div>
+                  </Specimen>
+
+                  <Specimen
+                    id="table"
+                    title="Table"
+                    tag="data grid"
+                    slots={["table", "table-head", "table-cell"]}
+                    wide
+                  >
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Name</TableHead>
+                          <TableHead>Type</TableHead>
+                          <TableHead className="text-right">Size</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {[
+                          ["index.tsx", "TypeScript", "2 KB"],
+                          ["globals.css", "Stylesheet", "9 KB"],
+                          ["logo.svg", "Vector", "4 KB"],
+                        ].map(([name, type, size]) => (
+                          <TableRow key={name}>
+                            <TableCell className="flex items-center gap-2">
+                              <Folder className="size-4 opacity-70" />
+                              {name}
+                            </TableCell>
+                            <TableCell>{type}</TableCell>
+                            <TableCell className="text-right">{size}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </Specimen>
+
+                  <Specimen
+                    id="dialog"
+                    title="Dialog"
+                    tag="modal window"
+                    slots={["dialog-content"]}
+                  >
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button>Open Dialog…</Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Delete project?</DialogTitle>
+                          <DialogDescription>
+                            This action cannot be undone. This will permanently
+                            delete the project and all of its data.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <DialogFooter className="gap-2">
+                          <DialogClose asChild>
+                            <Button variant="secondary">Cancel</Button>
+                          </DialogClose>
+                          <DialogClose asChild>
+                            <Button variant="destructive">Delete</Button>
+                          </DialogClose>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
+                  </Specimen>
+
+                  <Specimen
+                    id="menu"
+                    title="Dropdown Menu"
+                    tag="context actions"
+                    slots={["dropdown-menu-content", "dropdown-menu-item"]}
+                  >
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline">
+                          Actions
+                          <ChevronDown data-icon="inline-end" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="start" className="w-48">
+                        <DropdownMenuLabel>Project</DropdownMenuLabel>
+                        <DropdownMenuGroup>
+                          <DropdownMenuItem>
+                            Open
+                            <DropdownMenuShortcut>↵</DropdownMenuShortcut>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem>
+                            Rename
+                            <DropdownMenuShortcut>F2</DropdownMenuShortcut>
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem variant="destructive">
+                            Delete
+                            <DropdownMenuShortcut>⌫</DropdownMenuShortcut>
+                          </DropdownMenuItem>
+                        </DropdownMenuGroup>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </Specimen>
+
+                  <Specimen
+                    id="overlays"
+                    title="Tooltip & Popover"
+                    tag="floating info"
+                    slots={["tooltip-content", "popover-content"]}
+                  >
+                    <div className="demo-row">
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button variant="outline">
+                            <Bell data-icon="inline-start" />
+                            Hover me
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>3 unread notifications</TooltipContent>
+                      </Tooltip>
+
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button variant="outline">Open Popover</Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-64">
+                          <div className="flex flex-col gap-1">
+                            <strong className="text-sm">Dimensions</strong>
+                            <p className="text-xs text-muted-foreground">
+                              Set the width and height of the layer.
+                            </p>
+                          </div>
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                  </Specimen>
+
+                  <Specimen
+                    id="ranges"
+                    title="Slider & Progress"
+                    tag="ranges"
+                    slots={[
+                      "slider-track",
+                      "slider-range",
+                      "slider-thumb",
+                      "progress",
+                      "progress-indicator",
+                    ]}
+                  >
+                    <div
+                      className="demo-col"
+                      style={{ gap: 22, maxWidth: 440 }}
+                    >
+                      <div className="demo-col">
+                        <span className="demo-label">slider</span>
+                        <Slider defaultValue={[40]} max={100} step={1} />
+                      </div>
+                      <div className="demo-col">
+                        <span className="demo-label">
+                          progress — {progress}%
+                        </span>
+                        <Progress value={progress} />
+                        <div className="demo-row">
+                          <Button
+                            size="sm"
+                            onClick={() =>
+                              setProgress((p) => Math.max(0, p - 10))
+                            }
+                          >
+                            −10%
+                          </Button>
+                          <Button
+                            size="sm"
+                            onClick={() =>
+                              setProgress((p) => Math.min(100, p + 10))
+                            }
+                          >
+                            +10%
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  </Specimen>
+
+                  <Specimen
+                    id="chart"
+                    title="Chart"
+                    tag="recharts · token-driven"
+                    slots={["chart"]}
+                    wide
+                  >
+                    <ChartContainer
+                      config={chartConfig}
+                      className="max-h-[260px] w-full"
+                    >
+                      <BarChart accessibilityLayer data={chartData}>
+                        <CartesianGrid vertical={false} />
+                        <XAxis
+                          dataKey="month"
+                          tickLine={false}
+                          axisLine={false}
+                          tickMargin={8}
+                        />
+                        <ChartTooltip content={<ChartTooltipContent />} />
+                        <Bar
+                          dataKey="desktop"
+                          fill="var(--color-desktop)"
+                          radius={4}
+                        />
+                        <Bar
+                          dataKey="mobile"
+                          fill="var(--color-mobile)"
+                          radius={4}
+                        />
+                      </BarChart>
+                    </ChartContainer>
+                  </Specimen>
+                </div>
+              </main>
+            </div>
           </div>
         </div>
 
         <section className="closing-cta">
           <div className="closing-cta-inner">
-            <div className="closing-cta-kicker">one install · any aesthetic</div>
+            <div className="closing-cta-kicker">
+              one install · any aesthetic
+            </div>
             <h2 className="closing-cta-title">Ship shadcn in any skin.</h2>
             <p className="closing-cta-sub">
               Fifteen drop-in concept skins over unmodified components — add one
