@@ -372,12 +372,14 @@ html {
     gap: 6px;
     overflow-x: auto;
     position: sticky;
-    top: 60px;
+    /* pin flush under the ~49px app-bar (1px overlap) so the two sticky bars
+       read as one continuous header with no see-through seam */
+    top: 48px;
     z-index: 20;
     margin: 0 0 14px;
     padding: 8px 2px;
     scrollbar-width: none;
-    background: color-mix(in srgb, var(--background) 88%, transparent);
+    background: color-mix(in srgb, var(--background) 97%, transparent);
     backdrop-filter: blur(6px);
     -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 3%, #000 94%, transparent 100%);
     mask-image: linear-gradient(90deg, transparent 0, #000 3%, #000 94%, transparent 100%);
