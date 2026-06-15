@@ -123,6 +123,18 @@
     --sidebar-accent-foreground: #18181b;
     --sidebar-border: #e4e4e7;
     --sidebar-ring: #a1a1aa;
+
+    /* Landing-chrome brand accent. Defaults to the active skin's primary (so
+       concept skins keep their identity), but the neutral baseline overrides
+       it to a vivid hue so the page has a brand of its own. */
+    --brand: var(--primary);
+    --brand-foreground: var(--primary-foreground);
+}
+
+:root[data-skin="default"],
+:root[data-skin="base"] {
+    --brand: #4f46e5;
+    --brand-foreground: #ffffff;
 }
 
 @layer base {
@@ -147,9 +159,9 @@
 
 .app {
   width: 100%;
-  max-width: 1060px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 20px 16px 48px;
+  padding: 20px 16px 56px;
 }
 
 .app-bar {
@@ -287,27 +299,65 @@
 }
 
 .hero {
-  padding: 22px;
+  position: relative;
+  overflow: hidden;
+  padding: clamp(28px, 5vw, 56px) clamp(22px, 4vw, 48px);
   border: 1px solid var(--border);
-  border-radius: var(--radius);
+  border-radius: calc(var(--radius) + 4px);
   background: var(--card);
+}
+/* signature backdrop glow — token-driven, subtle under every skin */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(60rem 32rem at 102% -12%,
+      color-mix(in srgb, var(--brand) 20%, transparent), transparent 60%),
+    radial-gradient(42rem 28rem at -8% 112%,
+      color-mix(in srgb, var(--accent) 14%, transparent), transparent 55%);
+}
+.hero > * {
+  position: relative;
+  z-index: 1;
 }
 .hero-kicker {
   font-family: var(--app-font-mono);
   font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--muted-foreground);
-  margin-bottom: 8px;
+  margin-bottom: 18px;
 }
 .hero-title {
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  margin-bottom: 8px;
   font-family: var(--app-font-heading);
+  font-size: clamp(30px, 5.2vw, 58px);
+  font-weight: 800;
+  line-height: 1.03;
+  letter-spacing: -0.035em;
+  max-width: 19ch;
+  margin-bottom: 20px;
+}
+.hero-title-accent {
+  color: inherit;
+}
+/* two-tone headline only where the hero bg is the neutral card (safe contrast) */
+:root[data-skin="default"] .hero-title-accent,
+:root[data-skin="base"] .hero-title-accent {
+  color: var(--brand);
 }
 .hero-sub {
   color: var(--muted-foreground);
-  max-width: 64ch;
+  font-size: clamp(15px, 1.4vw, 17px);
+  line-height: 1.55;
+  max-width: 58ch;
+  margin-bottom: 28px;
+}
+.hero-sub strong {
+  color: var(--foreground);
+  font-weight: 600;
 }
 
 .specimen {
@@ -495,34 +545,153 @@
   font-weight: 600;
 }
 
-/* Hero chip strip — every concept one click away on landing. Kept skin-neutral
-   (inherits the hero's text color) so it stays legible under all 15 skins. */
-.skin-strip {
+/* ---- Hero skin gallery + auto-tour (the live centerpiece) --------------- */
+.gallery-switch {
   display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.gallery-now {
+  display: flex;
+  align-items: center;
+  gap: 14px;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 14px;
 }
-.skin-chip {
+.gallery-play {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font: inherit;
-  font-size: 12px;
-  line-height: 1.3;
-  padding: 4px 10px;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 16px;
   cursor: pointer;
-  color: inherit;
-  background: transparent;
-  border: 1px solid currentColor;
+  color: var(--brand-foreground);
+  background: var(--brand);
+  border: 1px solid color-mix(in srgb, var(--brand) 72%, #000);
   border-radius: 999px;
-  opacity: 0.72;
+  transition: filter 0.12s ease, transform 0.12s ease;
 }
-.skin-chip:hover {
-  opacity: 1;
+.gallery-play:hover {
+  filter: brightness(1.07);
+  transform: translateY(-1px);
 }
-.skin-chip[data-active] {
-  opacity: 1;
+.gallery-play:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+.gallery-now-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.32;
+}
+.gallery-now-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: var(--muted-foreground);
+}
+.gallery-now-label strong {
+  color: var(--foreground);
   font-weight: 700;
-  text-decoration: underline;
-  text-underline-offset: 3px;
+}
+.gallery-now-vibe {
+  font-family: var(--app-font-mono);
+  font-size: 12px;
+  color: var(--muted-foreground);
+  opacity: 0.82;
+}
+.gallery-now-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand) 55%, var(--muted-foreground));
+}
+.gallery-now-dot[data-playing] {
+  background: var(--brand);
+  animation: gallery-pulse 1.2s ease-in-out infinite;
+}
+@keyframes gallery-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.6); }
+}
+.gallery-rail {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 2px 2px 8px;
+  margin: 0 -2px;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+}
+.gallery-chip {
+  flex: none;
+  scroll-snap-align: center;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 7px 14px;
+  cursor: pointer;
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--foreground) 5%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  transition: transform 0.12s ease, background 0.12s ease, color 0.12s ease;
+}
+.gallery-chip:hover {
+  transform: translateY(-1px);
+  background: color-mix(in srgb, var(--foreground) 11%, transparent);
+}
+.gallery-chip[data-active] {
+  color: var(--brand-foreground);
+  background: var(--brand);
+  border-color: var(--brand);
+}
+.gallery-chip:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+/* ---- Section eyebrows — chunk the long scroll into labeled zones --------- */
+.section-eyebrow {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 26px 2px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
+.section-eyebrow-num {
+  font-family: var(--app-font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--brand);
+}
+.section-eyebrow-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--foreground);
+}
+.section-eyebrow-note {
+  font-size: 12.5px;
+  color: var(--muted-foreground);
+}
+
+/* Soften the dead-white margins on the neutral baseline (concept skins paint
+   their own rich backgrounds, so scope this to default/base only). */
+:root[data-skin="default"] body,
+:root[data-skin="base"] body {
+  background:
+    radial-gradient(52rem 40rem at 50% -6%,
+      color-mix(in srgb, var(--brand) 8%, transparent), transparent 60%),
+    var(--background);
+  background-attachment: fixed;
 }
 
 .compare-pane {

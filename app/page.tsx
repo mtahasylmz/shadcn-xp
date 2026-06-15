@@ -13,7 +13,8 @@ import {
 } from "lucide-react"
 
 import { Specimen } from "@/components/showcase/specimen"
-import { SkinSwitcher, SkinStrip } from "@/components/showcase/skin-switcher"
+import { SkinSwitcher } from "@/components/showcase/skin-switcher"
+import { SkinGallery } from "@/components/showcase/skin-gallery"
 import { ComparePanel } from "@/components/showcase/compare-panel"
 import { TokenDeltaPanel } from "@/components/showcase/token-delta-panel"
 import { TokenEditor } from "@/components/showcase/token-editor"
@@ -181,26 +182,52 @@ export default function Page() {
 
             <main className="gallery">
               <section className="hero">
-                <div className="hero-kicker">$ shadcn skins — beyond theming</div>
+                <div className="hero-kicker">shadcn/ui · concept skin engine</div>
                 <h1 className="hero-title">
-                  A theme editor recolors components. This re-conceptualizes them.
+                  A theme editor recolors components.
+                  <br />
+                  <span className="hero-title-accent">
+                    This re-conceptualizes them.
+                  </span>
                 </h1>
                 <p className="hero-sub">
-                  Every component on this page is the unmodified shadcn/ui
-                  source. Tokens (tweakcn&apos;s territory) set its colors,
-                  radius and fonts — the swappable <code>[data-skin]</code>{" "}
-                  overlay adds what tokens never can: bevels, window chrome,
-                  glow, press physics. Fifteen complete concepts, one click
-                  apart, each with tunable shape knobs:
+                  One unmodified shadcn/ui component set, re-skinned into{" "}
+                  <strong>15 complete visual concepts</strong> — bevels, window
+                  chrome, glow, press physics — that no token editor can express.
+                  Hit play and watch the whole page transform.
                 </p>
-                <SkinStrip />
+                <SkinGallery />
               </section>
 
+              <div className="section-eyebrow" id="proof-eyebrow">
+                <span className="section-eyebrow-num">01</span>
+                <span className="section-eyebrow-label">The proof</span>
+                <span className="section-eyebrow-note">
+                  where a token editor stops and the engine begins
+                </span>
+              </div>
+
               <TokenDeltaPanel />
+
+              <div className="section-eyebrow">
+                <span className="section-eyebrow-num">02</span>
+                <span className="section-eyebrow-label">Try it live</span>
+                <span className="section-eyebrow-note">
+                  retune tokens & shape, or compare against stock
+                </span>
+              </div>
 
               <TokenEditor />
 
               <ComparePanel />
+
+              <div className="section-eyebrow">
+                <span className="section-eyebrow-num">03</span>
+                <span className="section-eyebrow-label">The components</span>
+                <span className="section-eyebrow-note">
+                  every shadcn primitive, live in the current skin
+                </span>
+              </div>
 
               <Specimen id="buttons" title="Button" tag="variants · sizes · states" slots={["button"]}>
                 <div className="demo-col" style={{ gap: 16 }}>
@@ -552,7 +579,7 @@ export default function Page() {
 
         <footer className="app-status">
           <span>{NAV.length} components · stock shadcn/ui · radix base</span>
-          <span>6 skins · one component set</span>
+          <span>15 skins · one component set</span>
           <span>istanbul, 2026</span>
         </footer>
       </div>
