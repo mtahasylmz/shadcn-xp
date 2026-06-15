@@ -322,6 +322,11 @@ html {
   color: var(--muted-foreground);
   padding: 2px 8px 6px;
 }
+.app-nav-title-mt {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+}
 .app-nav a {
   display: block;
   padding: 5px 8px;
@@ -425,11 +430,11 @@ html {
 }
 .hero-title {
   font-family: var(--app-font-heading);
-  font-size: clamp(28px, 3.6vw, 46px);
+  font-size: clamp(26px, 3vw, 40px);
   font-weight: 800;
-  line-height: 1.05;
+  line-height: 1.08;
   letter-spacing: -0.03em;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 /* Two-tone headline: the accent line takes the brand color (= each skin's
    primary, or indigo on the neutral baseline). Readable on every skin's hero
@@ -473,7 +478,7 @@ html {
 }
 @media (min-width: 940px) {
   .hero-grid {
-    grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.85fr);
   }
 }
 .hero-copy {
@@ -500,11 +505,57 @@ html {
   background: var(--brand);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 22%, transparent);
 }
-/* the live card sits a touch lifted so it reads as the focal artifact, but
-   skins repaint it via their own .specimen/card rules — keep this minimal */
-.hero-card {
+/* In-hero proof: the same markup, plain vs skinned, stacked. */
+.hero-proof {
   width: 100%;
-  box-shadow: 0 20px 50px -24px color-mix(in srgb, var(--foreground) 45%, transparent);
+}
+.hero-proof-panes {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+.hero-proof-pane {
+  margin: 0;
+}
+.hero-proof-pane figcaption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--app-font-mono);
+  font-size: 11px;
+  color: var(--muted-foreground);
+  margin-bottom: 6px;
+}
+.hero-proof-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 2px 6px;
+  border-radius: 5px;
+  text-transform: uppercase;
+}
+.hero-proof-tag.is-stock {
+  background: color-mix(in srgb, var(--muted-foreground) 16%, transparent);
+  color: var(--muted-foreground);
+}
+.hero-proof-tag.is-skin {
+  background: color-mix(in srgb, var(--brand) 16%, transparent);
+  color: var(--brand);
+}
+.hero-proof-frame {
+  position: relative;
+  height: 168px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) - 2px);
+  background: #fff;
+  box-shadow: 0 12px 30px -18px color-mix(in srgb, var(--foreground) 40%, transparent);
+}
+.hero-proof-frame iframe {
+  width: 100%;
+  height: 520px;
+  border: 0;
+  display: block;
 }
 
 /* Bento layout — break the uniform stack into a large/small cadence. Light
@@ -542,6 +593,12 @@ html {
 :root[data-skin="default"] .specimen,
 :root[data-skin="base"] .specimen {
   box-shadow: 0 1px 2px color-mix(in srgb, var(--foreground) 6%, transparent);
+}
+/* tonal rhythm on the neutral baseline: wide feature cards stay white, paired
+   cells take a faint tint, so the bento alternates instead of reading uniform */
+:root[data-skin="default"] .specimen-grid > .specimen:not(.span-2),
+:root[data-skin="base"] .specimen-grid > .specimen:not(.span-2) {
+  background: color-mix(in srgb, var(--muted) 55%, var(--card));
 }
 .specimen-head {
   display: flex;

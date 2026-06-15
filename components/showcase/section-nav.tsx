@@ -60,21 +60,30 @@ function useScrollSpy() {
   return active
 }
 
+const STORY_IDS = new Set(["top", "proof", "try"])
+
 export function SectionNav() {
   const active = useScrollSpy()
+  const story = SECTIONS.filter(([id]) => STORY_IDS.has(id))
+  const components = SECTIONS.filter(([id]) => !STORY_IDS.has(id))
+
+  const link = ([id, label]: readonly [string, string]) => (
+    <a
+      key={id}
+      href={`#${id}`}
+      data-active={active === id || undefined}
+      aria-current={active === id ? "true" : undefined}
+    >
+      {label}
+    </a>
+  )
+
   return (
     <nav className="app-nav-inner" aria-label="Sections">
-      <span className="app-nav-title">On this page</span>
-      {SECTIONS.map(([id, label]) => (
-        <a
-          key={id}
-          href={`#${id}`}
-          data-active={active === id || undefined}
-          aria-current={active === id ? "true" : undefined}
-        >
-          {label}
-        </a>
-      ))}
+      <span className="app-nav-title">The story</span>
+      {story.map(link)}
+      <span className="app-nav-title app-nav-title-mt">The components</span>
+      {components.map(link)}
     </nav>
   )
 }

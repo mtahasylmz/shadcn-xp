@@ -16,6 +16,7 @@ import { Specimen } from "@/components/showcase/specimen"
 import { SkinSwitcher } from "@/components/showcase/skin-switcher"
 import { SkinGallery } from "@/components/showcase/skin-gallery"
 import { SectionNav, MobileSectionNav } from "@/components/showcase/section-nav"
+import { HeroProof } from "@/components/showcase/hero-proof"
 import { ComparePanel } from "@/components/showcase/compare-panel"
 import { TokenDeltaPanel } from "@/components/showcase/token-delta-panel"
 import { TokenEditor } from "@/components/showcase/token-editor"
@@ -203,40 +204,10 @@ export default function Page() {
                     <SkinGallery />
                   </div>
 
-                  {/* live artifact — real shadcn components, re-skinned by the
-                      page's own data-skin (morphs as the tour cycles) */}
-                  <div className="hero-stage" inert>
-                    <div className="hero-stage-label">
-                      <span className="hero-stage-dot" /> live preview · same
-                      markup, current skin
-                    </div>
-                    <Card className="hero-card">
-                      <CardHeader>
-                        <CardTitle>Upgrade plan</CardTitle>
-                        <CardDescription>
-                          One component set — every concept.
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent className="demo-col" style={{ gap: 14 }}>
-                        <div className="demo-row" style={{ gap: 8 }}>
-                          <Badge>Pro</Badge>
-                          <Badge variant="secondary">Team</Badge>
-                          <Badge variant="outline">Trial</Badge>
-                        </div>
-                        <div
-                          className="demo-row"
-                          style={{ justifyContent: "space-between" }}
-                        >
-                          <Label>Notifications</Label>
-                          <Switch defaultChecked />
-                        </div>
-                        <Input placeholder="you@example.com" />
-                      </CardContent>
-                      <CardFooter className="demo-row" style={{ gap: 10 }}>
-                        <Button>Upgrade</Button>
-                        <Button variant="outline">Maybe later</Button>
-                      </CardFooter>
-                    </Card>
+                  {/* in-hero proof — the same stock markup, plain vs skinned,
+                      so the structural delta is visible above the fold */}
+                  <div className="hero-stage">
+                    <HeroProof />
                   </div>
                 </div>
               </section>
