@@ -680,13 +680,15 @@ html {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  gap: 12px;
+  gap: 8px 12px;
+  flex-wrap: wrap;
   padding: 12px 16px;
   border-bottom: 1px solid var(--border);
 }
 .specimen-title {
   font-weight: 600;
   font-family: var(--app-font-heading);
+  min-width: 0;
 }
 .specimen-tag {
   font-size: 12px;

@@ -30,6 +30,7 @@ export function HeaderSkin() {
       className="app-bar-controls"
       data-shown={shown || undefined}
       aria-hidden={!shown}
+      inert={!shown || undefined}
     >
       <label htmlFor="skin">skin</label>
       <SkinSwitcher />
