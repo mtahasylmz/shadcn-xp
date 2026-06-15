@@ -11,6 +11,54 @@ portalled dialogs, dropdowns and tooltips — repaints.
 
 Built with **Next.js 16 + React 19 + Tailwind v4 + shadcn (radix base)**.
 
+---
+
+## Use a skin in your app (start here)
+
+Add a skin to **any** shadcn/ui project. It only writes one CSS file; your
+components are never touched.
+
+**1. Install** (writes `app/skins/xp.css`):
+
+```bash
+npx shadcn@latest add https://raw.githubusercontent.com/mtahasylmz/shadcn-xp/master/public/r/skin-xp.json
+```
+
+**2. Import** it in your global stylesheet (e.g. `app/globals.css`):
+
+```css
+@import "./skins/xp.css";
+```
+
+**3. Activate** it by setting `data-skin` on the root `<html>` element
+(in Next.js, that's the `<html>` tag in `app/layout.tsx`):
+
+```html
+<html lang="en" data-skin="xp">
+```
+
+Done — every shadcn component now renders in the **XP** skin. To use a different
+concept, change **both** the URL's `skin-<name>` and the `data-skin` value. To
+switch at runtime, just change `data-skin` on `<html>` (e.g.
+`document.documentElement.dataset.skin = "terminal"`).
+
+**Available skins** (use the `skin-<name>` form in the URL, the bare name in
+`data-skin`): `xp`, `win98`, `aqua`, `macos`, `material`, `brutalist`,
+`neumorphic`, `clay`, `glass`, `terminal`, `cyberpunk`, `pixel`, `synthwave`,
+`editorial`, `swiss`, plus `base` (tunable, concept-free). There's also
+`theme-xp` — the **tokens-only** XP theme (a `registry:theme`, no structural
+overlay) if you only want the colors/radius/font.
+
+> Installing several / scripting it? See **[Use it by name](#use-it-by-name-agents--repeat-installs)**
+> below for a one-time `components.json` registry so you can run
+> `shadcn add @skins/skin-terminal`.
+
+> The **`## Run it`** section further down is **not** for this — that's only for
+> running *this showcase repo's* dev server. To use the skins you do **not**
+> need to clone or run anything here; the `shadcn add` command above is all.
+
+---
+
 ## Skins
 
 15 complete concepts (plus the stock baseline and a tunable concept-free base):
@@ -35,7 +83,10 @@ Built with **Next.js 16 + React 19 + Tailwind v4 + shadcn (radix base)**.
 | `editorial`  | Print/editorial — ink on cream, serif hierarchy, hairline rules  |
 | `swiss`      | Swiss International — Helvetica grid, signal-red accent, ink rules |
 
-## Run it
+## Run this showcase repo (contributors only)
+
+> Not needed to **use** the skins — that's the [install command above](#use-a-skin-in-your-app-start-here).
+> This is only for developing/previewing this demo site itself.
 
 ```bash
 pnpm install
@@ -94,34 +145,13 @@ components/
   showcase/           Specimen + SkinSwitcher (the thin wrapper layer)
 ```
 
-## Install on any shadcn app
+## Install — more options
 
-A skin installs onto a real, stock shadcn project the same way you'd add a
-tweakcn token theme — verified end-to-end against a fresh `shadcn init` app.
-
-The registry is served straight from this public repo (no separate host needed):
-
-```bash
-# 1. add a skin — writes app/skins/<skin>.css, components stay untouched
-npx shadcn@latest add https://raw.githubusercontent.com/mtahasylmz/shadcn-xp/master/public/r/skin-xp.json
-```
-```css
-/* 2. globals.css — import it */
-@import "./skins/xp.css";
-```
-```html
-<!-- 3. activate it -->
-<html data-skin="xp">
-```
-
-That's it — every shadcn component reskins, zero component changes. (The skin's
-`.app/.specimen` shell rules are showcase-only and sit inert in a real app; the
-`[data-slot]` rules are what do the work.)
-
-Swap `skin-xp` for any item: `skin-base`, `skin-win98`, `skin-aqua`,
-`skin-macos`, `skin-material`, `skin-brutalist`, `skin-neumorphic`, `skin-clay`,
-`skin-glass`, `skin-terminal`, `skin-cyberpunk`, `skin-pixel`, `skin-synthwave`,
-`skin-editorial`, `skin-swiss`, or `theme-xp` (the token-only XP theme).
+The 3-step install is at the [top of this README](#use-a-skin-in-your-app-start-here).
+The registry is served straight from this public repo (no separate host needed),
+and was verified end-to-end against a fresh `shadcn init` app. Good to know: a
+skin's `.app/.specimen` *shell* rules are showcase-only and sit inert in a real
+app — the `[data-slot]` rules are what actually reskin your components.
 
 ### Use it by name (agents / repeat installs)
 
