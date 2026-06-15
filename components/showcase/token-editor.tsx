@@ -275,23 +275,29 @@ export function TokenEditor() {
             <>
               <div className="editor-section-label">Shape — the part tweakcn can&apos;t do</div>
               <div className="shape-grid">
-                {shapeParams.map((p) => (
-                  <label key={p.varName} className="shape-row">
-                    <span className="token-label">{p.label}</span>
-                    <input
-                      type="range"
-                      min={p.min}
-                      max={p.max}
-                      step={p.step}
-                      value={parseFloat(fields[p.varName] ?? "0") || 0}
-                      onChange={(e) => setShape(p, e.target.value)}
-                    />
-                    <span className="shape-value">
-                      {(parseFloat(fields[p.varName] ?? "0") || 0).toFixed(p.step < 1 ? 2 : 0)}
-                      {p.unit}
-                    </span>
-                  </label>
-                ))}
+                {shapeParams.map((p) => {
+                  const val = parseFloat(fields[p.varName] ?? "0") || 0
+                  const pct = ((val - p.min) / (p.max - p.min)) * 100
+                  return (
+                    <label key={p.varName} className="shape-row">
+                      <span className="token-label">{p.label}</span>
+                      <input
+                        className="shape-slider"
+                        type="range"
+                        min={p.min}
+                        max={p.max}
+                        step={p.step}
+                        value={val}
+                        onChange={(e) => setShape(p, e.target.value)}
+                        style={{ "--range-pct": `${pct}%` } as React.CSSProperties}
+                      />
+                      <span className="shape-value">
+                        {val.toFixed(p.step < 1 ? 2 : 0)}
+                        {p.unit}
+                      </span>
+                    </label>
+                  )
+                })}
               </div>
             </>
           ) : null}

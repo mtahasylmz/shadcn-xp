@@ -1242,10 +1242,72 @@ html {
   align-items: center;
   gap: 10px;
 }
-.shape-row input[type="range"] {
+/* Custom shape slider: a rounded track with a primary-filled portion (driven by
+   the --range-pct the editor sets per value) and a clean knob. Skin-neutral via
+   tokens, so it adapts to whichever skin paints the editor. */
+.shape-slider {
+  -webkit-appearance: none;
+  appearance: none;
   width: 100%;
-  accent-color: var(--primary);
+  height: 18px;
+  background: transparent;
   cursor: pointer;
+}
+.shape-slider:focus {
+  outline: none;
+}
+/* WebKit / Blink */
+.shape-slider::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--primary) 0 var(--range-pct, 50%),
+    color-mix(in srgb, var(--foreground) 16%, transparent) var(--range-pct, 50%) 100%
+  );
+}
+.shape-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin-top: -5px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 2px solid var(--primary);
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--foreground) 28%, transparent);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.shape-slider:hover::-webkit-slider-thumb {
+  transform: scale(1.12);
+}
+.shape-slider:active::-webkit-slider-thumb {
+  transform: scale(1.04);
+}
+.shape-slider:focus-visible::-webkit-slider-thumb {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 28%, transparent);
+}
+/* Firefox */
+.shape-slider::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--foreground) 16%, transparent);
+}
+.shape-slider::-moz-range-progress {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--primary);
+}
+.shape-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+  background: var(--card);
+  box-shadow: 0 1px 3px color-mix(in srgb, var(--foreground) 28%, transparent);
+}
+.shape-slider:focus-visible::-moz-range-thumb {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 28%, transparent);
 }
 .shape-value {
   font-family: var(--app-font-mono);
