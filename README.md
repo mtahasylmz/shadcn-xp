@@ -13,14 +13,27 @@ Built with **Next.js 16 + React 19 + Tailwind v4 + shadcn (radix base)**.
 
 ## Skins
 
-| `data-skin`   | Concept                                                             |
-| ------------- | ------------------------------------------------------------------ |
-| `default`     | Stock-ish shadcn baseline (the control)                            |
-| `xp`          | Windows XP "Luna" — beveled putty controls, navy title gradient    |
-| `brutalist`   | Hard black borders, chunky offset shadows, uppercase grotesk       |
-| `neumorphic`  | Monochrome soft-UI, extruded via paired light/dark shadows         |
-| `terminal`    | Phosphor green-on-black, monospace, `[ bracketed ]`, CRT scanlines |
-| `glass`       | Frosted translucent panels, backdrop blur, over a vivid gradient   |
+15 complete concepts (plus the stock baseline and a tunable concept-free base):
+
+| `data-skin`  | Concept                                                          |
+| ------------ | ---------------------------------------------------------------- |
+| `default`    | Stock-ish shadcn baseline (the control)                          |
+| `base`       | Concept-free, fully tunable structural dials (no skin at all)    |
+| `xp`         | Windows XP "Luna" — beveled putty controls, navy title gradient  |
+| `win98`      | Windows 98 — grey 4-edge 3D bevels, navy title bars              |
+| `aqua`       | Mac OS X Aqua — glossy gel lozenges, pinstripes, candy gradients |
+| `macos`      | Modern macOS — vibrancy blur, hairline borders, traffic lights   |
+| `material`   | Material Design 3 — tonal surfaces, state layers, elevation      |
+| `brutalist`  | Hard black borders, chunky offset shadows, uppercase grotesk     |
+| `neumorphic` | Monochrome soft-UI, extruded via paired light/dark shadows       |
+| `clay`       | Claymorphism — puffy inflated 3D, pastel palette, big radii      |
+| `glass`      | Frosted translucent panels, backdrop blur, over a vivid gradient |
+| `terminal`   | Phosphor green-on-black, monospace, `[ bracketed ]`, scanlines   |
+| `cyberpunk`  | Neon cyan/magenta glow, clipped angular corners, dark HUD        |
+| `pixel`      | 8-bit — stepped pixel bevels, Press Start 2P, CRT scanlines      |
+| `synthwave`  | Outrun — sunset gradient, neon glow, perspective grid horizon    |
+| `editorial`  | Print/editorial — ink on cream, serif hierarchy, hairline rules  |
+| `swiss`      | Swiss International — Helvetica grid, signal-red accent, ink rules |
 
 ## Run it
 
@@ -81,14 +94,16 @@ components/
   showcase/           Specimen + SkinSwitcher (the thin wrapper layer)
 ```
 
-## Drop-in on any shadcn app (verified)
+## Install on any shadcn app
 
 A skin installs onto a real, stock shadcn project the same way you'd add a
-tweakcn token theme — verified end-to-end against a fresh `shadcn init` app:
+tweakcn token theme — verified end-to-end against a fresh `shadcn init` app.
+
+The registry is served straight from this public repo (no separate host needed):
 
 ```bash
-# 1. install a skin from the registry (writes app/skins/<skin>.css, untouched components)
-npx shadcn add https://<host>/r/skin-xp.json     # or skin-base, skin-brutalist, …
+# 1. add a skin — writes app/skins/<skin>.css, components stay untouched
+npx shadcn@latest add https://raw.githubusercontent.com/mtahasylmz/shadcn-xp/master/public/r/skin-xp.json
 ```
 ```css
 /* 2. globals.css — import it */
@@ -102,6 +117,40 @@ npx shadcn add https://<host>/r/skin-xp.json     # or skin-base, skin-brutalist,
 That's it — every shadcn component reskins, zero component changes. (The skin's
 `.app/.specimen` shell rules are showcase-only and sit inert in a real app; the
 `[data-slot]` rules are what do the work.)
+
+Swap `skin-xp` for any item: `skin-base`, `skin-win98`, `skin-aqua`,
+`skin-macos`, `skin-material`, `skin-brutalist`, `skin-neumorphic`, `skin-clay`,
+`skin-glass`, `skin-terminal`, `skin-cyberpunk`, `skin-pixel`, `skin-synthwave`,
+`skin-editorial`, `skin-swiss`, or `theme-xp` (the token-only XP theme).
+
+### Use it by name (agents / repeat installs)
+
+Register the namespace once in your project's `components.json`, then add skins
+by short name — handy for scripts and AI agents driving `shadcn`:
+
+```jsonc
+// components.json
+{
+  "registries": {
+    "@skins": "https://raw.githubusercontent.com/mtahasylmz/shadcn-xp/master/public/r/{name}.json"
+  }
+}
+```
+```bash
+npx shadcn@latest add @skins/skin-terminal
+```
+
+> Tip: point the **shadcn MCP server** at the same `@skins` registry and an
+> agent (Claude Code, etc.) can browse and apply these skins by name while it
+> builds an app.
+
+### Hosting the showcase (optional)
+
+The above works with zero hosting. To also publish the live demo site with
+cleaner `/r/<name>.json` URLs, connect this repo to **Cloudflare Pages** or
+**Netlify** (both free, GitHub-connected, Next.js-aware — same flow as Vercel):
+build command `pnpm build`, framework preset *Next.js*. The registry then lives
+at `https://<your-domain>/r/skin-xp.json`.
 
 ## Token editor (the tweakcn-style half)
 
