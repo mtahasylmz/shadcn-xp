@@ -61,10 +61,15 @@ export function SkinGallery() {
     return () => window.clearInterval(id)
   }, [playing])
 
-  // Keep the active chip scrolled into view (during tour and on manual pick).
+  // Center the active chip WITHIN the rail (horizontal only). We scroll the rail
+  // itself rather than scrollIntoView() — the latter scrolls every ancestor,
+  // which yanked the whole page back to the hero on each auto-tour tick.
   React.useEffect(() => {
-    const el = railRef.current?.querySelector<HTMLElement>('[data-active="true"]')
-    el?.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" })
+    const rail = railRef.current
+    const el = rail?.querySelector<HTMLElement>('[data-active="true"]')
+    if (!rail || !el) return
+    const left = el.offsetLeft - rail.clientWidth / 2 + el.clientWidth / 2
+    rail.scrollTo({ left, behavior: "smooth" })
   }, [skin])
 
   function apply(next: string) {

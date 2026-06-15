@@ -92,9 +92,14 @@ export function MobileSectionNav() {
   const active = useScrollSpy()
   const railRef = React.useRef<HTMLDivElement>(null)
 
+  // Center the active chip within the rail horizontally only — scrolling the
+  // rail itself (not scrollIntoView, which would also scroll the page).
   React.useEffect(() => {
-    const el = railRef.current?.querySelector<HTMLElement>('[data-active="true"]')
-    el?.scrollIntoView({ block: "nearest", inline: "center", behavior: "smooth" })
+    const rail = railRef.current
+    const el = rail?.querySelector<HTMLElement>('[data-active="true"]')
+    if (!rail || !el) return
+    const left = el.offsetLeft - rail.clientWidth / 2 + el.clientWidth / 2
+    rail.scrollTo({ left, behavior: "smooth" })
   }, [active])
 
   const firstComponentId = SECTIONS.find(([id]) => !STORY_IDS.has(id))?.[0]

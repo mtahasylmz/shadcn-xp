@@ -1253,3 +1253,110 @@ html {
   color: var(--muted-foreground);
   text-align: right;
 }
+
+/* ==========================================================================
+   LANDING CHROME — cross-skin consistency & readability
+   The marketing hero + the structural spacing skeleton are the SAME on every
+   skin: stable padding/margins (switching skins no longer jumps the layout)
+   and guaranteed-readable text (each skin's --card / --card-foreground /
+   --muted-foreground pairs are always legible — the component cards depend on
+   them). Defined after the skin @imports, so at equal specificity these win
+   over per-skin .hero rules. The component cards, proof panes and the stage
+   window chrome still re-skin.
+   ========================================================================== */
+
+/* Hero: one consistent, readable surface on every skin. */
+[data-skin] .hero {
+  padding: clamp(28px, 4vw, 52px);
+  background: var(--card);
+  color: var(--card-foreground);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 4px);
+}
+/* Replace any per-skin hero ::before (prompts, scanlines) with one consistent
+   brand glow so the hero reads the same across skins. */
+[data-skin] .hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  height: auto;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  box-shadow: none;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(50rem 32rem at 84% -2%,
+      color-mix(in srgb, var(--brand) 26%, transparent), transparent 60%),
+    radial-gradient(38rem 26rem at 8% 106%,
+      color-mix(in srgb, var(--accent) 16%, transparent), transparent 58%);
+}
+[data-skin] .hero > * {
+  position: relative;
+  z-index: 1;
+}
+[data-skin] .hero-title {
+  color: var(--card-foreground);
+}
+[data-skin] .hero-title-accent {
+  color: var(--brand);
+}
+[data-skin] .hero-sub,
+[data-skin] .hero-delta {
+  color: var(--muted-foreground);
+}
+[data-skin] .hero-sub strong,
+[data-skin] .hero-delta strong {
+  color: var(--card-foreground);
+}
+[data-skin] .hero-delta {
+  border-left-color: var(--brand);
+}
+[data-skin] .hero-kicker,
+[data-skin] .hero-stage-label {
+  color: color-mix(in srgb, var(--card-foreground) 50%, var(--muted-foreground));
+  /* strip any per-skin title-bar/box treatment so the kicker stays plain text */
+  background: none;
+  box-shadow: none;
+  border: 0;
+  padding: 0;
+}
+
+/* Section eyebrows: legible on any page background. */
+[data-skin] .section-eyebrow-num {
+  color: var(--brand);
+}
+[data-skin] .section-eyebrow-label {
+  color: var(--foreground);
+}
+[data-skin] .section-eyebrow-note {
+  color: var(--muted-foreground);
+}
+
+/* Sidebar nav group labels: plain uppercase labels (not skin title-bars) so
+   they don't read as active items, and stay legible on every skin's sidebar. */
+[data-skin] .app-nav-title {
+  color: color-mix(in srgb, var(--card-foreground) 45%, var(--muted-foreground));
+  background: none;
+  box-shadow: none;
+}
+
+/* Stable spacing skeleton — skins repaint surfaces, not the layout spacing. */
+[data-skin] .app {
+  padding: 20px 16px 56px;
+}
+[data-skin] .app-content {
+  gap: 16px;
+}
+[data-skin] .story {
+  gap: 16px;
+}
+[data-skin] .gallery {
+  gap: 16px;
+}
